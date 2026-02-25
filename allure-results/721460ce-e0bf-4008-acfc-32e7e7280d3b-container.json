@@ -1,0 +1,1 @@
+{"uuid":"721460ce-e0bf-4008-acfc-32e7e7280d3b","name":"e commerce Test Suite","children":["0d8b2fb1-c267-49b5-bdbe-8b30a276505f"],"befores":[{"name":"beforeSuite","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1771700360845,"stop":1771700360846}],"afters":[],"start":1771700360839,"stop":1771700369126}

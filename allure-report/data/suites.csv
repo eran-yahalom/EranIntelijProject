@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","9889","Register success flow","","2026-02-22","passed","2026-02-22","","User Registration","Register success flow",""
+"","6845","Register with non matching password and confirm password will result in fail to register","","2026-02-22","passed","2026-02-22","","User Registration","Register with non matching password and confirm password will result in fail to register",""
+"","5719","Register without entering details will result in fail to register","","2026-02-22","passed","2026-02-22","","User Registration","Register without entering details will result in fail to register",""
+"","7026","Register with existing driver will result in fail to register","","2026-02-22","passed","2026-02-22","","User Registration","Register with existing driver will result in fail to register",""

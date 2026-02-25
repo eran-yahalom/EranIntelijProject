@@ -1,0 +1,5 @@
+"BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
+"0","","0","User Registration","1","0","Register success flow","0"
+"0","","0","User Registration","1","0","Register with non matching password and confirm password will result in fail to register","0"
+"0","","0","User Registration","1","0","Register without entering details will result in fail to register","0"
+"0","","0","User Registration","1","0","Register with existing driver will result in fail to register","0"
