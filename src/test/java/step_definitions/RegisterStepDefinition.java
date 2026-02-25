@@ -1,6 +1,7 @@
 package step_definitions;
 
 import io.cucumber.java.en.*;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.*;
 import utils.*;
@@ -8,16 +9,32 @@ import utils.*;
 public class RegisterStepDefinition {
     private String email = GeneratorUtils.generateEmail();
     private String password = GeneratorUtils.generatePassword();
-    WelcomePage welcomePage = new WelcomePage(Hooks.driver);
-    RegisterPage registerPage = new RegisterPage(Hooks.driver);
-    LoggedInPage loggedInPage = new LoggedInPage(Hooks.driver);
-    TopPanelPage topPanelPage = new TopPanelPage(Hooks.driver);
-    TopMenuPage topMenuPage = new TopMenuPage(Hooks.driver);
-    GiftCardsPage giftCardsPage = new GiftCardsPage(Hooks.driver);
-    CartItemPage cartItemPage = new CartItemPage(Hooks.driver);
-    ShoppingCartPage shoppingCartPage = new ShoppingCartPage(Hooks.driver);
-    ElectronicsPage electronicsPage = new ElectronicsPage(Hooks.driver);
-    CellPhonesPage cellPhonesPage = new CellPhonesPage(Hooks.driver);
+
+    WelcomePage welcomePage;
+    RegisterPage registerPage;
+    LoggedInPage loggedInPage;
+    TopPanelPage topPanelPage;
+    TopMenuPage topMenuPage;
+    GiftCardsPage giftCardsPage;
+    CartItemPage cartItemPage;
+    ShoppingCartPage shoppingCartPage;
+    ElectronicsPage electronicsPage;
+    CellPhonesPage cellPhonesPage;
+
+    public RegisterStepDefinition() {
+        WebDriver driver = DriverManager.getDriver();
+        this.welcomePage = new WelcomePage(driver);
+        this.registerPage = new RegisterPage(driver);
+        this.loggedInPage = new LoggedInPage(driver);
+        this.topPanelPage = new TopPanelPage(driver);
+        this.topMenuPage = new TopMenuPage(driver);
+        this.giftCardsPage = new GiftCardsPage(driver);
+        this.cartItemPage = new CartItemPage(driver);
+        this.shoppingCartPage = new ShoppingCartPage(driver);
+        this.electronicsPage = new ElectronicsPage(driver);
+        this.cellPhonesPage = new CellPhonesPage(driver);
+    }
+
 
     @When("user clicks on register link")
     public void clickOnRegisterLink() {

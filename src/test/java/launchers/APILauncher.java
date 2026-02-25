@@ -16,7 +16,7 @@ import org.testng.annotations.DataProvider;
 public class APILauncher extends BaseLauncher {
 
     @Override
-    @DataProvider(parallel = false) // ניתן לשנות ל-true להרצה מקבילית
+    @DataProvider(parallel = true) // ניתן לשנות ל-true להרצה מקבילית
     public Object[][] scenarios() {
         return super.scenarios();
     }

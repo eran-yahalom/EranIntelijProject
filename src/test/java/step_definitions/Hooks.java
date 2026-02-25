@@ -20,22 +20,30 @@ public class Hooks {
     @Before
     public void setup() {
         WebDriverManager.chromedriver().setup();
-//        WebDriverManager.chromedriver().cachePath("wdm-cache").setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.setCapability("goog:loggingPrefs",
-                Map.of(LogType.BROWSER, Level.ALL));
+
+        // --- הגדרות לבידוד ומניעת התנגשויות ---
+        options.addArguments("--incognito"); // פותח דפדפן נקי ללא קוקיז קודמים
+        options.addArguments("--disable-extensions"); // מונע מתוספים להפריע
+        options.addArguments("--no-sandbox"); // עוזר ליציבות במערכות CI
+        // ------------------------------------
+
+        options.setCapability("goog:loggingPrefs", Map.of(LogType.BROWSER, Level.ALL));
         options.addArguments("--remote-allow-origins=*");
 
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        DriverManager.setDriver(driver);
+
+        DriverManager.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        DriverManager.getDriver().manage().window().maximize();
 
         String url = Utils.readProperty("url");
-        driver.get(url);
+        DriverManager.getDriver().get(url);
+
         try {
-            driver.findElement(By.cssSelector("#details-button")).click();
-            driver.findElement(By.cssSelector("#proceed-link")).click();
+            DriverManager.getDriver().findElement(By.cssSelector("#details-button")).click();
+            DriverManager.getDriver().findElement(By.cssSelector("#proceed-link")).click();
         } catch (Exception ignored) {
         }
     }
@@ -85,23 +93,46 @@ public class Hooks {
 //        }
 //    }
 //}
+//    @After
+//    public void tearDown(Scenario scenario) {
+//
+//        if (scenario.isFailed()) {
+//
+//            AllureUtils.attachScreenshot(driver,
+//                    "Screenshot - " + scenario.getName());
+//
+//            AllureUtils.attachBrowserLogs(driver);
+//
+//            AllureUtils.attachPageSource(driver);
+//
+//            AllureUtils.attachCurrentUrl(driver);
+//        }
+//        ScenarioContext.clear();
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
     @After
     public void tearDown(Scenario scenario) {
+        WebDriver currentDriver = DriverManager.getDriver();
 
-        if (scenario.isFailed()) {
-
-            AllureUtils.attachScreenshot(driver,
+        if (scenario.isFailed() && currentDriver != null) {
+            AllureUtils.attachScreenshot(currentDriver,
                     "Screenshot - " + scenario.getName());
 
-            AllureUtils.attachBrowserLogs(driver);
+            AllureUtils.attachBrowserLogs(currentDriver);
 
-            AllureUtils.attachPageSource(driver);
+            AllureUtils.attachPageSource(currentDriver);
 
-            AllureUtils.attachCurrentUrl(driver);
+            AllureUtils.attachCurrentUrl(currentDriver);
         }
+
         ScenarioContext.clear();
-        if (driver != null) {
-            driver.quit();
+
+        if (currentDriver != null) {
+            currentDriver.quit();
+            // קריטי: מנקים את ה-ThreadLocal כדי למנוע זליגת זיכרון (Memory Leak)
+            DriverManager.unload();
         }
     }
 }
