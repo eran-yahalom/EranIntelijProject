@@ -3,9 +3,6 @@ Feature: handle all activities in book page
 
   Background:
     Given user clicks on "BOOKS" from the top menu
-    And user fills in email and password
-    And user clicks on log in button
-    And user clicks on "BOOKS" from the top menu
 
   Scenario Outline: test sorting books by different options
     When user clicks on sort by dropdown and selects "<sortByOption>"
@@ -25,4 +22,13 @@ Feature: handle all activities in book page
       | 4             |
       | 8             |
       | 12            |
+
+  Scenario Outline: test view as options
+    When user clicks on view as dropdown and selects "<viewAsOption>"
+    Then books should be displayed in "<viewAsOption>" view
+
+    Examples:
+      | viewAsOption |
+      | List         |
+      | Grid         |
 

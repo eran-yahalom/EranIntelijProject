@@ -61,4 +61,14 @@ public class ItemsStepDefinition {
                 "Displayed books count does NOT match selected display option: " + displayOption
         );
     }
+
+    @When("user clicks on view as dropdown and selects {string}")
+    public void userClicksOnViewAsDropdownAndSelects(String viewOption) {
+        Assert.assertTrue(booksPage.selectViewModeOption(viewOption));
+    }
+
+    @Then("books should be displayed in {string} view")
+    public void booksShouldBeDisplayedInView(String viewOption) {
+        Assert.assertTrue(booksPage.isViewDisplayed(viewOption));
+    }
 }
