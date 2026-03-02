@@ -71,4 +71,19 @@ public class ItemsStepDefinition {
     public void booksShouldBeDisplayedInView(String viewOption) {
         Assert.assertTrue(booksPage.isViewDisplayed(viewOption));
     }
+
+    @And("sort by dropdown should be set to {string}")
+    public void sortByDropdownShouldBeSetTo(String expectedOption) {
+        Assert.assertTrue(booksPage.areDropDownsSetToDefault(expectedOption));
+    }
+
+    @And("display dropdown should be set to {string}")
+    public void displayDropdownShouldBeSetTo(String expectedOption) {
+        Assert.assertTrue(booksPage.areDropDownsSetToDefault(expectedOption));
+    }
+
+    @And("view as dropdown should be set to {string}")
+    public void viewAsDropdownShouldBeSetTo(String expectedOption) {
+        Assert.assertTrue(booksPage.areDropDownsSetToDefault(expectedOption));
+    }
 }

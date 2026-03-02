@@ -1,11 +1,11 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import utils.Utils;
 
 import java.util.*;
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 import static utils.Utils.getPricesFromUI;
@@ -162,5 +162,39 @@ public class BooksPage extends BasePage {
         };
 
         return getNumberOfDisplayedBooks() == expectedCount;
+    }
+
+    public boolean isSortByDropdownIsSetToDefault() {
+        return getSelectedOptionText(sortByDropdown).equals("Position");
+    }
+
+    public boolean isDisplayDropdownIsSetToDefault() {
+        return getSelectedOptionText(displayDropdown).equals("8");
+    }
+
+    public boolean isViewModeDropdownIsSetToDefault() {
+        return getSelectedOptionText(viewModeDropdown).equals("Grid");
+    }
+
+    public String getSelectedOptionText(WebElement dropdown) {
+        try {
+            return dropdown.findElement(By.cssSelector("option:checked")).getText();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("No option is currently selected in the dropdown.");
+        }
+    }
+
+    public boolean areDropDownsSetToDefault(String orderType) {
+        Map<String, Supplier<Boolean>> sortingChecks = Map.of(
+                "position", this::isSortByDropdownIsSetToDefault,
+                "8", this::isDisplayDropdownIsSetToDefault,
+                "grid", this::isViewModeDropdownIsSetToDefault
+        );
+
+        return sortingChecks.getOrDefault(orderType.toLowerCase(),
+                        () -> {
+                            throw new IllegalArgumentException("Invalid order type: " + orderType);
+                        })
+                .get();
     }
 }

@@ -32,3 +32,8 @@ Feature: handle all activities in book page
       | List         |
       | Grid         |
 
+  Scenario: test that dropdowns are initially set to default values
+    And sort by dropdown should be set to "Position"
+    When display dropdown should be set to "8"
+    Then view as dropdown should be set to "Grid"
+
