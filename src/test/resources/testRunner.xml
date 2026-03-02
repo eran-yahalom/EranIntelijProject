@@ -11,6 +11,7 @@
     <test name="e commerce tests">
         <classes>
             <class name="launchers.APILauncher"/>
+            <class name="launchers.BookLauncher"></class>
         </classes>
     </test>
 

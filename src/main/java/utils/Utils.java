@@ -69,7 +69,7 @@ public class Utils {
         }
     }
 
-    public List<Double> getPricesFromUI(List<WebElement> priceElements) {
+    public static List<Double> getPricesFromUI(List<WebElement> priceElements) {
 
         List<Double> prices = new ArrayList<>();
 
@@ -82,21 +82,34 @@ public class Utils {
         return prices;
     }
 
-    public List<Double> verifyPricesSortedHighToLow(List<Double> actualPrices) {
+    public static List<String> getTitleNamesFromUI(List<WebElement> nameElements) {
+
+        List<String> names = new ArrayList<>();
+
+        for (WebElement element : nameElements) {
+            String priceText = element.getText().trim();
+
+            names.add(priceText);
+        }
+
+        return names;
+    }
+
+    public static List<Double> verifyPricesSortedHighToLow(List<Double> actualPrices) {
 
         List<Double> expectedPrices = new ArrayList<>(actualPrices);
         expectedPrices.sort(Comparator.reverseOrder());
         return expectedPrices;
     }
 
-    public List<Double> verifyPricesSortedLowToHigh(List<Double> actualPrices) {
+    public static List<Double> verifyPricesSortedLowToHigh(List<Double> actualPrices) {
 
         List<Double> expectedPrices = new ArrayList<>(actualPrices);
         expectedPrices.sort(Comparator.naturalOrder());
         return expectedPrices;
     }
 
-    public List<String> getProducesNamesFromUI(List<WebElement> productNameElements) {
+    public static List<String> getProducesNamesFromUI(List<WebElement> productNameElements) {
 
         List<String> productNames = new ArrayList<>();
         for (WebElement element : productNameElements) {
@@ -106,18 +119,23 @@ public class Utils {
         return productNames;
     }
 
-    public List<String> sortItemNamesHighToLow(List<String> actualNames) {
-        actualNames.sort(Collections.reverseOrder());
+    public static boolean verifyNameSortedZToA(List<WebElement> actualNames) {
+        List<String> actualTitles = getTitleNamesFromUI(actualNames);
+        List<String> sortedTitles = new ArrayList<>(actualTitles);
+        sortedTitles.sort(Collections.reverseOrder());
 
-        return actualNames;
+        return actualTitles.equals(sortedTitles);
     }
 
-    public List<String> sortItemNamesRegularOrder(List<String> actualNames) {
-        Collections.sort(actualNames);
-        return actualNames;
+    public static boolean verifyNameSortedAToZ(List<WebElement> actualNames) {
+        List<String> actualTitles = getTitleNamesFromUI(actualNames);
+        List<String> sortedTitles = new ArrayList<>(actualTitles);
+        Collections.sort(sortedTitles);
+
+        return actualTitles.equals(sortedTitles);
     }
 
-    public boolean areItemsDisplayedAInCorrectOrder(List<WebElement> elements) {
+    public static boolean areItemsDisplayedAInCorrectOrder(List<WebElement> elements) {
         int size = elements.size();
         return size > 0;
     }

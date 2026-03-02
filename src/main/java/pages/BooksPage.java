@@ -3,10 +3,12 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utils.Utils;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
+
+import static utils.Utils.getPricesFromUI;
 
 public class BooksPage extends BasePage {
 
@@ -85,16 +87,57 @@ public class BooksPage extends BasePage {
     }
 
     public boolean selectSortByOption(String option) {
-        return selectOptionFromDropdown(sortByDropdown, option);
+        return selectOptionFromDropdownByVisibleText(sortByDropdown, option);
     }
 
     public boolean selectDisplayOption(String option) {
-        return selectOptionFromDropdown(displayDropdown, option);
+        return selectOptionFromDropdownByVisibleText(displayDropdown, option);
     }
 
     public boolean selectViewModeOption(String option) {
-        return selectOptionFromDropdown(viewModeDropdown, option);
+        return selectOptionFromDropdownByVisibleText(viewModeDropdown, option);
     }
 
+    public boolean areBooksOrderedByPriceLowToHigh() {
+        try {
+            List<Double> pricesFromBooksPage = getPricesFromUI(productActualPrice);
+            Utils.verifyPricesSortedHighToLow(pricesFromBooksPage);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
+    public boolean areBooksOrderedByPriceHighToLow() {
+        try {
+            List<Double> pricesFromBooksPage = getPricesFromUI(productActualPrice);
+            List<Double> sortedPrices = Utils.verifyPricesSortedHighToLow(pricesFromBooksPage);
+            return pricesFromBooksPage.equals(sortedPrices);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean areBooksSortedAToZ() {
+        return Utils.verifyNameSortedAToZ(productTitle);
+    }
+
+    public boolean areBooksOrderedZToA() {
+        return Utils.verifyNameSortedZToA(productTitle);
+    }
+
+    public boolean areBooksSortedCorrectly(String orderType) {
+        Map<String, Supplier<Boolean>> sortingChecks = Map.of(
+                "price: low to high", this::areBooksOrderedByPriceLowToHigh,
+                "price: high to low", this::areBooksOrderedByPriceHighToLow,
+                "name: a to z", this::areBooksSortedAToZ,
+                "name: z to a", this::areBooksOrderedZToA
+        );
+
+        return sortingChecks.getOrDefault(orderType.toLowerCase(),
+                        () -> {
+                            throw new IllegalArgumentException("Invalid order type: " + orderType);
+                        })
+                .get();
+    }
 }

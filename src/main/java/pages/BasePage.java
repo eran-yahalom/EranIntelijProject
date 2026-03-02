@@ -224,11 +224,33 @@ public abstract class BasePage {
     // ==============================
     // Dropdown
     // ==============================
-    public boolean selectOptionFromDropdown(WebElement element, String value) {
+    public boolean selectOptionFromDropdownByValue(WebElement element, String value) {
         try {
             longWait.until(ExpectedConditions.elementToBeClickable(element));
             Select select = new Select(element);
             select.selectByValue(value);
+            return true;
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
+    public boolean selectOptionFromDropdownByVisibleText(WebElement element, String value) {
+        try {
+            longWait.until(ExpectedConditions.elementToBeClickable(element));
+            Select select = new Select(element);
+            select.selectByVisibleText(value);
+            return true;
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
+    public boolean selectOptionFromDropdownByIndex(WebElement element, String value) {
+        try {
+            longWait.until(ExpectedConditions.elementToBeClickable(element));
+            Select select = new Select(element);
+            select.selectByIndex(2);
             return true;
         } catch (StaleElementReferenceException e) {
             return false;
