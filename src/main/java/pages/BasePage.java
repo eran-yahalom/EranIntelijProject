@@ -224,10 +224,15 @@ public abstract class BasePage {
     // ==============================
     // Dropdown
     // ==============================
-    public void selectDropDownHandler(WebElement element, String value) {
-        longWait.until(ExpectedConditions.elementToBeClickable(element));
-        Select select = new Select(element);
-        select.selectByValue(value);
+    public boolean selectOptionFromDropdown(WebElement element, String value) {
+        try {
+            longWait.until(ExpectedConditions.elementToBeClickable(element));
+            Select select = new Select(element);
+            select.selectByValue(value);
+            return true;
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
     }
 
     // ==============================
