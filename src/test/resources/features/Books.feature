@@ -59,3 +59,17 @@ Feature: handle all activities in book page
       | Under 25.00   |
       | 25.00 - 50.00 |
       | Over 50.00    |
+
+    #TODO : scenario: 25.00 - 50.00 returns empty list- need to handle it
+  Scenario Outline: test that sorting and filtering options work together
+    When user clicks on sort by dropdown and selects "<sortByOption>"
+    And user sets price range filter to "<priceRange>"
+    When only books within the price range of "<priceRange>" should be displayed
+    Then books should be sorted correctly by "<sortByOption>"
+
+    Examples:
+      | sortByOption       | priceRange    |
+      | Name: A to Z       | Under 25.00   |
+      | Price: Low to High | 25.00 - 50.00 |
+      | Price: High to Low | Over 50.00    |
+      | Name: Z to A       | Under 25.00   |
