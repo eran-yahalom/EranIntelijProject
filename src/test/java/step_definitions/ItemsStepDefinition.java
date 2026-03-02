@@ -1,7 +1,6 @@
 package step_definitions;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
+import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.*;
@@ -40,7 +39,7 @@ public class ItemsStepDefinition {
         this.booksPage = new BooksPage(driver);
     }
 
-    @And("user clicks on sort by dropdown and selects {string}")
+    @When("user clicks on sort by dropdown and selects {string}")
     public void userClicksOnSortByDropdownAndSelects(String sortOption) {
         Assert.assertTrue(booksPage.selectSortByOption(sortOption));
     }
@@ -48,5 +47,18 @@ public class ItemsStepDefinition {
     @Then("books should be sorted correctly by {string}")
     public void booksShouldBeSortedCorrectly(String sortOption) {
         Assert.assertTrue(booksPage.areBooksSortedCorrectly(sortOption));
+    }
+
+    @When("user clicks on display dropdown and selects {string}")
+    public void userClicksOnDisplayDropdownAndSelects(String sortOption) {
+        Assert.assertTrue(booksPage.selectDisplayOption(sortOption));
+    }
+
+    @Then("books should be displayed correctly by {string}")
+    public void booksShouldBeDisplayedCorrectly(String displayOption) {
+        Assert.assertTrue(
+                booksPage.doesNumberOfDisplayedBooksMatchDisplayOption(displayOption),
+                "Displayed books count does NOT match selected display option: " + displayOption
+        );
     }
 }

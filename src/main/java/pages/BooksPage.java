@@ -15,7 +15,7 @@ public class BooksPage extends BasePage {
     @FindBy(css = "#products-orderby")
     private WebElement sortByDropdown;
 
-    @FindBy(css = "products-pagesize")
+    @FindBy(css = "#products-pagesize")
     private WebElement displayDropdown;
 
     @FindBy(css = "#products-viewmode")
@@ -139,5 +139,28 @@ public class BooksPage extends BasePage {
                             throw new IllegalArgumentException("Invalid order type: " + orderType);
                         })
                 .get();
+    }
+
+    public int getNumberOfDisplayedBooks() {
+        return productTitle.size();
+    }
+
+    public boolean areBooksDisplayedInGridView() {
+        return isViewDisplayed("grid");
+    }
+
+    public boolean areBooksDisplayedInListView() {
+        return isViewDisplayed("list");
+    }
+
+    public boolean doesNumberOfDisplayedBooksMatchDisplayOption(String displayOption) {
+        int expectedCount = switch (displayOption.toLowerCase()) {
+            case "4" -> 4;
+            case "8" -> 8;
+            case "12" -> 12;
+            default -> throw new IllegalArgumentException("Invalid display option: " + displayOption);
+        };
+
+        return getNumberOfDisplayedBooks() == expectedCount;
     }
 }
