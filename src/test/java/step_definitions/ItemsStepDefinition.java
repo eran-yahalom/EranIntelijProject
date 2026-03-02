@@ -1,5 +1,6 @@
 package step_definitions;
 
+import io.cucumber.java.bs.A;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -95,5 +96,21 @@ public class ItemsStepDefinition {
     @Then("only books within the price range of {string} should be displayed")
     public void onlyBooksWithinPriceRangeShouldBeDisplayed(String priceRangeFilter) {
         Assert.assertTrue(booksPage.areDisplayedBooksWithinPriceRange(priceRangeFilter));
+    }
+
+    @And("number of displayed filter by price elements is correct")
+    public void numberOfDisplayedFilterByPriceElementsIsCorrect() {
+        Assert.assertTrue(booksPage.isNumberOfFilterByPriceElementsAfterFilterCorrect());
+        Assert.assertTrue(booksPage.isRemovePriceRangeFilterButtonDisplayed());
+    }
+
+    @And("user clicks on remove price range filter button")
+    public void userClicksOnRemovePriceRangeFilterButton() {
+        Assert.assertTrue(booksPage.clickRemovePriceRangeFilterButton());
+    }
+
+    @Then("all price range filters should be displayed again")
+    public void allPriceRangeFiltersShouldBeDisplayedAgain() {
+        Assert.assertTrue(booksPage.isNumberOfFilterByPriceElementsCorrect());
     }
 }

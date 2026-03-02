@@ -51,6 +51,15 @@ public class BooksPage extends BasePage {
     @FindBy(css = ".product-list .product-item")
     private WebElement listElement;
 
+    @FindBy(css = ".price-range-selector li")
+    private List<WebElement> priceRangeOptions;
+
+    @FindBy(css = ".filter-content div")
+    private List<WebElement> filterContentOptions;
+
+    @FindBy(css = ".remove-price-range-filter")
+    private WebElement removePriceRangeFilterButton;
+
 
     public BooksPage(WebDriver driver) {
         super(driver);
@@ -207,5 +216,29 @@ public class BooksPage extends BasePage {
             case "over 50.00" -> pricesFromBooksPage.stream().allMatch(price -> price > 50);
             default -> throw new IllegalArgumentException("Invalid price range: " + priceRange);
         };
+    }
+
+    public int getNumberOfPriceRangeOptions() {
+        return priceRangeOptions.size();
+    }
+
+    public int getNumberOfFilterContentOptions() {
+        return filterContentOptions.size();
+    }
+
+    public boolean isRemovePriceRangeFilterButtonDisplayed() {
+        return removePriceRangeFilterButton.isDisplayed();
+    }
+
+    public boolean isNumberOfFilterByPriceElementsCorrect() {
+        return getNumberOfPriceRangeOptions() == 3;
+    }
+
+    public boolean isNumberOfFilterByPriceElementsAfterFilterCorrect() {
+        return getNumberOfFilterContentOptions() == 2;
+    }
+
+    public boolean clickRemovePriceRangeFilterButton() {
+        return click(removePriceRangeFilterButton);
     }
 }
