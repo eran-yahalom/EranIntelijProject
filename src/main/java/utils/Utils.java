@@ -139,5 +139,15 @@ public class Utils {
         int size = elements.size();
         return size > 0;
     }
+
+    public int getPriceMaxValue(List<WebElement> priceElements) {
+        List<Double> prices = getPricesFromUI(priceElements);
+        return (int) Collections.max(prices).doubleValue();
+    }
+
+    public int getPriceMinValue(List<WebElement> priceElements) {
+        List<Double> prices = getPricesFromUI(priceElements);
+        return (int) Collections.min(prices).doubleValue();
+    }
 }
 

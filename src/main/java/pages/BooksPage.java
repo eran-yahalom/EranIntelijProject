@@ -73,9 +73,9 @@ public class BooksPage extends BasePage {
 
     public boolean selectPriceFilter(String priceRange) {
         Map<String, WebElement> priceFilterMap = Map.of(
-                "under25", priceFilterUnder25,
-                "25to50", priceFilter25To50,
-                "over50", priceFilterOver50
+                "under 25.00", priceFilterUnder25,
+                "25.00 - 50.00", priceFilter25To50,
+                "over 50.00", priceFilterOver50
         );
 
         WebElement filterElement = priceFilterMap.get(priceRange.toLowerCase());
@@ -196,5 +196,16 @@ public class BooksPage extends BasePage {
                             throw new IllegalArgumentException("Invalid order type: " + orderType);
                         })
                 .get();
+    }
+
+    public boolean areDisplayedBooksWithinPriceRange(String priceRange) {
+        List<Double> pricesFromBooksPage = getPricesFromUI(productActualPrice);
+
+        return switch (priceRange.toLowerCase()) {
+            case "under 25.00" -> pricesFromBooksPage.stream().allMatch(price -> price < 25);
+            case "25.00 - 50.00" -> pricesFromBooksPage.stream().allMatch(price -> price >= 25 && price <= 50);
+            case "over 50.00" -> pricesFromBooksPage.stream().allMatch(price -> price > 50);
+            default -> throw new IllegalArgumentException("Invalid price range: " + priceRange);
+        };
     }
 }

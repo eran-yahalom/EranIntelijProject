@@ -86,4 +86,14 @@ public class ItemsStepDefinition {
     public void viewAsDropdownShouldBeSetTo(String expectedOption) {
         Assert.assertTrue(booksPage.areDropDownsSetToDefault(expectedOption));
     }
+
+    @And("user sets price range filter to {string}")
+    public void userSetsPriceRangeFilterTo(String priceRangeFilter) {
+        Assert.assertTrue(booksPage.selectPriceFilter(priceRangeFilter));
+    }
+
+    @Then("only books within the price range of {string} should be displayed")
+    public void onlyBooksWithinPriceRangeShouldBeDisplayed(String priceRangeFilter) {
+        Assert.assertTrue(booksPage.areDisplayedBooksWithinPriceRange(priceRangeFilter));
+    }
 }

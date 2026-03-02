@@ -37,3 +37,13 @@ Feature: handle all activities in book page
     When display dropdown should be set to "8"
     Then view as dropdown should be set to "Grid"
 
+  Scenario Outline: test filtering books by price range
+    When user sets price range filter to "<priceRange>"
+    Then only books within the price range of "<priceRange>" should be displayed
+
+    Examples:
+      | priceRange    |
+      | Under 25.00   |
+      | 25.00 - 50.00 |
+      | Over 50.00    |
+
