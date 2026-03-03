@@ -276,7 +276,7 @@ public class RegisterStepDefinition {
         Assert.assertTrue(electronicsPage.selectItem(categoryOption));
     }
 
-    @And("user select item {string} from the dropdown page that was opened")
+    @And("user selects the item {string} from the selected category")
     public void userSelectsItemFromDropdownPage(String itemName) {
         Assert.assertTrue(cellPhonesPage.selectItem(itemName));
     }

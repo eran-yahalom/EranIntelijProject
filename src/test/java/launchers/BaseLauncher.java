@@ -8,9 +8,8 @@ public class BaseLauncher extends AbstractTestNGCucumberTests {
 
     @BeforeSuite
     public void beforeSuite() {
-        System.out.println("--- התחלת הרצת Suite אוטומציה ---");
+        System.out.println("Start running the test suite...");
 
-        // יצירת תיקיית Screenshots אם היא לא קיימת
         File screenshotDir = new File("target/screenshots");
         if (!screenshotDir.exists()) {
             screenshotDir.mkdirs();

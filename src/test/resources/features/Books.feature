@@ -73,3 +73,7 @@ Feature: handle all activities in book page
       | Price: Low to High | 25.00 - 50.00 |
       | Price: High to Low | Over 50.00    |
       | Name: Z to A       | Under 25.00   |
+
+
+
+

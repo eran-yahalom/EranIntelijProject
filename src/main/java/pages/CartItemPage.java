@@ -1,5 +1,6 @@
 package pages;
 
+import components.BreadcrumbComponent;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,6 +10,8 @@ import utils.Utils;
 import java.time.Duration;
 
 public class CartItemPage extends BasePage {
+
+    private BreadcrumbComponent breadcrumbs;
 
     @FindBy(css = ".add-to-cart-panel [value='Add to cart']")
     private WebElement addToCartButton;
@@ -37,8 +40,18 @@ public class CartItemPage extends BasePage {
     @FindBy(css = "#bar-notification p")
     private WebElement addToCartSuccessNotificationMessage;
 
+    @FindBy(css = ".product-name h1")
+    private WebElement productNameHeader;
+
+    @FindBy(css = "[value='Add to wishlist']")
+    private WebElement addToWishlistButton;
+
+    @FindBy(css = "[value='Add to compare list']")
+    private WebElement addToCompareListButton;
+
     public CartItemPage(WebDriver driver) {
         super(driver);
+        breadcrumbs = new BreadcrumbComponent(driver);
     }
 
     public boolean clickAddToCartButton() {
@@ -75,4 +88,22 @@ public class CartItemPage extends BasePage {
         return click(shoppingCartLinkInNotification);
     }
 
+    public String getProductNameHeader() {
+        return getText(productNameHeader);
+    }
+
+    public boolean clickAddToWishlistButton() {
+        wait.until(ExpectedConditions.elementToBeClickable(addToWishlistButton));
+        return click(addToWishlistButton);
+    }
+
+    public boolean addToCompareListButton() {
+        wait.until(ExpectedConditions.elementToBeClickable(addToCompareListButton));
+        return click(addToCompareListButton);
+    }
+
+    public boolean doesBreadcrumbContainProductName(String expectedBreadcrumb) {
+        String lastBreadCrumbText = breadcrumbs.getLastBreadcrumbStep();
+        return expectedBreadcrumb.equalsIgnoreCase(lastBreadCrumbText);
+    }
 }

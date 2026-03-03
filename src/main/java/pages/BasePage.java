@@ -7,7 +7,9 @@ import org.openqa.selenium.support.ui.*;
 import utils.Utils;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class BasePage {
 
@@ -36,6 +38,13 @@ public abstract class BasePage {
     // ==============================
     // Text actions
     // ==============================
+
+    public String getPageHeader() {
+        return driver.findElement(By.cssSelector(".page-title h1"))
+                .getText()
+                .trim();
+    }
+
     public boolean fillText(WebElement element, String text) {
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
@@ -320,5 +329,9 @@ public abstract class BasePage {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clickBreadcrumbStep(String stepName) {
+        driver.findElement(By.linkText(stepName)).click();
     }
 }
