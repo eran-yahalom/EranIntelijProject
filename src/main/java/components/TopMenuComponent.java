@@ -1,12 +1,13 @@
-package pages;
+package components;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.*;
 
-public class TopMenuPage extends BasePage {
+public class TopMenuComponent extends BaseComponent {
 
     private List<WebElement> subMenuLink;
     @FindBy(css = ".header-menu .top-menu>li>a")
@@ -21,7 +22,7 @@ public class TopMenuPage extends BasePage {
     @FindBy(css = ".header-logo a")
     private WebElement logoLink;
 
-    public TopMenuPage(WebDriver driver) {
+    public TopMenuComponent(WebDriver driver) {
         super(driver);
     }
 
@@ -69,5 +70,4 @@ public class TopMenuPage extends BasePage {
         return Optional.ofNullable(menuMap.get(linkText.toLowerCase()))
                 .orElse(Collections.emptyList());
     }
-
 }

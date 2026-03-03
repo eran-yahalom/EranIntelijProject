@@ -1,5 +1,7 @@
 package step_definitions;
 
+import components.HeaderComponent;
+import components.TopMenuComponent;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -13,37 +15,37 @@ public class RegisterStepDefinition {
     WelcomePage welcomePage;
     RegisterPage registerPage;
     LoggedInPage loggedInPage;
-    TopPanelPage topPanelPage;
-    TopMenuPage topMenuPage;
     GiftCardsPage giftCardsPage;
     CartItemPage cartItemPage;
     ShoppingCartPage shoppingCartPage;
     ElectronicsPage electronicsPage;
     CellPhonesPage cellPhonesPage;
+    TopMenuComponent topMenuComponent;
+    HeaderComponent headerComponent;
 
     public RegisterStepDefinition() {
         WebDriver driver = DriverManager.getDriver();
         this.welcomePage = new WelcomePage(driver);
         this.registerPage = new RegisterPage(driver);
         this.loggedInPage = new LoggedInPage(driver);
-        this.topPanelPage = new TopPanelPage(driver);
-        this.topMenuPage = new TopMenuPage(driver);
         this.giftCardsPage = new GiftCardsPage(driver);
         this.cartItemPage = new CartItemPage(driver);
         this.shoppingCartPage = new ShoppingCartPage(driver);
         this.electronicsPage = new ElectronicsPage(driver);
         this.cellPhonesPage = new CellPhonesPage(driver);
+        this.topMenuComponent = new TopMenuComponent(driver);
+        this.headerComponent = new HeaderComponent(driver);
     }
 
 
     @When("user clicks on register link")
     public void clickOnRegisterLink() {
-        Assert.assertTrue(topPanelPage.clickOnRegisterLink());
+        Assert.assertTrue(headerComponent.clickOnRegisterLink());
     }
 
     @When("user clicks on log in link")
     public void clickOnLogInLink() {
-        Assert.assertTrue(topPanelPage.clickOnLoginLink());
+        Assert.assertTrue(headerComponent.clickOnLoginLink());
     }
 
     @And("user fills in email and password")
@@ -186,7 +188,7 @@ public class RegisterStepDefinition {
 
     @And("user clicks on {string} from the top menu")
     public void userClicksOnFromTheTopMenu(String menuOption) {
-        Assert.assertTrue(topMenuPage.clickOnTopMenuLink(menuOption));
+        Assert.assertTrue(topMenuComponent.clickOnTopMenuLink(menuOption));
     }
 
     @And("user adds {string} to the cart")
@@ -239,7 +241,7 @@ public class RegisterStepDefinition {
 
     @And("user clicks on shopping cart link in the top menu")
     public void userClicksOnShoppingCartLinkInTheTopMenu() {
-        Assert.assertTrue(topPanelPage.clickOnShoppingCartLink());
+        Assert.assertTrue(headerComponent.clickOnShoppingCartLink());
     }
 
     @And("user counts the number of items in the cart")
@@ -251,7 +253,7 @@ public class RegisterStepDefinition {
 
     @And("user clicks on demo web shop link in the top menu")
     public void userClicksOnDemoWebShopLinkInTheTopMenu() {
-        Assert.assertTrue(topMenuPage.clickOnLogoLink());
+        Assert.assertTrue(topMenuComponent.clickOnLogoLink());
     }
 
     @And("user counts the quantity of items in the cart")
@@ -268,7 +270,7 @@ public class RegisterStepDefinition {
 
     @And("user clicks on {string} from top menu and selects {string} from the submenu")
     public void userSelectsFromTheTopMenu(String menuOption, String subMenuOption) {
-        Assert.assertTrue(topMenuPage.clickOnSubMenuLink(menuOption, subMenuOption));
+        Assert.assertTrue(topMenuComponent.clickOnSubMenuLink(menuOption, subMenuOption));
     }
 
     @And("user selects {string} from categories page")
@@ -289,7 +291,7 @@ public class RegisterStepDefinition {
     @And("number of items in cart header should match the number of items in the cart page")
     public void numberOfItemsInCartHeaderShouldMatchNumberOfItemsInCartPage() {
         int numberOfItemsInCart = shoppingCartPage.countNumberOfItemsInCart();
-        int numberOfItemsInHeader = topPanelPage.getShoppingCartItemCount();
+        int numberOfItemsInHeader = headerComponent.getShoppingCartItemCount();
         Assert.assertEquals(numberOfItemsInHeader, numberOfItemsInCart, "Expected number of items in cart header to match the actual number of items in the cart, but it did not.");
     }
 }

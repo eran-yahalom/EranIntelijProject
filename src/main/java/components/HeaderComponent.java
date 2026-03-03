@@ -1,11 +1,10 @@
-package pages;
+package components;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class TopPanelPage extends BasePage {
+public class HeaderComponent extends BaseComponent {
 
     @FindBy(css = ".ico-register")
     private WebElement registerLink;
@@ -34,8 +33,7 @@ public class TopPanelPage extends BasePage {
     @FindBy(css = ".header-logo")
     private WebElement homeLogo;
 
-
-    public TopPanelPage(WebDriver driver) {
+    public HeaderComponent(WebDriver driver) {
         super(driver);
     }
 
@@ -47,24 +45,23 @@ public class TopPanelPage extends BasePage {
         return click(loginLink);
     }
 
+    public boolean clickOnWishlistLink() {
+        return click(wishlistLink);
+    }
+
+    public boolean clickOnHomeLogo() {
+        return click(homeLogo);
+    }
+
     public boolean clickOnShoppingCartLink() {
-        By cartLink = By.cssSelector("#topcartlink .ico-cart");
-
-        for (int i = 0; i < 2; i++) {
-            try {
-                wait.until(ExpectedConditions.elementToBeClickable(cartLink));
-                return click(shoppingCartLink);
-
-            } catch (StaleElementReferenceException e) {
-                // retry
-            }
-        }
-        return false;
+        return click(shoppingCartLink);
     }
 
     public int getShoppingCartItemCount() {
         try {
-            String itemCountText =getText(shoppingCartItemCount).replaceAll("[()]", "").trim();
+            String itemCountText = getText(shoppingCartItemCount)
+                    .replaceAll("[()]", "")
+                    .trim();
             return Integer.parseInt(itemCountText);
         } catch (Exception e) {
             return 0;
@@ -80,21 +77,11 @@ public class TopPanelPage extends BasePage {
         }
     }
 
-    public boolean clickOnWishlistLink() {
-        return click(wishlistLink);
+    public boolean fillSearchInput(String searchTerm) {
+        return fillText(searchInput, searchTerm);
     }
 
     public boolean clickOnSearchButton() {
         return click(searchButton);
     }
-
-    public boolean fillSearchInput(String searchTerm) {
-        return fillText(searchInput, searchTerm);
-    }
-
-    public boolean clickOnHomeLogo() {
-        return click(homeLogo);
-    }
 }
-
-

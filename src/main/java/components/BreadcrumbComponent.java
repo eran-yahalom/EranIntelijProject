@@ -5,14 +5,13 @@ import org.openqa.selenium.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BreadcrumbComponent {
+public class BreadcrumbComponent extends BaseComponent {
 
-    private WebDriver driver;
     private By breadcrumbElements = By.cssSelector(".breadcrumb ul li");
     private By breadcrumbContainer = By.cssSelector(".breadcrumb");
 
     public BreadcrumbComponent(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public boolean isDisplayedCorrectly(String... expectedBreadcrumbs) {

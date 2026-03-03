@@ -16,8 +16,6 @@ public class ItemsStepDefinition {
     WelcomePage welcomePage;
     RegisterPage registerPage;
     LoggedInPage loggedInPage;
-    TopPanelPage topPanelPage;
-    TopMenuPage topMenuPage;
     GiftCardsPage giftCardsPage;
     CartItemPage cartItemPage;
     ShoppingCartPage shoppingCartPage;
@@ -30,8 +28,6 @@ public class ItemsStepDefinition {
         this.welcomePage = new WelcomePage(driver);
         this.registerPage = new RegisterPage(driver);
         this.loggedInPage = new LoggedInPage(driver);
-        this.topPanelPage = new TopPanelPage(driver);
-        this.topMenuPage = new TopMenuPage(driver);
         this.giftCardsPage = new GiftCardsPage(driver);
         this.cartItemPage = new CartItemPage(driver);
         this.shoppingCartPage = new ShoppingCartPage(driver);
