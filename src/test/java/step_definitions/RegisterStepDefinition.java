@@ -310,7 +310,7 @@ public class RegisterStepDefinition {
         Assert.assertTrue(shoppingCartPage.deleteItemFromCart());
     }
 
-    @And("the user clicks on log out link")
+    @And("user clicks on log out link")
     public void userClicksOnLogOutLink() {
         Assert.assertTrue(headerComponent.clickOnLogoutLink());
     }

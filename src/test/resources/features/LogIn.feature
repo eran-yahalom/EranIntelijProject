@@ -23,5 +23,5 @@ Feature: Log in actions
 
   Scenario: Logout after successful login
     Given the user is logged in
-    When the user clicks on log out link
+    When user clicks on log out link
     Then the user is logged out successfully
