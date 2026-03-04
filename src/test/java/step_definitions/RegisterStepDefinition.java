@@ -309,4 +309,15 @@ public class RegisterStepDefinition {
         Assert.assertTrue(headerComponent.clickOnShoppingCartLink());
         Assert.assertTrue(shoppingCartPage.deleteItemFromCart());
     }
+
+    @And("the user clicks on log out link")
+    public void userClicksOnLogOutLink() {
+        Assert.assertTrue(headerComponent.clickOnLogoutLink());
+    }
+
+    @Then("the user is logged out successfully")
+    public void theUserIsLoggedOutSuccessfully() {
+        Assert.assertTrue(welcomePage.isRegisterLinkDisplayed());
+        Assert.assertTrue(welcomePage.isLoginLinkDisplayed());
+    }
 }

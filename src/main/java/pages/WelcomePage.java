@@ -33,6 +33,9 @@ public class WelcomePage extends BasePage {
     @FindBy(css = ".validation-summary-errors")
     private WebElement loginValidationErrorMessage;
 
+    @FindBy(css = ".topic-html-content-header")
+    private WebElement welcomeMessage;
+
     public WelcomePage(WebDriver driver) {
         super(driver);
     }
@@ -71,8 +74,21 @@ public class WelcomePage extends BasePage {
     public String getInvalidLoginErrorMessage() {
         return getText(loginValidationErrorMessage);
     }
+
     public boolean isCorrectErrorMessageDisplayed(String expectedMessage) {
         String actualMessage = getInvalidLoginErrorMessage();
         return expectedMessage.equalsIgnoreCase(actualMessage);
+    }
+
+    public boolean isWelcomeMessageDisplayed() {
+        return isDisplayed(welcomeMessage);
+    }
+
+    public boolean isRegisterLinkDisplayed() {
+        return isDisplayed(registerLink);
+    }
+
+     public boolean isLoginLinkDisplayed() {
+        return isDisplayed(loginLink);
     }
 }

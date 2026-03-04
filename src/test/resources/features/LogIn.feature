@@ -20,3 +20,8 @@ Feature: Log in actions
       | invalidemail@gmail.com | password123.com | loginErrorMessage                  |
       |                        | password123     | loginNoCustomerAccountFoundMessage |
       | invalidemail@gmail.com |                 | loginErrorMessage                  |
+
+  Scenario: Logout after successful login
+    Given the user is logged in
+    When the user clicks on log out link
+    Then the user is logged out successfully

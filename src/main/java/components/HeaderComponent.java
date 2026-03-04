@@ -12,6 +12,9 @@ public class HeaderComponent extends BaseComponent {
     @FindBy(css = ".ico-login")
     private WebElement loginLink;
 
+    @FindBy(css = ".ico-logout")
+    private WebElement logoutLink;
+
     @FindBy(css = "#topcartlink .ico-cart")
     private WebElement shoppingCartLink;
 
@@ -51,6 +54,10 @@ public class HeaderComponent extends BaseComponent {
 
     public boolean clickOnHomeLogo() {
         return click(homeLogo);
+    }
+
+    public boolean clickOnLogoutLink() {
+        return click(logoutLink);
     }
 
     public boolean clickOnShoppingCartLink() {
