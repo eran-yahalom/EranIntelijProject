@@ -10,8 +10,10 @@
 
     <test name="e commerce tests">
         <classes>
-            <class name="launchers.APILauncher"/>
+            <class name="launchers.Registerlauncher"/>
+            <class name="launchers.LoginLauncher"/>
             <class name="launchers.BookLauncher"/>
+            <class name="launchers.CartLauncher"/>
             <class name="launchers.BreadCrumbsLauncher">
             </class>
         </classes>
