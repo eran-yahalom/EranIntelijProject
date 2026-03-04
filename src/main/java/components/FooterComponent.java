@@ -4,7 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -31,6 +32,11 @@ public class FooterComponent extends BaseComponent {
     @FindBy(css = ".column.my-account ul li a")
     private List<WebElement> myAccountFooterLinks;
 
+    @FindBy(css = ".column.customer-service ul li a")
+    private List<WebElement> customerServiceFooterLinks;
+
+    @FindBy(css = ".column.information ul li a")
+    private List<WebElement> informationLinks;
 
     public FooterComponent(WebDriver driver) {
         super(driver);
@@ -74,6 +80,54 @@ public class FooterComponent extends BaseComponent {
 
     public boolean clickOnMyAccountWishlistLink() {
         return click(myAccountFooterLinks.get(4));
+    }
+
+    public boolean clickOnCustomerServiceSearchLink() {
+        return click(customerServiceFooterLinks.get(0));
+    }
+
+    public boolean clickOnCustomerServiceNewsLink() {
+        return click(customerServiceFooterLinks.get(1));
+    }
+
+    public boolean clickOnCustomerServiceBlogLink() {
+        return click(customerServiceFooterLinks.get(2));
+    }
+
+    public boolean clickOnCustomerServiceRecentlyViewedProductsLink() {
+        return click(customerServiceFooterLinks.get(3));
+    }
+
+    public boolean clickOnCustomerServiceCompareProductsListLink() {
+        return click(customerServiceFooterLinks.get(4));
+    }
+
+    public boolean clickOnCustomerServiceNewProductsListLink() {
+        return click(customerServiceFooterLinks.get(5));
+    }
+
+    public boolean clickOnInformationSiteLink() {
+        return click(informationLinks.get(0));
+    }
+
+    public boolean clickOnInformationShippingAndReturnsLink() {
+        return click(informationLinks.get(1));
+    }
+
+    public boolean clickOnInformationSPrivacyNoticeLink() {
+        return click(informationLinks.get(2));
+    }
+
+    public boolean clickOnInformationConditionsOfUseLink() {
+        return click(informationLinks.get(3));
+    }
+
+    public boolean clickOnInformationAboutUsLink() {
+        return click(informationLinks.get(4));
+    }
+
+    public boolean clickOnInformationContactUsLink() {
+        return click(informationLinks.get(5));
     }
 
     public boolean clickAndMoveToSelectedSocialMedia(String socialMedia) {
@@ -149,6 +203,79 @@ public class FooterComponent extends BaseComponent {
                 "addresses", actualPageValue -> actualPageValue.equalsIgnoreCase("My account - Addresses"),
                 "shopping cart", actualPageValue -> actualPageValue.equalsIgnoreCase("Shopping cart"),
                 "wishlist", actualPageValue -> actualPageValue.equalsIgnoreCase("Wishlist")
+        );
+
+        return pageValidationMap
+                .getOrDefault(pageName.toLowerCase(), p -> false)
+                .test(actualPage);
+    }
+
+    public boolean clickOnCustomerServiceLinks(String myAccountLink) {
+
+        Map<String, Supplier<Boolean>> socialMediaMap = Map.of(
+                "search", this::clickOnCustomerServiceSearchLink,
+                "news", this::clickOnCustomerServiceNewsLink,
+                "blog", this::clickOnCustomerServiceBlogLink,
+                "recently viewed products", this::clickOnCustomerServiceRecentlyViewedProductsLink,
+                "compare products list", this::clickOnCustomerServiceCompareProductsListLink,
+                "new products", this::clickOnCustomerServiceNewProductsListLink
+        );
+
+        return socialMediaMap.getOrDefault(
+                myAccountLink.toLowerCase(),
+                () -> {
+                    throw new IllegalArgumentException("Invalid customer service page: " + myAccountLink);
+                }
+        ).get();
+    }
+
+    public boolean isCorrectCustomerServicePageOpenedF(String pageName) {
+        String actualPage = getPageHeader();
+
+        Map<String, Predicate<String>> pageValidationMap = Map.of(
+                "search", actualPageValue -> actualPageValue.equalsIgnoreCase("Search"),
+                "news", actualPageValue -> actualPageValue.equalsIgnoreCase("News"),
+                "blog", actualPageValue -> actualPageValue.equalsIgnoreCase("Blog"),
+                "recently viewed products", actualPageValue -> actualPageValue.equalsIgnoreCase("Recently viewed products"),
+                "compare products list", actualPageValue -> actualPageValue.equalsIgnoreCase("Compare products"),
+                "new products", actualPageValue -> actualPageValue.equalsIgnoreCase("New products")
+        );
+
+        return pageValidationMap
+                .getOrDefault(pageName.toLowerCase(), p -> false)
+                .test(actualPage);
+    }
+
+    public boolean clickOnInformationLinks(String informationLink) {
+
+        Map<String, Supplier<Boolean>> socialMediaMap = Map.of(
+                "sitemap", this::clickOnInformationSiteLink,
+                "shipping & returns", this::clickOnInformationShippingAndReturnsLink,
+                "privacy notice", this::clickOnInformationSPrivacyNoticeLink,
+                "conditions of use", this::clickOnInformationConditionsOfUseLink,
+                "about us", this::clickOnInformationAboutUsLink,
+                "contact us", this::clickOnInformationContactUsLink
+        );
+
+        return socialMediaMap.getOrDefault(
+                informationLink.toLowerCase(),
+                () -> {
+                    throw new IllegalArgumentException("Invalid information page: " + myAccountLink);
+                }
+        ).get();
+    }
+
+    public boolean isCorrectInformationPageOpenedF(String pageName) {
+        String actualPage = getPageHeader();
+
+        Map<String, Predicate<String>> pageValidationMap = Map.of(
+                "sitemap", actualPageValue -> actualPageValue.equalsIgnoreCase("Sitemap"),
+                "shipping & returns", actualPageValue -> actualPageValue.equalsIgnoreCase("Shipping & Returns"),
+                "privacy notice", actualPageValue -> actualPageValue.equalsIgnoreCase("Privacy policy"),
+                "conditions of use", actualPageValue -> actualPageValue.equalsIgnoreCase("Conditions of use"),
+                "about us", actualPageValue -> actualPageValue.equalsIgnoreCase("About Us"),
+                "contact us", actualPageValue -> actualPageValue.equalsIgnoreCase("Contact Us")
+
         );
 
         return pageValidationMap

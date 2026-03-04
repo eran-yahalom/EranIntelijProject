@@ -53,11 +53,31 @@ public class FooterStepDefinition {
 
     @Then("my account {string} page will be opened")
     public void myAccountPageWillBeOpened(String expectedPage) {
-       Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForAnonymousUser(expectedPage));
+        Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForAnonymousUser(expectedPage));
     }
 
     @Then("my account {string} page will be opened for logged in user")
     public void myAccountPageWillBeOpenedForLoggedInUser(String expectedPage) {
         Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForLoggedInUser(expectedPage));
+    }
+
+    @When("user clicks on customer service {string} link in the footer")
+    public void userClicksOnCustomerServiceLinkInTheFooter(String customerServiceLink) {
+        Assert.assertTrue(footerComponent.clickOnCustomerServiceLinks(customerServiceLink));
+    }
+
+    @Then("customer service {string} page will be opened")
+    public void customerServicePageWillBeOpened(String customerServiceLink) {
+        Assert.assertTrue(footerComponent.isCorrectCustomerServicePageOpenedF(customerServiceLink));
+    }
+
+    @When("user clicks on information {string} link in the footer")
+    public void userClicksOnInformationLinkInTheFooter(String informationLink) {
+        Assert.assertTrue(footerComponent.clickOnInformationLinks(informationLink));
+    }
+
+    @Then("information {string} page will be opened")
+    public void informationPageWillBeOpened(String informationLink) {
+        Assert.assertTrue(footerComponent.isCorrectInformationPageOpenedF(informationLink));
     }
 }

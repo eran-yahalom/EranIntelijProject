@@ -36,3 +36,29 @@ Feature: Social media links in the footer
       | Addresses     |
       | Shopping cart |
       | Wishlist      |
+
+  Scenario Outline: User can navigate to customer service pages as anonymous user
+    When user clicks on customer service "<customerService>" link in the footer
+    Then customer service "<customerService>" page will be opened
+
+    Examples:
+      | customerService          |
+      | Search                   |
+      | News                     |
+      | Blog                     |
+      | Recently viewed products |
+      | Compare products list    |
+      | New products             |
+
+  Scenario Outline: User can navigate to information pages as anonymous user
+    When user clicks on information "<information>" link in the footer
+    Then information "<information>" page will be opened
+
+    Examples:
+      | information        |
+      | Sitemap            |
+      | Shipping & Returns |
+      | Privacy Notice     |
+      | Conditions of Use  |
+      | About us           |
+      | Contact us         |
