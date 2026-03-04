@@ -1,12 +1,12 @@
 @ui @book
-Feature: handle all activities in book page
+Feature: User can manage sorting, filtering and display on Books page
 
   Background:
-    Given user clicks on "BOOKS" from the top menu
+    Given the user navigates to the "BOOKS" page
 
-  Scenario Outline: test sorting books by different options
+  Scenario Outline: User can sort books by different options
     When user clicks on sort by dropdown and selects "<sortByOption>"
-    Then books should be sorted correctly by "<sortByOption>"
+    Then the books should be sorted by "<sortByOption>"
     Examples:
       | sortByOption       |
       | Name: Z to A       |
@@ -14,31 +14,31 @@ Feature: handle all activities in book page
       | Price: Low to High |
       | Price: High to Low |
 
-  Scenario Outline: test sorting books by display options
+  Scenario Outline: User can change the number of displayed books by different options
     When user clicks on display dropdown and selects "<displayOption>"
-    Then books should be displayed correctly by "<displayOption>"
+    Then "<displayOption>" books should be displayed
     Examples:
       | displayOption |
       | 4             |
       | 8             |
       | 12            |
 
-  Scenario Outline: test view as options
+  Scenario Outline: User can change the view of displayed books by different options
     When user clicks on view as dropdown and selects "<viewAsOption>"
-    Then books should be displayed in "<viewAsOption>" view
+    Then the books should be displayed in "<viewAsOption>" view
 
     Examples:
       | viewAsOption |
       | List         |
       | Grid         |
 
-  Scenario: test that dropdowns are initially set to default values
-    And sort by dropdown should be set to "Position"
-    When display dropdown should be set to "8"
-    Then view as dropdown should be set to "Grid"
+  Scenario: Dropdown options should be set to default values
+    Then sort by dropdown should be set to "Position"
+    And display dropdown should be set to "8"
+    And view as dropdown should be set to "Grid"
 
   @flaky #TODO : scenario: 25.00 - 50.00 returns empty list- need to handle it
-  Scenario Outline: test filtering books by price range
+  Scenario Outline: User can filter books by price range
     When user sets price range filter to "<priceRange>"
     Then only books within the price range of "<priceRange>" should be displayed
 
@@ -48,9 +48,9 @@ Feature: handle all activities in book page
       | 25.00 - 50.00 |
       | Over 50.00    |
 
-  Scenario Outline: test that filter by price range works according to display options
-    And user sets price range filter to "<priceRange>"
-    And number of displayed filter by price elements is correct
+  Scenario Outline: User can remove price filter
+    When user sets price range filter to "<priceRange>"
+    Then number of displayed filter by price elements is correct
     When user clicks on remove price range filter button
     Then all price range filters should be displayed again
 
@@ -61,11 +61,11 @@ Feature: handle all activities in book page
       | Over 50.00    |
 
     #TODO : scenario: 25.00 - 50.00 returns empty list- need to handle it
-  Scenario Outline: test that sorting and filtering options work together
+  Scenario Outline: User can filter books by price range and sort the filtered books by different options
     When user clicks on sort by dropdown and selects "<sortByOption>"
     And user sets price range filter to "<priceRange>"
-    When only books within the price range of "<priceRange>" should be displayed
-    Then books should be sorted correctly by "<sortByOption>"
+    Then only books within the price range of "<priceRange>" should be displayed
+    And the books should be sorted by "<sortByOption>"
 
     Examples:
       | sortByOption       | priceRange    |

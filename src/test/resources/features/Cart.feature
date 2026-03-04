@@ -1,49 +1,46 @@
 @ui @cart
-Feature: cart operations
+Feature: User can manage shopping cart operations
 
   Background:
-    Given user clicks on log in link
-    And user enters email
-    And user fills in email and password
-    And user clicks on log in button
-    And user clicks on shopping cart link in the top menu
-    And user deletes all the items from the cart
+    Given the user is logged in
+    And the shopping cart is empty
 
-  Scenario Outline: user fails to add a product to the cart
-    And user clicks on "<category>" from the top menu
+  Scenario Outline: User cannot add a gift card to the cart without filling in required fields
+    When the user navigates to the "<category>" page
     And user adds "<itemNane>" to the cart
     And user clicks on add to cart button
-    Then user should see a message that the product was not added to the cart successfully
+    Then an error message should be displayed
+
     Examples:
       | category   | itemNane             |
       | Gift Cards | $5 Virtual Gift Card |
 
-  Scenario Outline: user adds a gift card to the cart successfully
-    And user counts the quantity of items in the cart
+  Scenario Outline: Item is added to the cart successfully
+    When user counts the quantity of items in the cart
     And user clicks on demo web shop link in the top menu
-    And user clicks on "<category>" from the top menu
+    And the user navigates to the "<category>" page
     And user adds "<itemNane>" to the cart
     And user fills in recipient name
     And user fills in recipient email
     And user clicks on add to cart button
-    Then user should see a message that the product was added to the cart successfully
-    And user clicks on cart link in the notification
-    And user should be on the shopping cart page
-    And item was added to the cart successfully
+    Then a success message should be displayed
+    And the user clicks on cart link in the notification
+    And the user should be redirected to the shopping cart page
+    And the item was added to the cart successfully
 
     Examples:
       | category   | itemNane             |
       | Gift Cards | $5 Virtual Gift Card |
 
-  Scenario Outline: user adds books/Digital downloads to the cart successfully
-    And user counts the quantity of items in the cart
+  Scenario Outline: User can add products to the cart
+    When user counts the quantity of items in the cart
     And user clicks on demo web shop link in the top menu
-    And user clicks on "<category>" from the top menu
+    And the user navigates to the "<category>" page
     And user adds "<itemNane>" to the cart
-    Then user should see a message that the product was added to the cart successfully
-    And user clicks on cart link in the notification
-    And user should be on the shopping cart page
-    And item was added to the cart successfully
+    Then a success message should be displayed
+    And the user clicks on cart link in the notification
+    And the user should be redirected to the shopping cart page
+    And the item was added to the cart successfully
 
     Examples:
       | category          | itemNane   |
@@ -51,16 +48,16 @@ Feature: cart operations
       | Digital downloads | 3rd Album  |
       | BOOKS             | Fiction    |
 
-  Scenario Outline: add item to cart from dropdown menu
-    And user counts the quantity of items in the cart
+  Scenario Outline: User can add products to the cart by navigating through the submenu
+    When user counts the quantity of items in the cart
     And user clicks on demo web shop link in the top menu
     And user clicks on "<topPageMenu>" from top menu and selects "<subMenu>" from the submenu
-    And user selects the item "<categoryName>" from the selected category
+    And user selects "<categoryName>"
     And user clicks on add to cart button
-    Then user should see a message that the product was added to the cart successfully
-    And user clicks on cart link in the notification
-    And user should be on the shopping cart page
-    And item was added to the cart successfully
+    Then a success message should be displayed
+    And the user clicks on cart link in the notification
+    And the user should be redirected to the shopping cart page
+    And the item was added to the cart successfully
 
     Examples:
       | topPageMenu | subMenu     | categoryName                  |
@@ -70,26 +67,27 @@ Feature: cart operations
       | Computers   | Notebooks   | 14.1-inch Laptop              |
       | Computers   | Accessories | TCP Instructor Led Training   |
 
-  Scenario: check cart total price after adding items to the cart
-    And user clicks on demo web shop link in the top menu
+  Scenario: Cart total price is calculated correctly
+    When user clicks on demo web shop link in the top menu
     And user clicks on "Electronics" from top menu and selects "Cell phones" from the submenu
-    And user selects the item "Smartphone" from the selected category
+    And user selects "Smartphone"
     And user clicks on add to cart button
     And user clicks on "Electronics" from top menu and selects "Cell phones" from the submenu
-    And user selects the item "Phone Cover" from the selected category
+    And user selects "Phone Cover"
     And user clicks on add to cart button
     And user clicks on shopping cart link in the top menu
-    When user should be on the shopping cart page
-    Then user should see the correct total price for the items in the cart
+    Then the user should be redirected to the shopping cart page
+    And the cart total price should be calculated correctly
 
-  Scenario: check cart total items match cart header items
+  Scenario: Cart header displays correct number of items in the cart
+    When user clicks on demo web shop link in the top menu
     And user clicks on "Electronics" from top menu and selects "Cell phones" from the submenu
-    And user selects the item "Smartphone" from the selected category
+    And user selects "Smartphone"
     And user clicks on add to cart button
     And user clicks on "Electronics" from top menu and selects "Cell phones" from the submenu
-    And user selects the item "Phone Cover" from the selected category
+    And user selects "Phone Cover"
     And user clicks on add to cart button
     And user clicks on shopping cart link in the top menu
-    When user should be on the shopping cart page
-    Then number of items in cart header should match the number of items in the cart page
+    Then the user should be redirected to the shopping cart page
+    Then the cart header number of items match the cart page number of items
 

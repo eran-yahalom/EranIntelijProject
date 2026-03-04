@@ -104,7 +104,7 @@ public class RegisterStepDefinition {
         Assert.assertTrue(registerPage.clickOnRegisterButton());
     }
 
-    @And("user should see the registration success message")
+    @And("a success message is displayed")
     public void userShouldSeeRegistrationSuccessMessage() {
         String actualMessage = registerPage.getSuccessMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("registerSuccessMessage"), "Registration success message does not match expected.");
@@ -120,29 +120,29 @@ public class RegisterStepDefinition {
         Assert.assertTrue(loggedInPage.isUserLoggedIn(email));
     }
 
-    @And("new user is logged in successfully")
+    @And("the user should be logged in")
     public void newUserIsLoggedInSuccessfully() {
         Assert.assertTrue(loggedInPage.isUserLoggedIn(email));
     }
 
-    @And("existing user is logged in successfully")
+    @And("the user is logged in successfully")
     public void existingUserIsLoggedInSuccessfully() {
         Assert.assertTrue(loggedInPage.isUserLoggedIn(Utils.readProperty("userEmail")));
     }
 
-    @Then("user should see an error message for existing email")
+    @Then("a error message should be displayed for existing email")
     public void userShouldSeeErrorMessageForExistingEmail() {
         String actualMessage = registerPage.getEmailRegistrationErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("emailAlreadyExistsText"));
     }
 
-    @Then("user should see an error message for non matching passwords")
+    @Then("a error message should be displayed for non matching passwords")
     public void userShouldSeeErrorMessageForNonMatchingPasswords() {
         String actualMessage = registerPage.getPasswordValidationErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("passwordsDontMatchErrorMessage"));
     }
 
-    @Then("user should see an error message for all empty fields")
+    @Then("a error message should be displayed for all empty fields")
     public void userShouldSeeErrorMessageForAllEmptyFields() {
         String emptyFirstname = registerPage.getFirstNameValidationErrorMessage();
         String emptyLastname = registerPage.getLastNameValidationErrorMessage();
@@ -180,13 +180,13 @@ public class RegisterStepDefinition {
         );
     }
 
-    @Then("user should see an error message:{string} for invalid credentials")
+    @Then("error message {string} is displayed for invalid credentials")
     public void userShouldSeeErrorMessageForInvalidCredentials(String errorMessageFormat) {
         String actualMessage = welcomePage.getInvalidLoginErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty(errorMessageFormat));
     }
 
-    @And("user clicks on {string} from the top menu")
+    @And("the user navigates to the {string} page")
     public void userClicksOnFromTheTopMenu(String menuOption) {
         Assert.assertTrue(topMenuComponent.clickOnTopMenuLink(menuOption));
     }
@@ -201,7 +201,7 @@ public class RegisterStepDefinition {
         Assert.assertTrue(cartItemPage.clickAddToCartButton());
     }
 
-    @And("user should see a message that the product was not added to the cart successfully")
+    @And("an error message should be displayed")
     public void userShouldSeeMessageProductNotAddedToCart() {
         Assert.assertTrue(cartItemPage.isValidTRecipientEmailMessagePresented());
         Assert.assertTrue(cartItemPage.isValidTRecipientNameMessagePresented());
@@ -217,22 +217,22 @@ public class RegisterStepDefinition {
         Assert.assertTrue(cartItemPage.fillRecipientEmailFromSender());
     }
 
-    @And("user should see a message that the product was added to the cart successfully")
+    @And("a success message should be displayed")
     public void userShouldSeeMessageProductAddedToCart() {
         Assert.assertTrue(cartItemPage.addToCartSuccessMessagePresented());
     }
 
-    @And("user clicks on cart link in the notification")
+    @And("the user clicks on cart link in the notification")
     public void userClicksOnCartLinkInTheNotification() {
         Assert.assertTrue(cartItemPage.clickOnCartLinkInNotification());
     }
 
-    @Then("user should be on the shopping cart page")
+    @Then("the user should be redirected to the shopping cart page")
     public void userShouldBeOnShoppingCartPage() {
         Assert.assertTrue(shoppingCartPage.isHeaderDisplayedCorrectly());
     }
 
-    @Then("item was added to the cart successfully")
+    @Then("the item was added to the cart successfully")
     public void itemWasAddedToTheCartSuccessfully() {
         int numberOfItemsBeforeAdd = ScenarioContext.get("quantityOfItemsInCart", Integer.class);
         int numberOfItemsAfterAdd = shoppingCartPage.getQuantityOfItemInCart();
@@ -278,20 +278,35 @@ public class RegisterStepDefinition {
         Assert.assertTrue(electronicsPage.selectItem(categoryOption));
     }
 
-    @And("user selects the item {string} from the selected category")
+    @And("user selects {string}")
     public void userSelectsItemFromDropdownPage(String itemName) {
         Assert.assertTrue(cellPhonesPage.selectItem(itemName));
     }
 
-    @And("user should see the correct total price for the items in the cart")
+    @And("the cart total price should be calculated correctly")
     public void userShouldSeeCorrectTotalPriceForItemsInCart() {
         Assert.assertTrue(shoppingCartPage.isTotalPriceCalculatedCorrectly());
     }
 
-    @And("number of items in cart header should match the number of items in the cart page")
+    @And("the cart header number of items match the cart page number of items")
     public void numberOfItemsInCartHeaderShouldMatchNumberOfItemsInCartPage() {
         int numberOfItemsInCart = shoppingCartPage.countNumberOfItemsInCart();
         int numberOfItemsInHeader = headerComponent.getShoppingCartItemCount();
         Assert.assertEquals(numberOfItemsInHeader, numberOfItemsInCart, "Expected number of items in cart header to match the actual number of items in the cart, but it did not.");
+    }
+
+    @And("the user is logged in")
+    public void theUserIsLoggedIn() {
+        Assert.assertTrue(headerComponent.clickOnLoginLink());
+        Assert.assertTrue(registerPage.fillEmail(email));
+        Assert.assertTrue(welcomePage.fillEmail(Utils.readProperty("userEmail")));
+        Assert.assertTrue(welcomePage.fillPassword(Utils.readProperty("userPassword")));
+        Assert.assertTrue(welcomePage.clickOnLoginButton());
+    }
+
+    @And("the shopping cart is empty")
+    public void theShoppingCartIsEmpty() {
+        Assert.assertTrue(headerComponent.clickOnShoppingCartLink());
+        Assert.assertTrue(shoppingCartPage.deleteItemFromCart());
     }
 }

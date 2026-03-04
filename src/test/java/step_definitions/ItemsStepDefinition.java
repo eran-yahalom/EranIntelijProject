@@ -41,7 +41,7 @@ public class ItemsStepDefinition {
         Assert.assertTrue(booksPage.selectSortByOption(sortOption));
     }
 
-    @Then("books should be sorted correctly by {string}")
+    @Then("the books should be sorted by {string}")
     public void booksShouldBeSortedCorrectly(String sortOption) {
         Assert.assertTrue(booksPage.areBooksSortedCorrectly(sortOption));
     }
@@ -51,7 +51,7 @@ public class ItemsStepDefinition {
         Assert.assertTrue(booksPage.selectDisplayOption(sortOption));
     }
 
-    @Then("books should be displayed correctly by {string}")
+    @Then("{string} books should be displayed")
     public void booksShouldBeDisplayedCorrectly(String displayOption) {
         Assert.assertTrue(
                 booksPage.doesNumberOfDisplayedBooksMatchDisplayOption(displayOption),
@@ -64,7 +64,7 @@ public class ItemsStepDefinition {
         Assert.assertTrue(booksPage.selectViewModeOption(viewOption));
     }
 
-    @Then("books should be displayed in {string} view")
+    @Then("the books should be displayed in {string} view")
     public void booksShouldBeDisplayedInView(String viewOption) {
         Assert.assertTrue(booksPage.isViewDisplayed(viewOption));
     }

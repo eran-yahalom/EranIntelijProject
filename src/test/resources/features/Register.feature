@@ -1,42 +1,42 @@
 @register @ui
-Feature: User Registration
+Feature: User can register a new account
 
   Background:
     Given user clicks on register link
 
   @ui
   Scenario: Register success flow
-    And user enters gender "male"
+    When user enters gender "male"
     And user enters first and last name
     And user enters email
     And user enters password and confirm password
     And user clicks on register button
-    And user should see the registration success message
+    Then a success message is displayed
     When user clicks on continue button
-    Then new user is logged in successfully
+    Then the user should be logged in
 
   @ui
-  Scenario: Register with existing driver will result in fail to register
-    And user enters gender "male"
+  Scenario: Fail to register with existing user
+    When user enters gender "male"
     And user enters first and last name
     And user enters existing email
     And user enters password and confirm password
-    When user clicks on register button
-    Then user should see an error message for existing email
+    And user clicks on register button
+    Then a error message should be displayed for existing email
 
   @ui
-  Scenario: Register with non matching password and confirm password will result in fail to register
-    And user enters gender "male"
+  Scenario: Fail to register with non matching password and confirm password
+    When user enters gender "male"
     And user enters first and last name
     And user enters existing email
     And user enters non matching password and confirm password
-    When user clicks on register button
-    Then user should see an error message for non matching passwords
+    And user clicks on register button
+    Then a error message should be displayed for non matching passwords
 
   @ui
-  Scenario: Register without entering details will result in fail to register
+  Scenario: Fail to register with empty fields
     When user clicks on register button
-    Then user should see an error message for all empty fields
+    Then a error message should be displayed for all empty fields
 
 
 

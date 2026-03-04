@@ -27,6 +27,14 @@ public abstract class BaseComponent {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    protected WebElement waitForVisibility(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    protected WebElement waitForClickability(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
     protected boolean click(WebElement element) {
         try {
             waitForClickability(element).click();
