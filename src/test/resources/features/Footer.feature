@@ -12,9 +12,22 @@ Feature: Social media links in the footer
       | RSS         |
       | YouTube     |
 
-  Scenario Outline: User can navigate to my account pages
+  Scenario Outline: User can navigate to my account pages as anonymous user
     When user clicks on my account "<myAccountPage>" link in the footer
     Then my account "<myAccountPage>" page will be opened
+
+    Examples:
+      | myAccountPage |
+      | My account    |
+      | Orders        |
+      | Addresses     |
+      | Shopping cart |
+      | Wishlist      |
+
+  Scenario Outline: User can navigate to my account pages as logged in user
+    Given the user is logged in
+    When user clicks on my account "<myAccountPage>" link in the footer
+    Then my account "<myAccountPage>" page will be opened for logged in user
 
     Examples:
       | myAccountPage |

@@ -139,4 +139,20 @@ public class FooterComponent extends BaseComponent {
                 .getOrDefault(pageName.toLowerCase(), p -> false)
                 .test(actualPage);
     }
+
+    public boolean isCorrectMyAccountPageOpenedForLoggedInUser(String pageName) {
+        String actualPage = getPageHeader();
+
+        Map<String, Predicate<String>> pageValidationMap = Map.of(
+                "my account", actualPageValue -> actualPageValue.equalsIgnoreCase("My account - Customer info"),
+                "orders", actualPageValue -> actualPageValue.equalsIgnoreCase("My account - Orders"),
+                "addresses", actualPageValue -> actualPageValue.equalsIgnoreCase("My account - Addresses"),
+                "shopping cart", actualPageValue -> actualPageValue.equalsIgnoreCase("Shopping cart"),
+                "wishlist", actualPageValue -> actualPageValue.equalsIgnoreCase("Wishlist")
+        );
+
+        return pageValidationMap
+                .getOrDefault(pageName.toLowerCase(), p -> false)
+                .test(actualPage);
+    }
 }

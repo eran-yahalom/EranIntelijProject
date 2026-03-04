@@ -55,4 +55,9 @@ public class FooterStepDefinition {
     public void myAccountPageWillBeOpened(String expectedPage) {
        Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForAnonymousUser(expectedPage));
     }
+
+    @Then("my account {string} page will be opened for logged in user")
+    public void myAccountPageWillBeOpenedForLoggedInUser(String expectedPage) {
+        Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForLoggedInUser(expectedPage));
+    }
 }
