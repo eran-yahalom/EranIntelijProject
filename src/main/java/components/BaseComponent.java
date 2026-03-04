@@ -21,6 +21,12 @@ public abstract class BaseComponent {
         PageFactory.initElements(driver, this);
     }
 
+    public String getPageHeader() {
+        return driver.findElement(By.cssSelector(".page-title h1"))
+                .getText()
+                .trim();
+    }
+
     protected WebElement waitForVisibility(WebElement element) {
         return wait.until(ExpectedConditions.visibilityOf(element));
     }

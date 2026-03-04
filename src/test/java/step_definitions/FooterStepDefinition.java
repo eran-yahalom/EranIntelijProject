@@ -45,4 +45,14 @@ public class FooterStepDefinition {
     public void socialMediaPageWillBeOpenedInANewTab(String socialMedia) {
         Assert.assertTrue(footerComponent.isCorrectSocialMediaPageOpened(socialMedia));
     }
+
+    @When("user clicks on my account {string} link in the footer")
+    public void userClicksOnMyAccountLinkInTheFooter(String linkText) {
+        Assert.assertTrue(footerComponent.clickOnMyAccountLinks(linkText));
+    }
+
+    @Then("my account {string} page will be opened")
+    public void myAccountPageWillBeOpened(String expectedPage) {
+       Assert.assertTrue(footerComponent.isCorrectMyAccountPageOpenedForAnonymousUser(expectedPage));
+    }
 }

@@ -4,7 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class FooterComponent extends BaseComponent {
@@ -23,6 +24,13 @@ public class FooterComponent extends BaseComponent {
 
     @FindBy(css = ".google-plus a")
     private WebElement googlePlusLink;
+
+    @FindBy(css = ".account")
+    private WebElement myAccountLink;
+
+    @FindBy(css = ".column.my-account ul li a")
+    private List<WebElement> myAccountFooterLinks;
+
 
     public FooterComponent(WebDriver driver) {
         super(driver);
@@ -46,6 +54,26 @@ public class FooterComponent extends BaseComponent {
 
     public boolean clickAndMoveToGooglePlusPage() {
         return clickAndMoveToSelectedSocialMedia(googlePlusLink);
+    }
+
+    public boolean clickOnMyAccountAccountLink() {
+        return click(myAccountFooterLinks.get(0));
+    }
+
+    public boolean clickOnMyAccountOrdersLink() {
+        return click(myAccountFooterLinks.get(1));
+    }
+
+    public boolean clickOnMyAccountAddressesLink() {
+        return click(myAccountFooterLinks.get(2));
+    }
+
+    public boolean clickOnMyAccountShoppingCartLink() {
+        return click(myAccountFooterLinks.get(3));
+    }
+
+    public boolean clickOnMyAccountWishlistLink() {
+        return click(myAccountFooterLinks.get(4));
     }
 
     public boolean clickAndMoveToSelectedSocialMedia(String socialMedia) {
@@ -76,5 +104,39 @@ public class FooterComponent extends BaseComponent {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean clickOnMyAccountLinks(String myAccountLink) {
+
+        Map<String, Supplier<Boolean>> socialMediaMap = Map.of(
+                "my account", this::clickOnMyAccountAccountLink,
+                "orders", this::clickOnMyAccountOrdersLink,
+                "addresses", this::clickOnMyAccountAddressesLink,
+                "shopping cart", this::clickOnMyAccountShoppingCartLink,
+                "wishlist", this::clickOnMyAccountWishlistLink
+        );
+
+        return socialMediaMap.getOrDefault(
+                myAccountLink.toLowerCase(),
+                () -> {
+                    throw new IllegalArgumentException("Invalid my account page: " + myAccountLink);
+                }
+        ).get();
+    }
+
+    public boolean isCorrectMyAccountPageOpenedForAnonymousUser(String pageName) {
+        String actualPage = getPageHeader();
+
+        Map<String, Predicate<String>> pageValidationMap = Map.of(
+                "my account", actualPageValue -> actualPageValue.equalsIgnoreCase("Welcome, Please Sign In!"),
+                "orders", actualPageValue -> actualPageValue.equalsIgnoreCase("Welcome, Please Sign In!"),
+                "addresses", actualPageValue -> actualPageValue.equalsIgnoreCase("Welcome, Please Sign In!"),
+                "shopping cart", actualPageValue -> actualPageValue.equalsIgnoreCase("Shopping cart"),
+                "wishlist", actualPageValue -> actualPageValue.equalsIgnoreCase("Wishlist")
+        );
+
+        return pageValidationMap
+                .getOrDefault(pageName.toLowerCase(), p -> false)
+                .test(actualPage);
     }
 }
