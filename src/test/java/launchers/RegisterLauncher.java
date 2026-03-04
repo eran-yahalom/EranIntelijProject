@@ -13,7 +13,7 @@ import org.testng.annotations.DataProvider;
         },
         tags = "@register or @ui"
 )
-public class Registerlauncher extends BaseLauncher{
+public class RegisterLauncher extends BaseLauncher{
     @Override
     @DataProvider(parallel = true)
     public Object[][] scenarios() {
