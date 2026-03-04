@@ -7,11 +7,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Set;
 
 public abstract class BaseComponent {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected static String mainWindow;
 
     public BaseComponent(WebDriver driver) {
         this.driver = driver;
@@ -78,5 +80,33 @@ public abstract class BaseComponent {
 
     public void waitForElementToBeClickable(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public void moveToNewWindow() {
+
+        mainWindow = driver.getWindowHandle();
+
+        Set<String> windows = driver.getWindowHandles();
+
+        for (String win : windows) {
+            if (!win.equals(mainWindow)) {
+                driver.switchTo().window(win);
+            }
+        }
+    }
+
+    public void backToMainWindow() {
+        driver.close();
+        driver.switchTo().window(mainWindow);
+    }
+
+    public boolean clickAndMoveToSelectedSocialMedia(WebElement element) {
+        try {
+            click(element);
+            moveToNewWindow();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

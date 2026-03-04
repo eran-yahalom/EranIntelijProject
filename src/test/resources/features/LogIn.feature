@@ -1,5 +1,5 @@
 @logIn @ui
-Feature: Log in actions
+Feature: Log in and logout actions
 
   Background:
     Given user clicks on log in link

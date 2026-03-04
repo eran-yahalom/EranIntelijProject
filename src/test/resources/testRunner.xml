@@ -14,8 +14,8 @@
             <class name="launchers.LoginLauncher"/>
             <class name="launchers.BookLauncher"/>
             <class name="launchers.CartLauncher"/>
-            <class name="launchers.BreadCrumbsLauncher">
-            </class>
+            <class name="launchers.FooterLauncher"/>
+            <class name="launchers.BreadCrumbsLauncher"/>
         </classes>
     </test>
 </suite>
