@@ -91,4 +91,12 @@ public class HeaderComponent extends BaseComponent {
     public boolean clickOnSearchButton() {
         return click(searchButton);
     }
+
+    public String getAlertPopUpText() {
+        return getAlertText();
+    }
+
+    public boolean closeAlertPopUp() {
+        return clickOnAlertOKButton();
+    }
 }

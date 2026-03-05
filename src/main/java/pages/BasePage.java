@@ -78,6 +78,10 @@ public abstract class BasePage {
         );
     }
 
+    public String getTextFromTextField(WebElement element) {
+        return element.getAttribute("value");
+    }
+
     public String getTextIfVisible(WebElement element) {
         if (isDisplayed(element)) {
             return element.getText();

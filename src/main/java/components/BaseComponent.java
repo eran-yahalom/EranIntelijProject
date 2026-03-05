@@ -115,4 +115,17 @@ public abstract class BaseComponent {
             return false;
         }
     }
+
+    public String getAlertText() {
+        return driver.switchTo().alert().getText();
+    }
+
+    public boolean clickOnAlertOKButton() {
+        try {
+            driver.switchTo().alert().accept();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

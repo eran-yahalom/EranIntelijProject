@@ -10,6 +10,7 @@
 
     <test name="e commerce tests">
         <classes>
+            <class name="launchers.HeaderLauncher"/>
             <class name="launchers.RegisterLauncher"/>
             <class name="launchers.LoginLauncher"/>
             <class name="launchers.BookLauncher"/>
