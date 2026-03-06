@@ -1,6 +1,7 @@
 package components;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ public class BreadcrumbComponent extends BaseComponent {
 
     public BreadcrumbComponent(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public boolean isDisplayedCorrectly(String... expectedBreadcrumbs) {

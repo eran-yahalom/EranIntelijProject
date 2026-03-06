@@ -3,6 +3,7 @@ package components;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.*;
@@ -24,12 +25,14 @@ public class TopMenuComponent extends BaseComponent {
 
     public TopMenuComponent(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public boolean clickOnTopMenuLink(String linkText) {
-        waitForElementToBeClickable(topMenuLinks.get(topMenuLinks.size() - 1));
         for (WebElement link : topMenuLinks) {
             if (getText(link).equalsIgnoreCase(linkText)) {
+
+                waitForElementToBeClickable(link);
                 return click(link);
             }
         }
@@ -41,7 +44,7 @@ public class TopMenuComponent extends BaseComponent {
             if (getText(link).equalsIgnoreCase(linkText)) {
                 hover(link);
 
-                subMenuLink=getSubMenuByText(linkText);
+                subMenuLink = getSubMenuByText(linkText);
                 wait.until(ExpectedConditions.visibilityOfAllElements(subMenuLink));
 
                 for (WebElement subLink : subMenuLink) {

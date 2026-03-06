@@ -14,7 +14,7 @@ import org.testng.annotations.DataProvider;
         tags = "@logIn or @ui"
 )
 
-public class LoginLauncher extends BaseLauncher{
+public class LoginLauncher extends BaseLauncher {
     @Override
     @DataProvider(parallel = true)
     public Object[][] scenarios() {

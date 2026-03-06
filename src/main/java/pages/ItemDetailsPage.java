@@ -1,14 +1,15 @@
 package pages;
 
-import components.BreadcrumbComponent;
+import components.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import utils.Utils;
 
-public class CartItemPage extends BasePage {
-    private BreadcrumbComponent breadcrumbs;
+// page that opens after we click on a product in the page (click on book x from bookPage and see book x details in this page)
+public class ItemDetailsPage extends BasePage {
+    private CategoryItemsComponent categoryItems;
 
     @FindBy(css = ".add-to-cart-panel [value='Add to cart']")
     private WebElement addToCartButton;
@@ -46,9 +47,20 @@ public class CartItemPage extends BasePage {
     @FindBy(css = "[value='Add to compare list']")
     private WebElement addToCompareListButton;
 
-    public CartItemPage(WebDriver driver) {
+    @FindBy(css = ".product-name h1")
+    private WebElement productName;
+
+    @FindBy(css = "[value='Add to compare list']")
+    private WebElement addToCompareButton;
+
+    public ItemDetailsPage(WebDriver driver) {
+
         super(driver);
-        breadcrumbs = new BreadcrumbComponent(driver);
+        categoryItems = new CategoryItemsComponent(driver);
+    }
+
+    public String getProductName() {
+        return productName.getText();
     }
 
     public boolean clickAddToCartButton() {
@@ -99,8 +111,10 @@ public class CartItemPage extends BasePage {
         return click(addToCompareListButton);
     }
 
-    public boolean doesBreadcrumbContainProductName(String expectedBreadcrumb) {
-        String lastBreadCrumbText = breadcrumbs.getLastBreadcrumbStep();
-        return expectedBreadcrumb.equalsIgnoreCase(lastBreadCrumbText);
+    public boolean addProductToCart(String productName) {
+
+        ItemComponent item = categoryItems.getItemByName(productName);
+        item.clickAddToCart();
+        return true;
     }
 }

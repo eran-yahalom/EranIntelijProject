@@ -14,7 +14,6 @@ import java.util.*;
 
 public class Utils {
 
-
     public static String readProperty(String key) {
         Properties prop = new Properties();
         try {
@@ -78,7 +77,6 @@ public class Utils {
                     .replaceAll("[^0-9.]", "");
             prices.add(Double.parseDouble(priceText));
         }
-
         return prices;
     }
 
@@ -91,7 +89,6 @@ public class Utils {
 
             names.add(priceText);
         }
-
         return names;
     }
 

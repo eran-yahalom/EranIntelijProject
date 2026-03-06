@@ -13,7 +13,7 @@ import org.testng.annotations.DataProvider;
         },
         tags = "@breadCrumbs or @ui"
 )
-public class BreadCrumbsLauncher extends BaseLauncher{
+public class BreadCrumbsLauncher extends BaseLauncher {
     @Override
     @DataProvider(parallel = true)
     public Object[][] scenarios() {

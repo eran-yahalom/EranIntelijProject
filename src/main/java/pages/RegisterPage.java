@@ -87,7 +87,6 @@ public class RegisterPage extends BasePage {
 
     public boolean fillLastName(String lastName) {
         return fillText(lastNameInput, lastName);
-
     }
 
     public boolean fillEmail(String email) {

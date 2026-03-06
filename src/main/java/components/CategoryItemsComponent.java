@@ -1,7 +1,8 @@
-package pages;
+package components;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import utils.Utils;
 
 import java.util.*;
@@ -10,7 +11,11 @@ import java.util.function.Supplier;
 
 import static utils.Utils.getPricesFromUI;
 
-public class BooksPage extends BasePage {
+// the page items (e.g:booksPage) see filters,sort ,list of elements
+public class CategoryItemsComponent extends BaseComponent {
+
+    private WebDriver driver;
+    private WebElement root;
 
     @FindBy(css = "#products-orderby")
     private WebElement sortByDropdown;
@@ -60,9 +65,17 @@ public class BooksPage extends BasePage {
     @FindBy(css = ".remove-price-range-filter")
     private WebElement removePriceRangeFilterButton;
 
+    @FindBy(css = ".product-item")
+    private List<WebElement> items;
 
-    public BooksPage(WebDriver driver) {
+
+    public CategoryItemsComponent(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
+    }
+
+    public int getItemsCount() {
+        return items.size();
     }
 
     public boolean isViewDisplayed(String viewType) {
@@ -240,5 +253,19 @@ public class BooksPage extends BasePage {
 
     public boolean clickRemovePriceRangeFilterButton() {
         return click(removePriceRangeFilterButton);
+    }
+
+    public ItemComponent getItemByName(String name) {
+
+        for (WebElement item : items) {
+
+            ItemComponent itemComponent = new ItemComponent(driver, item);
+
+            if (itemComponent.getTitle().equalsIgnoreCase(name)) {
+                return itemComponent;
+            }
+        }
+
+        throw new RuntimeException("Product not found: " + name);
     }
 }

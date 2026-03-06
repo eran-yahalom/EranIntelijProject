@@ -11,25 +11,13 @@ import utils.DriverManager;
 public class GeneralStepDefinition {
 
     WelcomePage welcomePage;
-    RegisterPage registerPage;
-    LoggedInPage loggedInPage;
-    GiftCardsPage giftCardsPage;
     CartItemPage cartItemPage;
-    ShoppingCartPage shoppingCartPage;
-    ElectronicsPage electronicsPage;
-    CellPhonesPage cellPhonesPage;
     BreadcrumbComponent breadcrumbComponent;
 
     public GeneralStepDefinition() {
         WebDriver driver = DriverManager.getDriver();
         this.welcomePage = new WelcomePage(driver);
-        this.registerPage = new RegisterPage(driver);
-        this.loggedInPage = new LoggedInPage(driver);
-        this.giftCardsPage = new GiftCardsPage(driver);
         this.cartItemPage = new CartItemPage(driver);
-        this.shoppingCartPage = new ShoppingCartPage(driver);
-        this.electronicsPage = new ElectronicsPage(driver);
-        this.cellPhonesPage = new CellPhonesPage(driver);
         this.breadcrumbComponent = new BreadcrumbComponent(driver);
     }
 

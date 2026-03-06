@@ -31,7 +31,6 @@ public class AllureUtils {
             System.out.println("Failed to capture screenshot: " + e.getMessage());
         }
     }
-
     // ==============================
     // 🖥 Browser Console Logs
     // ==============================
@@ -57,7 +56,6 @@ public class AllureUtils {
             System.out.println("Failed to capture browser logs: " + e.getMessage());
         }
     }
-
     // ==============================
     // 🌐 Page Source
     // ==============================
@@ -71,7 +69,6 @@ public class AllureUtils {
             System.out.println("Failed to capture page source: " + e.getMessage());
         }
     }
-
     // ==============================
     // 🔗 Current URL
     // ==============================
@@ -85,7 +82,6 @@ public class AllureUtils {
             System.out.println("Failed to capture URL: " + e.getMessage());
         }
     }
-
     // ==============================
     // 📝 Custom Text Attachment
     // ==============================
@@ -105,7 +101,6 @@ public class AllureUtils {
 
         Allure.addAttachment("Environment Info", info);
     }
-
     // ==============================
     // 🧩 Step Helper (Optional)
     // ==============================

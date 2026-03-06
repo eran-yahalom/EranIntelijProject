@@ -15,26 +15,24 @@ public class RegisterStepDefinition {
     WelcomePage welcomePage;
     RegisterPage registerPage;
     LoggedInPage loggedInPage;
-    GiftCardsPage giftCardsPage;
-    CartItemPage cartItemPage;
     ShoppingCartPage shoppingCartPage;
     ElectronicsPage electronicsPage;
     CellPhonesPage cellPhonesPage;
     TopMenuComponent topMenuComponent;
     HeaderComponent headerComponent;
+    ItemDetailsPage itemDetailsPage;
 
     public RegisterStepDefinition() {
         WebDriver driver = DriverManager.getDriver();
         this.welcomePage = new WelcomePage(driver);
         this.registerPage = new RegisterPage(driver);
         this.loggedInPage = new LoggedInPage(driver);
-        this.giftCardsPage = new GiftCardsPage(driver);
-        this.cartItemPage = new CartItemPage(driver);
         this.shoppingCartPage = new ShoppingCartPage(driver);
         this.electronicsPage = new ElectronicsPage(driver);
         this.cellPhonesPage = new CellPhonesPage(driver);
         this.topMenuComponent = new TopMenuComponent(driver);
         this.headerComponent = new HeaderComponent(driver);
+        this.itemDetailsPage = new ItemDetailsPage(driver);
     }
 
 
@@ -193,38 +191,38 @@ public class RegisterStepDefinition {
 
     @And("user adds {string} to the cart")
     public void userAddsToTheCart(String productName) {
-        Assert.assertTrue(giftCardsPage.addGiftCardToCart(productName));
+        Assert.assertTrue(itemDetailsPage.addProductToCart(productName));
     }
 
     @And("user clicks on add to cart button")
     public void clickOnAddToCartButton() {
-        Assert.assertTrue(cartItemPage.clickAddToCartButton());
+        Assert.assertTrue(itemDetailsPage.clickAddToCartButton());
     }
 
     @And("an error message should be displayed")
     public void userShouldSeeMessageProductNotAddedToCart() {
-        Assert.assertTrue(cartItemPage.isValidTRecipientEmailMessagePresented());
-        Assert.assertTrue(cartItemPage.isValidTRecipientNameMessagePresented());
+        Assert.assertTrue(itemDetailsPage.isValidTRecipientEmailMessagePresented());
+        Assert.assertTrue(itemDetailsPage.isValidTRecipientNameMessagePresented());
     }
 
     @And("user fills in recipient name")
     public void userFillsInRecipientName() {
-        Assert.assertTrue(cartItemPage.fillRecipientNameFromSender());
+        Assert.assertTrue(itemDetailsPage.fillRecipientNameFromSender());
     }
 
     @And("user fills in recipient email")
     public void userFillsInRecipientEmail() {
-        Assert.assertTrue(cartItemPage.fillRecipientEmailFromSender());
+        Assert.assertTrue(itemDetailsPage.fillRecipientEmailFromSender());
     }
 
     @And("a success message should be displayed")
     public void userShouldSeeMessageProductAddedToCart() {
-        Assert.assertTrue(cartItemPage.addToCartSuccessMessagePresented());
+        Assert.assertTrue(itemDetailsPage.addToCartSuccessMessagePresented());
     }
 
     @And("the user clicks on cart link in the notification")
     public void userClicksOnCartLinkInTheNotification() {
-        Assert.assertTrue(cartItemPage.clickOnCartLinkInNotification());
+        Assert.assertTrue(itemDetailsPage.clickOnCartLinkInNotification());
     }
 
     @Then("the user should be redirected to the shopping cart page")

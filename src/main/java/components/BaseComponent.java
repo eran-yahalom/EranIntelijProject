@@ -2,9 +2,7 @@ package components;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 import java.util.Set;
@@ -13,12 +11,11 @@ public abstract class BaseComponent {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected static String mainWindow;
+    protected String mainWindow;
 
     public BaseComponent(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
     }
 
     public String getPageHeader() {
@@ -44,11 +41,23 @@ public abstract class BaseComponent {
     }
 
     protected boolean click(WebElement element) {
+
         try {
-            waitForClickability(element).click();
+            wait.until(ExpectedConditions.visibilityOf(element));
+            ((JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView(true);", element);
+            wait.until(ExpectedConditions.elementToBeClickable(element)).click();
             return true;
+
         } catch (Exception e) {
-            return false;
+            try {
+                ((JavascriptExecutor) driver)
+                        .executeScript("arguments[0].click();", element);
+                return true;
+
+            } catch (Exception ex) {
+                return false;
+            }
         }
     }
 
@@ -85,6 +94,10 @@ public abstract class BaseComponent {
     }
 
     public void waitForElementToBeClickable(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public void waitForElementToBeClickable(By element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
@@ -125,6 +138,17 @@ public abstract class BaseComponent {
             driver.switchTo().alert().accept();
             return true;
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean selectOptionFromDropdownByVisibleText(WebElement element, String value) {
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            Select select = new Select(element);
+            select.selectByVisibleText(value);
+            return true;
+        } catch (StaleElementReferenceException e) {
             return false;
         }
     }

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class GiftCardsPage extends BasePage {
 
-
     @FindBy(css = ".product-item")
     private List<WebElement> giftCardItems;
 
@@ -23,21 +22,12 @@ public class GiftCardsPage extends BasePage {
     @FindBy(css = ".product-item .price.actual-price")
     private List<WebElement> giftCardPrices;
 
-
     public GiftCardsPage(WebDriver driver) {
         super(driver);
     }
 
-    //    public boolean addGiftCardToCart(String giftCardName) {
-//        for(int i=0;i<giftCardItems.size();i++){
-//            if(getText(giftCardTitles.get(i)).equalsIgnoreCase(giftCardName)){
-//               return click(giftCardAddToCartButtons.get(i));
-//            }
-//        }
-//        return false;
-//    }
     public boolean addGiftCardToCart(String giftCardName) {
         wait.until(ExpectedConditions.elementToBeClickable(giftCardTitles.get(giftCardTitles.size() - 1)));
-        return Utils.addProductToCart(driver,giftCardTitles, giftCardAddToCartButtons, giftCardName);
+        return Utils.addProductToCart(driver, giftCardTitles, giftCardAddToCartButtons, giftCardName);
     }
 }

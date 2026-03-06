@@ -14,7 +14,7 @@ import org.testng.annotations.DataProvider;
         tags = "@cart or @ui"
 )
 
-public class CartLauncher extends BaseLauncher{
+public class CartLauncher extends BaseLauncher {
     @Override
     @DataProvider(parallel = true)
     public Object[][] scenarios() {

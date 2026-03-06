@@ -88,7 +88,7 @@ public class WelcomePage extends BasePage {
         return isDisplayed(registerLink);
     }
 
-     public boolean isLoginLinkDisplayed() {
+    public boolean isLoginLinkDisplayed() {
         return isDisplayed(loginLink);
     }
 }

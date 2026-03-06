@@ -15,7 +15,6 @@ public class CellPhonesPage extends BasePage {
     @FindBy(css = ".details .product-title")
     private List<WebElement> cellPhonesCategoryTitles;
 
-
     public CellPhonesPage(WebDriver driver) {
         super(driver);
     }

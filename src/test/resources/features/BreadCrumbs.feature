@@ -26,8 +26,7 @@ Feature: Breadcrumb reflects the correct navigation path
       | Electronics | Cell phones | Smartphone   |
       | Electronics | Cell phones | Phone Cover  |
 
-
-  Scenario Outline: ser can navigate using breadcrumb links
+  Scenario Outline: User can navigate using breadcrumb links
     When the user navigates to the "<topPageMenu>" page
     And user selects "<itemName>"
     And user clicks on the selected breadcrumb "<topPageMenu>"

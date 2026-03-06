@@ -7,9 +7,7 @@ import org.openqa.selenium.support.ui.*;
 import utils.Utils;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class BasePage {
 
