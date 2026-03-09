@@ -37,6 +37,9 @@ public class HeaderComponent extends BaseComponent {
     @FindBy(css = ".header-logo")
     private WebElement homeLogo;
 
+    @FindBy(css = ".search-results .result")
+    private WebElement noItemsInResultsMessage;
+
     public HeaderComponent(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -100,5 +103,9 @@ public class HeaderComponent extends BaseComponent {
 
     public boolean closeAlertPopUp() {
         return clickOnAlertOKButton();
+    }
+
+    public String getNoResultsTextMessage() {
+        return getText(noItemsInResultsMessage);
     }
 }

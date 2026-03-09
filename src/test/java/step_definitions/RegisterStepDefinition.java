@@ -318,4 +318,11 @@ public class RegisterStepDefinition {
         Assert.assertTrue(welcomePage.isRegisterLinkDisplayed());
         Assert.assertTrue(welcomePage.isLoginLinkDisplayed());
     }
+
+    @Then("error message {string} should be displayed")
+    public void errorMessageShouldBeDisplayed(String messageKey) {
+        String actualMessage = headerComponent.getNoResultsTextMessage();
+        String expectedMessage = Utils.readProperty(messageKey);
+        Assert.assertEquals(actualMessage, expectedMessage);
+    }
 }

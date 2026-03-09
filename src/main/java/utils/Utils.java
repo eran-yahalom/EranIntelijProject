@@ -58,10 +58,8 @@ public class Utils {
 
     public static boolean isMessageDisplayedCorrectly(WebDriver driver, WebElement element, String propertyKey) {
         try {
-            System.out.println("aaaa:" + element.getText());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.visibilityOf(element));
-            System.out.println("xxxxx:" + element.getText());
             return element.getText().equalsIgnoreCase(readProperty(propertyKey));
         } catch (TimeoutException e) {
             return false;
@@ -145,6 +143,30 @@ public class Utils {
     public int getPriceMinValue(List<WebElement> priceElements) {
         List<Double> prices = getPricesFromUI(priceElements);
         return (int) Collections.min(prices).doubleValue();
+    }
+
+    public static boolean isSearchedItemInCategoryItems(WebDriver driver, List<WebElement> titles, String productName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfAllElements(titles));
+        for (int i = 0; i < titles.size(); i++) {
+            String pageTitlesFromUI = titles.get(i).getText().toLowerCase();
+            if (!pageTitlesFromUI.contains(productName.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int getNumberOfProductsTitles(List<WebElement> productNameElementsTitles) {
+        return productNameElementsTitles.size();
+    }
+
+    public static List<String> getProductsTitles(List<WebElement> elements) {
+        List<String> titles = new ArrayList<>();
+        for (WebElement titleElement : elements) {
+            titles.add(titleElement.getText().trim());
+        }
+        return titles;
     }
 }
 

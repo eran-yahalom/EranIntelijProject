@@ -35,7 +35,7 @@ public class CategoryItemsComponent extends BaseComponent {
     @FindBy(css = ".price-range-selector li:nth-child(3) a")
     private WebElement priceFilterOver50;
 
-    @FindBy(css = ".product-title")
+    @FindBy(css = ".product-title a")
     private List<WebElement> productTitle;
 
     @FindBy(css = ".description")
@@ -67,6 +67,8 @@ public class CategoryItemsComponent extends BaseComponent {
 
     @FindBy(css = ".product-item")
     private List<WebElement> items;
+
+
 
 
     public CategoryItemsComponent(WebDriver driver) {
@@ -267,5 +269,17 @@ public class CategoryItemsComponent extends BaseComponent {
         }
 
         throw new RuntimeException("Product not found: " + name);
+    }
+
+    public List<String> productTitles() {
+        return Utils.getProductsTitles(productTitle);
+    }
+
+    public int getNumberOfProducts() {
+        return Utils.getNumberOfProductsTitles(items);
+    }
+
+    public List<WebElement> getListOfWebElementTitles() {
+        return productTitle;
     }
 }
