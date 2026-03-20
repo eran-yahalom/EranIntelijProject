@@ -1,0 +1,3 @@
+{
+  "get_album_title": "SELECT a.Title From Album a WHERE a.AlbumId =?"
+}

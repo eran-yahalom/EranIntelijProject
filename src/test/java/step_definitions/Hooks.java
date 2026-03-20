@@ -1,5 +1,6 @@
 package step_definitions;
 
+import configurations.db.*;
 import io.cucumber.java.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import utils.*;
 
+import java.sql.Connection;
 import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,6 +21,7 @@ public class Hooks {
 
     @Before
     public void setup() {
+        DBSetupService.init();
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
 
@@ -50,6 +53,7 @@ public class Hooks {
     @After
     public void tearDown(Scenario scenario) {
         WebDriver currentDriver = DriverManager.getDriver();
+        DBSetupService.close();
 
         if (scenario.isFailed() && currentDriver != null) {
             AllureUtils.attachScreenshot(currentDriver,
