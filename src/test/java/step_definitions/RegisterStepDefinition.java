@@ -6,7 +6,10 @@ import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.*;
+import services.RegistrationService;
 import utils.*;
+
+import java.util.List;
 
 public class RegisterStepDefinition {
     private String email = GeneratorUtils.generateEmail();
@@ -21,6 +24,7 @@ public class RegisterStepDefinition {
     TopMenuComponent topMenuComponent;
     HeaderComponent headerComponent;
     ItemDetailsPage itemDetailsPage;
+    RegistrationService registrationService;
 
     public RegisterStepDefinition() {
         WebDriver driver = DriverManager.getDriver();
@@ -33,6 +37,7 @@ public class RegisterStepDefinition {
         this.topMenuComponent = new TopMenuComponent(driver);
         this.headerComponent = new HeaderComponent(driver);
         this.itemDetailsPage = new ItemDetailsPage(driver);
+        this.registrationService = new RegistrationService();
     }
 
 
@@ -295,10 +300,11 @@ public class RegisterStepDefinition {
 
     @And("the user is logged in")
     public void theUserIsLoggedIn() {
+       List<String> userCreds= registrationService.getRandomUserLoginCredentials();
         Assert.assertTrue(headerComponent.clickOnLoginLink());
-        Assert.assertTrue(registerPage.fillEmail(email));
-        Assert.assertTrue(welcomePage.fillEmail(Utils.readProperty("userEmail")));
-        Assert.assertTrue(welcomePage.fillPassword(Utils.readProperty("userPassword")));
+       // Assert.assertTrue(registerPage.fillEmail(email));
+        Assert.assertTrue(welcomePage.fillEmail(userCreds.getFirst()));
+        Assert.assertTrue(welcomePage.fillPassword(userCreds.getLast()));
         Assert.assertTrue(welcomePage.clickOnLoginButton());
     }
 
@@ -324,5 +330,12 @@ public class RegisterStepDefinition {
         String actualMessage = headerComponent.getNoResultsTextMessage();
         String expectedMessage = Utils.readProperty(messageKey);
         Assert.assertEquals(actualMessage, expectedMessage);
+    }
+
+    @When("new user is updated in DB")
+    public void newUserIsUpdatedInDB() {
+        List<String> userDetails = registrationService.registerRandomUserInDB();
+        email = userDetails.get(0);
+        password = userDetails.get(1);
     }
 }

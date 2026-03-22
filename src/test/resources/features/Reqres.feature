@@ -12,8 +12,8 @@ Feature: Reqres API
     And API response user first name should be "<first_name>" and last name should be "<last_name>"
     Examples:
       | id | email                  | first_name | last_name |
-      | 2  | janet.weaver@reqres.in | Janet      | Weaver    |
       | 1  | george.bluth@reqres.in | George     | Bluth     |
+      | 2  | janet.weaver@reqres.in | Janet      | Weaver    |
 
   Scenario: user login with valid credentials
     When API request user login with username "eve.holt@reqres.in" and password "cityslicka"

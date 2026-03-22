@@ -5,18 +5,18 @@ import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"step_definitions"},
+        glue = {"step_definitions","hooks"},
         plugin = {
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@cart or @ui"
+        tags = "@cart"
 )
 
 public class CartLauncher extends BaseLauncher {
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

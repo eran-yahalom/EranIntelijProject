@@ -1,15 +1,17 @@
 package step_definitions;
 
 import api.client.ReqresAPI;
-import api.pojo.LoginResponsePOJO;
-import api.pojo.ShipResponsePOJO;
-import api.pojo.SingleUserResponsePOJO;
-import api.pojo.UpdateUserResponsePOJO;
+import api.pojo.*;
 import api.utils.ApiResponse;
+import configurations.db.QueryExecutor;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
+import utils.ScenarioContext;
+
+import java.util.List;
+import java.util.Map;
 
 public class APIStepDefinition {
 
@@ -19,26 +21,31 @@ public class APIStepDefinition {
     private ApiResponse<LoginResponsePOJO> loginResponse;
     private ApiResponse<UpdateUserResponsePOJO> updateUserResponse;
     private ApiResponse<Void> deleteUserResponse;
+    private ApiResponse<GetAllUsersDataPOJO> getAllUsersResponse;
+
+    private List<Map<String, Object>> result;
 
     @When("API request all users details")
     public void APIRequestAllUsersDetails() {
         api = new ReqresAPI();
-        response = api.getUsersDetails();
-        Assert.assertNotNull(response.getBody(), "Response body should not be null");
+//        response = api.getUsersDetails();
+        getAllUsersResponse = api.getUsersDetails();
+        Assert.assertNotNull(getAllUsersResponse.getBody(), "Response body should not be null");
     }
 
     @Then("API response should be successful with status code {int}")
     public void APIResponseShouldBeSuccessfulWithStatusCode(int expectedStatusCode) {
-        Assert.assertEquals(response.getStatusCode(), expectedStatusCode, "Expected status code does not match actual");
+        Assert.assertEquals(getAllUsersResponse.getStatusCode(), expectedStatusCode, "Expected status code does not match actual");
     }
 
     @Then("number of users in the response should be {int}")
     public void numberOfUsersInTheResponseShouldBe(int expectedUserCount) {
-        Assert.assertEquals(response.getBody().getTotal(), expectedUserCount, "Expected user count does not match actual");
+        Assert.assertEquals(getAllUsersResponse.getBody().getTotal(), expectedUserCount, "Expected user count does not match actual");
     }
 
     @When("API request user details with id {string}")
     public void APIRequestUserDetailsWithId(String userId) {
+        ScenarioContext.save("userId", userId);
         api = new ReqresAPI();
         singleUserResponse = api.getSingleUserDetails(userId);
         Assert.assertNotNull(singleUserResponse.getBody(), "Response body should not be null");
@@ -51,6 +58,13 @@ public class APIStepDefinition {
 
     @And("API response user first name should be {string} and last name should be {string}")
     public void APIResponseUserFirstNameShouldBeAndLastNameShouldBe(String expectedFirstName, String expectedLastName) {
+        result = QueryExecutor.executeQueryAsTable(
+                "get_customer_data",
+                ScenarioContext.get("userId", String.class));
+
+        Assert.assertEquals(singleUserResponse.getBody().getData().getEmail(), result.getFirst().get("Email").toString(), "Expected first name does not match actual");
+
+
         Assert.assertEquals(singleUserResponse.getBody().getData().getFirstName(), expectedFirstName, "Expected first name does not match actual");
         Assert.assertEquals(singleUserResponse.getBody().getData().getLastName(), expectedLastName, "Expected last name does not match actual");
     }

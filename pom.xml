@@ -33,6 +33,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -49,12 +58,6 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
             <version>${cucumber.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-core</artifactId>
-            <version>7.13.0</version>
         </dependency>
 
         <!-- ALLURE -->
@@ -85,7 +88,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.23.1</version>
+            <version>4.26.0</version>
         </dependency>
 
         <dependency>
@@ -114,12 +117,28 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
+
+        <!-- LOGGING (SLF4J + LOG4J2 bridge) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+
+        <!-- 🟢 ADD THIS (FIX SLF4J WARNING) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
         <!-- SQLLite -->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.46.1.0</version>
+            <version>3.45.3.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -143,7 +162,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
 
@@ -167,6 +186,21 @@
 
                 <configuration>
                     <release>21</release>
+
+                    <!-- 🟢 FIX FOR JAVA 21 + LOMBOK -->
+                    <compilerArgs>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                    </compilerArgs>
+
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.38</version>
+                        </path>
+                    </annotationProcessorPaths>
+
+
                 </configuration>
             </plugin>
 
@@ -177,6 +211,7 @@
                 <version>3.0.0-M5</version>
 
                 <configuration>
+
                     <properties>
                         <property>
                             <name>dataproviderthreadcount</name>
@@ -188,9 +223,14 @@
                         <suiteXmlFile>src/test/resources/testRunner.xml</suiteXmlFile>
                     </suiteXmlFiles>
 
+                    <!-- 🟢 ADD THIS BLOCK -->
                     <systemPropertyVariables>
                         <runParallel>${runParallel}</runParallel>
+
+                        <!-- FIX SQLITE GRAAL WARNING -->
+                        <org.sqlite.omit_loading_extension>true</org.sqlite.omit_loading_extension>
                     </systemPropertyVariables>
+
                 </configuration>
             </plugin>
 

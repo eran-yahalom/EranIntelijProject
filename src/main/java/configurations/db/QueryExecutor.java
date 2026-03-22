@@ -39,4 +39,63 @@ public class QueryExecutor {
             throw new RuntimeException("Query execution failed: " + queryKey, e);
         }
     }
+    // =========================
+    // INSERT / UPDATE / DELETE
+    // =========================
+    public static int executeUpdate(String queryKey, Object... params) {
+
+        String query = QueryProvider.getQuery(queryKey);
+
+        try {
+            Connection conn = DBThreadLocal.get();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            bindParams(stmt, params);
+
+            return stmt.executeUpdate(); // ✅ correct for INSERT/UPDATE/DELETE
+
+        } catch (SQLException e) {
+            throw new RuntimeException("UPDATE query failed: " + queryKey, e);
+        }
+    }
+
+
+    // =========================
+    // INSERT + RETURN GENERATED KEY (optional)
+    // =========================
+    public static Object executeInsertAndReturnKey(String queryKey, Object... params) {
+
+        String query = QueryProvider.getQuery(queryKey);
+
+        try {
+            Connection conn = DBThreadLocal.get();
+            PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            bindParams(stmt, params);
+
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getObject(1);
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("INSERT query failed: " + queryKey, e);
+        }
+    }
+
+
+    // =========================
+    // COMMON PARAM BINDER
+    // =========================
+    private static void bindParams(PreparedStatement stmt, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+    }
+
+
 }

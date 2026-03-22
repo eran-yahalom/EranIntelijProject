@@ -1,9 +1,6 @@
 package api.client;
 
-import api.pojo.LoginResponsePOJO;
-import api.pojo.ShipResponsePOJO;
-import api.pojo.SingleUserResponsePOJO;
-import api.pojo.UpdateUserResponsePOJO;
+import api.pojo.*;
 import api.utils.APIRequestUtility;
 import api.utils.ApiResponse;
 import api.utils.GenericAPIRequestBuilder;
@@ -23,7 +20,7 @@ public class ReqresAPI {
     Map<String, String> headers;
     Map<String, Object> pathParams = new HashMap<>();
 
-    public ApiResponse<ShipResponsePOJO> getUsersDetails() {
+    public ApiResponse<GetAllUsersDataPOJO> getUsersDetails() {
 
         headers = new HashMap<>();
         headers.put("Accept", "application/json");
@@ -33,12 +30,12 @@ public class ReqresAPI {
                 baseUrl + GETUsers,
                 headers,
                 null,
-                ShipResponsePOJO.class,
+                GetAllUsersDataPOJO.class,
                 GenericAPIRequestBuilder.RequestMethod.GET,
                 null,
                 null
         );
-    }
+    }//ShipResponsePOJO
 
     public ApiResponse<SingleUserResponsePOJO> getSingleUserDetails(String id) {
 

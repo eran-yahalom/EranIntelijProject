@@ -1,3 +1,8 @@
 {
-  "get_album_title": "SELECT a.Title From Album a WHERE a.AlbumId =?"
+  "get_album_title": "SELECT a.Title From Album a WHERE a.AlbumId =?",
+  "get_customer_data": "Select c.* FROM Customer c WHERE c.CustomerId =?",
+  "set_new_customer": "INSERT INTO ap_user (first_name, last_name, email, phone, address, city, country) VALUES (?,?,?,?,?,?,?);",
+  "set_new_customer_auth": "insert into CustomerAuth (password_hash,active,suspended,failed_login_attempts,app_user_id) values (?,?,?,?,?);",
+  "get_customer_id_by_email": "SELECT au.id FROM ap_user au WHERE au.email =?",
+  "get_customer_user_and_password": "SELECT au.email, ca.password_hash FROM ap_user au JOIN CustomerAuth ca ON au.id = ca.app_user_id WHERE ca.active =1 and ca.suspended =0 ORDER BY RANDOM() LIMIT 1;"
 }
