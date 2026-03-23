@@ -1,4 +1,4 @@
-@api
+@postmanApi
 Feature: Reqres API
 
   Scenario: Get all reqres

@@ -101,4 +101,15 @@ public class ShoppingCartPage extends BasePage {
         int actualTotal = Integer.parseInt(totalPriceText);
         return expectedTotal == actualTotal;
     }
+
+    public boolean updateQuantityOfItemInCart(int newQuantity) {
+        if (cartItemRow == null || cartItemRow.isEmpty()) {
+            return false;
+        }
+        for (WebElement quantityInput : quantityInputFields) {
+            quantityInput.clear();
+            quantityInput.sendKeys(String.valueOf(newQuantity));
+        }
+        return click(updateCartButton);
+    }
 }

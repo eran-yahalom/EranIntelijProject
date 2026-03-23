@@ -1,16 +1,20 @@
 package step_definitions;
 
-import configurations.db.*;
-import io.cucumber.java.*;
+import configurations.db.DBSetupService;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
-import utils.*;
+import utils.AllureUtils;
+import utils.DriverManager;
+import utils.ScenarioContext;
+import utils.Utils;
 
-import java.sql.Connection;
 import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,11 +29,9 @@ public class Hooks {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
 
-        // --- הגדרות לבידוד ומניעת התנגשויות ---
-        options.addArguments("--incognito"); // פותח דפדפן נקי ללא קוקיז קודמים
-        options.addArguments("--disable-extensions"); // מונע מתוספים להפריע
-        options.addArguments("--no-sandbox"); // עוזר ליציבות במערכות CI
-        // ------------------------------------
+        options.addArguments("--incognito");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--no-sandbox");
 
         options.setCapability("goog:loggingPrefs", Map.of(LogType.BROWSER, Level.ALL));
         options.addArguments("--remote-allow-origins=*");

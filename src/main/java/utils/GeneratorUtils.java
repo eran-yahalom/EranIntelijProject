@@ -3,6 +3,8 @@ package utils;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.Gender;
 
+import java.util.UUID;
+
 import java.sql.Timestamp;
 
 public class GeneratorUtils {
@@ -51,5 +53,9 @@ public class GeneratorUtils {
 
     public static Timestamp dateOfBirth() {
         return faker.get().date().birthday();
+    }
+
+    public static String generateUserName() {
+        return faker.get().name() + UUID.randomUUID().toString().substring(0, 5);
     }
 }

@@ -2,7 +2,9 @@
 Feature: User can manage sorting, filtering and display on Books page
 
   Background:
-    Given the user navigates to the "BOOKS" page
+    Given user is logged in with email "vivian.donnelly@yahoo.com" and password "gt08bo9no"
+    And the shopping cart is empty
+    And the user navigates to the "BOOKS" page
 
   Scenario Outline: User can sort books by different options
     When user clicks on sort by dropdown and selects "<sortByOption>"
@@ -74,5 +76,17 @@ Feature: User can manage sorting, filtering and display on Books page
       | Price: High to Low | Over 50.00    |
       | Name: Z to A       | Under 25.00   |
 
+  Scenario Outline: number and price of cart items match the cart items in DB after adding item to the cart
 
+    When user counts the quantity of items in the cart
+    And user adds "<itemNane>" to the cart
+    Then a success message should be displayed
+    And the user clicks on cart link in the notification
+    And the user should be redirected to the shopping cart page
+    And user updated cart item quantity to 2
+    And cart items for user "vivian.donnelly@yahoo.com" match the user cart in DB
+    Examples:
+      | itemNane               |
+      | Fiction                |
+      | Computing and Internet |
 

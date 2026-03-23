@@ -5,15 +5,15 @@ import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"step_definitions","hooks"},
+        glue = {"step_definitions", "hooks"},
         plugin = {
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@api"
+        tags = "@postmanApi"
 )
-public class APILauncher extends BaseLauncher {
+public class PostmanAPILauncher extends BaseLauncher {
 
     @Override
     @DataProvider(parallel = true)

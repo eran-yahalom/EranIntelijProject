@@ -1,6 +1,9 @@
 package api.client;
 
-import api.pojo.*;
+import api.pojo.GetAllUsersDataPOJO;
+import api.pojo.LoginResponsePOJO;
+import api.pojo.SingleUserResponsePOJO;
+import api.pojo.UpdateUserResponsePOJO;
 import api.utils.APIRequestUtility;
 import api.utils.ApiResponse;
 import api.utils.GenericAPIRequestBuilder;
@@ -16,15 +19,7 @@ public class ReqresAPI {
     private final String SingleUser = "users/";
     private final String userLogin = "login";
 
-
-    Map<String, String> headers;
-    Map<String, Object> pathParams = new HashMap<>();
-
-    public ApiResponse<GetAllUsersDataPOJO> getUsersDetails() {
-
-        headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        headers.put("x-api-key", "reqres_19e403e39f404de8b734a4acd6f8b1d0");
+    public ApiResponse<GetAllUsersDataPOJO> getUsersDetails(Map<String, String> headers) {
 
         return APIRequestUtility.makeApiRequest(
                 baseUrl + GETUsers,
@@ -35,13 +30,9 @@ public class ReqresAPI {
                 null,
                 null
         );
-    }//ShipResponsePOJO
+    }
 
-    public ApiResponse<SingleUserResponsePOJO> getSingleUserDetails(String id) {
-
-        headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        headers.put("x-api-key", "reqres_19e403e39f404de8b734a4acd6f8b1d0");
+    public ApiResponse<SingleUserResponsePOJO> getSingleUserDetails(Map<String, String> headers, String id) {
 
         return APIRequestUtility.makeApiRequest(
                 baseUrl + SingleUser + id,
@@ -54,12 +45,7 @@ public class ReqresAPI {
         );
     }
 
-    public ApiResponse<LoginResponsePOJO> userLogin(String email, String password) {
-
-        headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        headers.put("Content-Type", "application/json; charset=UTF-8");
-        headers.put("x-api-key", "reqres_19e403e39f404de8b734a4acd6f8b1d0");
+    public ApiResponse<LoginResponsePOJO> userLogin(Map<String, String> headers, String email, String password) {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("email", email);
@@ -76,12 +62,7 @@ public class ReqresAPI {
         );
     }
 
-    public ApiResponse<UpdateUserResponsePOJO> updateUser(String userName, String job, String id) {
-
-        headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        headers.put("Content-Type", "application/json; charset=UTF-8");
-        headers.put("x-api-key", "reqres_19e403e39f404de8b734a4acd6f8b1d0");
+    public ApiResponse<UpdateUserResponsePOJO> updateUser(Map<String, String> headers, String userName, String job, String id) {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("name", userName);
@@ -98,11 +79,7 @@ public class ReqresAPI {
         );
     }
 
-    public ApiResponse<Void> deleteUser(String id) {
-
-        headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        headers.put("x-api-key", "reqres_19e403e39f404de8b734a4acd6f8b1d0");
+    public ApiResponse<Void> deleteUser(Map<String, String> headers, String id) {
 
         return APIRequestUtility.makeApiRequest(
                 baseUrl + SingleUser + id,

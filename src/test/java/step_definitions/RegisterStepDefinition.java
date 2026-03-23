@@ -1,15 +1,19 @@
 package step_definitions;
 
+import com.beust.ah.A;
 import components.HeaderComponent;
 import components.TopMenuComponent;
+import configurations.db.QueryExecutor;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import pages.*;
 import services.RegistrationService;
 import utils.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class RegisterStepDefinition {
     private String email = GeneratorUtils.generateEmail();
@@ -300,9 +304,9 @@ public class RegisterStepDefinition {
 
     @And("the user is logged in")
     public void theUserIsLoggedIn() {
-       List<String> userCreds= registrationService.getRandomUserLoginCredentials();
+        List<String> userCreds = registrationService.getRandomUserLoginCredentials();
         Assert.assertTrue(headerComponent.clickOnLoginLink());
-       // Assert.assertTrue(registerPage.fillEmail(email));
+        // Assert.assertTrue(registerPage.fillEmail(email));
         Assert.assertTrue(welcomePage.fillEmail(userCreds.getFirst()));
         Assert.assertTrue(welcomePage.fillPassword(userCreds.getLast()));
         Assert.assertTrue(welcomePage.clickOnLoginButton());
@@ -337,5 +341,33 @@ public class RegisterStepDefinition {
         List<String> userDetails = registrationService.registerRandomUserInDB();
         email = userDetails.get(0);
         password = userDetails.get(1);
+    }
+
+    @When("user is logged in with email {string} and password {string}")
+    public void userIsLoggedInWithEmailAndPassword(String email, String password) {
+        Assert.assertTrue(headerComponent.clickOnLoginLink());
+        Assert.assertTrue(welcomePage.fillEmail(email));
+        Assert.assertTrue(welcomePage.fillPassword(password));
+        Assert.assertTrue(welcomePage.clickOnLoginButton());
+    }
+
+    @And("cart items for user {string} match the user cart in DB")
+    public void cartItemsMatchTheUserCartInDB(String userEmail) {
+        List<Map<String, Object>> queryResult = QueryExecutor.executeQueryAsTable(
+                "get_cart_item_qty_and_total_price", userEmail);
+
+        double totalPriceFromDB = (double) queryResult.getFirst().get("totalPrice");
+        int qtyFromDB = (int) queryResult.getFirst().get("itemsQty");
+
+        int itemQty = shoppingCartPage.getQuantityOfItemInCart();
+        double totalPriceFromUI = shoppingCartPage.sumPriceOfProductsInCart();
+
+        Assert.assertEquals(itemQty, qtyFromDB, "Expected item quantity in cart to match DB value, but it did not.");
+        Assert.assertEquals(totalPriceFromUI, totalPriceFromDB, "Expected total price in cart to match DB value, but it did not.");
+    }
+
+    @And("user updated cart item quantity to {int}")
+    public void userUpdatedCartItemQuantityTo(int quantity) {
+        Assert.assertTrue(shoppingCartPage.updateQuantityOfItemInCart(quantity));
     }
 }

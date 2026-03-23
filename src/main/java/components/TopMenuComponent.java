@@ -5,12 +5,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.*;
 
 public class TopMenuComponent extends BaseComponent {
 
     private List<WebElement> subMenuLink;
+
     @FindBy(css = ".header-menu .top-menu>li>a")
     private List<WebElement> topMenuLinks;
 
@@ -25,10 +28,12 @@ public class TopMenuComponent extends BaseComponent {
 
     public TopMenuComponent(WebDriver driver) {
         super(driver);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
     public boolean clickOnTopMenuLink(String linkText) {
+        wait.until(ExpectedConditions.visibilityOfAllElements(topMenuLinks));
         for (WebElement link : topMenuLinks) {
             if (getText(link).equalsIgnoreCase(linkText)) {
 
