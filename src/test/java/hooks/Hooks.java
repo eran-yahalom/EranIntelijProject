@@ -1,4 +1,4 @@
-package step_definitions;
+package hooks;
 
 import configurations.db.DBSetupService;
 import io.cucumber.java.After;

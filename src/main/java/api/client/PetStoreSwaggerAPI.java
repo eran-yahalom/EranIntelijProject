@@ -21,7 +21,7 @@ public class PetStoreSwaggerAPI {
     private final String deleteUserByUsername = "/user/{username}";
 
 
-    public Map<String, String> createNewUserWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
+    public Map<String, String> swaggerAPICreateNewUserWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
         Map<String, String> responseMap = new HashMap<>();
 
         CreateUserDTO request = CreateUserDTO.builder()
@@ -51,7 +51,7 @@ public class PetStoreSwaggerAPI {
         return responseMap;
     }
 
-    public Map<String, String> createNewUserListWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
+    public Map<String, String> swaggerAPICreateNewUserListWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
         Map<String, String> responseMap = new HashMap<>();
 
         List<CreateUserDTO> request = List.of(CreateUserDTO.builder()
@@ -66,7 +66,7 @@ public class PetStoreSwaggerAPI {
                 .build());
 
         ApiResponse<CreateUserPOJO> response = APIRequestUtility.makeApiRequest(
-                petStoreSwaggerBaseUrl + createUser,
+                petStoreSwaggerBaseUrl + createUserListEndpoint,
                 headers,
                 request,
                 CreateUserPOJO.class,
@@ -77,11 +77,12 @@ public class PetStoreSwaggerAPI {
 
         responseMap.put("statusCode", String.valueOf(response.getStatusCode()));
         responseMap.put("type", response.getBody().getType());
+        responseMap.put("message", response.getBody().getMessage());
 
         return responseMap;
     }
 
-    public ApiResponse<CreateUserPOJO> createNewUserWithMap(Map<String, String> headers) {
+    public ApiResponse<CreateUserPOJO> swaggerAPICreateNewUserWithMap(Map<String, String> headers) {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("id", "0");
@@ -104,7 +105,7 @@ public class PetStoreSwaggerAPI {
         );
     }
 
-    public Map<String, String> getUserDetails(Map<String, String> headers, String username) {
+    public Map<String, String> swaggerAPIGetUserDetails(Map<String, String> headers, String username) {
         Map<String, String> responseMap = new HashMap<>();
 
         ApiResponse<GetUserPOJO> response = APIRequestUtility.makeApiRequest(
@@ -126,7 +127,7 @@ public class PetStoreSwaggerAPI {
         return responseMap;
     }
 
-    public Map<String, String> updateUserWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
+    public Map<String, String> swaggerAPIUpdateUserWithDTO(Map<String, String> headers, String username, String firstName, String lastName, String email, String password, String phone) {
         Map<String, String> responseMap = new HashMap<>();
 
         CreateUserDTO request = CreateUserDTO.builder()
@@ -156,7 +157,7 @@ public class PetStoreSwaggerAPI {
         return responseMap;
     }
 
-    public Map<String, String> deleteUser(Map<String, String> headers, String username) {
+    public Map<String, String> swaggerAPIDeleteUser(Map<String, String> headers, String username) {
         Map<String, String> responseMap = new HashMap<>();
 
         ApiResponse<CreateUserPOJO> response = APIRequestUtility.makeApiRequest(

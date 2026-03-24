@@ -5,7 +5,10 @@ import api.client.ReqresAPI;
 import api.pojo.*;
 import api.utils.APIUtils;
 import api.utils.ApiResponse;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import configurations.db.QueryExecutor;
+import context.ScenarioState;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,29 +21,26 @@ import java.util.Map;
 
 public class APIStepDefinition {
 
-    private ReqresAPI reqresApi;
-    private PetStoreSwaggerAPI petStoreSwaggerAPI;
-    private ApiResponse<ShipResponsePOJO> response;
-    private ApiResponse<SingleUserResponsePOJO> singleUserResponse;
-    private ApiResponse<LoginResponsePOJO> loginResponse;
-    private ApiResponse<UpdateUserResponsePOJO> updateUserResponse;
-    private ApiResponse<Void> deleteUserResponse;
-    private ApiResponse<GetAllUsersDataPOJO> getAllUsersResponse;
+    @Inject
+    private Provider<ReqresAPI> reqresAPIProvider;
+    @Inject
+    private Provider<PetStoreSwaggerAPI> petStoreSwaggerAPIProvider;
 
-    private List<Map<String, Object>> result;
-    private Map<String, String> swaggerResult;
 
     @When("API request all users details")
     public void APIRequestAllUsersDetails() {
-        reqresApi = new ReqresAPI();
-        getAllUsersResponse = reqresApi.getUsersDetails(APIUtils.getPostmanHeaders());
-        Assert.assertNotNull(getAllUsersResponse.getBody(), "Response body should not be null");
+        ReqresAPI reqresApi = reqresAPIProvider.get();
+        ApiResponse<GetAllUsersDataPOJO> response =
+                reqresApi.getUsersDetails(APIUtils.getPostmanHeaders());
+
+        ScenarioState.save("getAllUserDetails", response);
+        Assert.assertNotNull(response.getBody(), "Response body should not be null");
     }
 
     @When("API creates a random user")
     public void APICreatesARandomUser() {
-        petStoreSwaggerAPI = new PetStoreSwaggerAPI();
-        swaggerResult = petStoreSwaggerAPI.createNewUserWithDTO(APIUtils.perStoreSwaggerHeaders(),
+        PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
+        Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPICreateNewUserWithDTO(APIUtils.perStoreSwaggerHeaders(),
                 GeneratorUtils.generateUserName(), GeneratorUtils.generateFirstName(),
                 GeneratorUtils.generateLastName(), GeneratorUtils.generateEmail(), GeneratorUtils.generatePassword(),
                 GeneratorUtils.phoneNumber());
@@ -56,10 +56,12 @@ public class APIStepDefinition {
         String userNameFromDB = QueryExecutor.executeQueryAsTable(
                 "get_user_data_by_user_name").getFirst().get("user_bame").toString();
 
-        petStoreSwaggerAPI = new PetStoreSwaggerAPI();
-        swaggerResult = petStoreSwaggerAPI.updateUserWithDTO(APIUtils.perStoreSwaggerHeaders(),
+        PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
+
+        Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPIUpdateUserWithDTO(APIUtils.perStoreSwaggerHeaders(),
                 userNameFromDB, GeneratorUtils.generateFirstName(), GeneratorUtils.generateLastName(),
                 GeneratorUtils.generateEmail(), GeneratorUtils.generatePassword(), GeneratorUtils.phoneNumber());
+
         ScenarioContext.save("statusCode", swaggerResult.get("statusCode"));
         ScenarioContext.save("type", swaggerResult.get("type"));
 
@@ -71,8 +73,8 @@ public class APIStepDefinition {
         String userNameFromDB = QueryExecutor.executeQueryAsTable(
                 "get_user_data_by_user_name").getFirst().get("user_bame").toString();
 
-        petStoreSwaggerAPI = new PetStoreSwaggerAPI();
-        swaggerResult = petStoreSwaggerAPI.deleteUser(APIUtils.perStoreSwaggerHeaders(),
+        PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
+        Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPIDeleteUser(APIUtils.perStoreSwaggerHeaders(),
                 userNameFromDB);
         ScenarioContext.save("statusCode", swaggerResult.get("statusCode"));
 
@@ -88,60 +90,88 @@ public class APIStepDefinition {
 
     @Then("API response should be successful with status code {int}")
     public void APIResponseShouldBeSuccessfulWithStatusCode(int expectedStatusCode) {
-        Assert.assertEquals(getAllUsersResponse.getStatusCode(), expectedStatusCode, "Expected status code does not match actual");
+        ApiResponse<GetAllUsersDataPOJO> response =
+                ScenarioState.get("getAllUserDetails", ApiResponse.class);
+
+        Assert.assertEquals(response.getStatusCode(), expectedStatusCode, "Expected status code does not match actual");
     }
 
     @Then("number of users in the response should be {int}")
     public void numberOfUsersInTheResponseShouldBe(int expectedUserCount) {
-        Assert.assertEquals(getAllUsersResponse.getBody().getTotal(), expectedUserCount, "Expected user count does not match actual");
+        ApiResponse<GetAllUsersDataPOJO> response =
+                ScenarioState.get("getAllUserDetails", ApiResponse.class);
+        Assert.assertEquals(response.getBody().getTotal(), expectedUserCount, "Expected user count does not match actual");
     }
 
     @When("API request user details with id {string}")
     public void APIRequestUserDetailsWithId(String userId) {
         ScenarioContext.save("userId", userId);
-        reqresApi = new ReqresAPI();
-        singleUserResponse = reqresApi.getSingleUserDetails(APIUtils.getPostmanHeaders(), userId);
-        Assert.assertNotNull(singleUserResponse.getBody(), "Response body should not be null");
+        ReqresAPI reqresApi = reqresAPIProvider.get();
+        ApiResponse<SingleUserResponsePOJO> response = reqresApi.getSingleUserDetails(APIUtils.getPostmanHeaders(), userId);
+
+        ScenarioState.save("singleUserResponse", response);
+
+        Assert.assertNotNull(response.getBody(), "Response body should not be null");
     }
 
     @And("API response user mail should be {string}")
     public void APIResponseUserMailShouldBe(String expectedEmail) {
-        Assert.assertEquals(singleUserResponse.getBody().getData().getEmail(), expectedEmail, "Expected email does not match actual");
+        ApiResponse<SingleUserResponsePOJO> response =
+                ScenarioState.get("singleUserResponse", ApiResponse.class);
+
+        Assert.assertEquals(response.getBody().getData().getEmail(), expectedEmail, "Expected email does not match actual");
     }
 
     @And("API response user first name should be {string} and last name should be {string}")
     public void APIResponseUserFirstNameShouldBeAndLastNameShouldBe(String expectedFirstName, String expectedLastName) {
-        result = QueryExecutor.executeQueryAsTable(
+        List<Map<String, Object>> result = QueryExecutor.executeQueryAsTable(
                 "get_customer_data",
                 ScenarioContext.get("userId", String.class));
 
-        Assert.assertEquals(singleUserResponse.getBody().getData().getEmail(), result.getFirst().get("Email").toString(), "Expected first name does not match actual");
-        Assert.assertEquals(singleUserResponse.getBody().getData().getFirstName(), expectedFirstName, "Expected first name does not match actual");
-        Assert.assertEquals(singleUserResponse.getBody().getData().getLastName(), expectedLastName, "Expected last name does not match actual");
+        ApiResponse<SingleUserResponsePOJO> response =
+                ScenarioState.get("singleUserResponse", ApiResponse.class);
+
+        Assert.assertEquals(response.getBody().getData().getEmail(), result.getFirst().get("Email").toString(), "Expected first name does not match actual");
+        Assert.assertEquals(response.getBody().getData().getFirstName(), expectedFirstName, "Expected first name does not match actual");
+        Assert.assertEquals(response.getBody().getData().getLastName(), expectedLastName, "Expected last name does not match actual");
     }
 
     @When("API request user login with username {string} and password {string}")
     public void APIRequestUserLogin(String username, String password) {
-        reqresApi = new ReqresAPI();
-        loginResponse = reqresApi.userLogin(APIUtils.geUTF8PostmanHeaders(), username, password);
-        Assert.assertNotNull(loginResponse.getBody(), "Response body should not be null");
+        ReqresAPI reqresApi = reqresAPIProvider.get();
+        ApiResponse<LoginResponsePOJO> request = reqresApi.userLogin(APIUtils.geUTF8PostmanHeaders(), username, password);
+
+        ScenarioState.save("loginResponse", request);
+        Assert.assertNotNull(request.getBody(), "Response body should not be null");
     }
 
     @Then("API LOGIN response should be successful")
     public void APILOGINResponseShouldBeSuccessful() {
+        ApiResponse<LoginResponsePOJO> loginResponse =
+                ScenarioState.get("loginResponse", ApiResponse.class);
+
         Assert.assertEquals(loginResponse.getStatusCode(), 200, "Expected status code does not match actual");
         Assert.assertNotNull(loginResponse.getBody().getToken(), "Login token should not be null");
     }
 
     @When("API updated user details with name {string} and job {string} for user with id {string}")
     public void APIUpdatedUserDetailsWithIdAndNameAndJob(String name, String job, String id) {
-        reqresApi = new ReqresAPI();
-        updateUserResponse = reqresApi.updateUser(APIUtils.geUTF8PostmanHeaders(), name, job, id);
-        Assert.assertNotNull(updateUserResponse.getBody(), "Response body should not be null");
+        ReqresAPI reqresApi = reqresAPIProvider.get();
+
+
+        ApiResponse<UpdateUserResponsePOJO> request = reqresApi.updateUser(APIUtils.geUTF8PostmanHeaders(), name, job, id);
+
+        ScenarioState.save("updateUserResponse", request);
+
+        Assert.assertNotNull(request.getBody(), "Response body should not be null");
     }
 
     @Then("API UPDATE response should be successful with updated name {string} and job {string}")
     public void APIUPDATEResponseShouldBeSuccessfulWithUpdatedNameAndJob(String expectedName, String expectedJob) {
+
+        ApiResponse<UpdateUserResponsePOJO> updateUserResponse =
+                ScenarioState.get("updateUserResponse", ApiResponse.class);
+
         Assert.assertEquals(updateUserResponse.getStatusCode(), 200, "Expected status code does not match actual");
         Assert.assertEquals(updateUserResponse.getBody().getName(), expectedName, "Expected name does not match actual");
         Assert.assertEquals(updateUserResponse.getBody().getJob(), expectedJob, "Expected job does not match actual");
@@ -149,19 +179,23 @@ public class APIStepDefinition {
 
     @When("API deletes user details with id {string}")
     public void APIRDeletesUserWithId(String userId) {
-        reqresApi = new ReqresAPI();
-        deleteUserResponse = reqresApi.deleteUser(APIUtils.getPostmanHeaders(), userId);
-        Assert.assertNotNull(deleteUserResponse, "Delete user response should not be null");
+        ReqresAPI reqresApi = reqresAPIProvider.get();
+        ApiResponse<Void> request = reqresApi.deleteUser(APIUtils.getPostmanHeaders(), userId);
+
+        ScenarioState.save("deleteUserResponse", request);
+
+        Assert.assertNotNull(request, "Delete user response should not be null");
     }
 
     @Then("API DELETE response should be successful with status code {int}")
     public void APIDELETEResponseShouldBeSuccessfulWithStatusCode(int expectedStatusCode) {
+        ApiResponse<Void> deleteUserResponse = ScenarioState.get("deleteUserResponse", ApiResponse.class);
         Assert.assertEquals(deleteUserResponse.getStatusCode(), expectedStatusCode, "Expected status code does not match actual");
     }
 
     @When("API request user details with user name")
     public void APIRequestUserDetailsWithUserName() {
-        petStoreSwaggerAPI = new PetStoreSwaggerAPI();
+        PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
 
         List<Map<String, Object>> queryResults = QueryExecutor.executeQueryAsTable(
                 "get_user_data_by_user_name");
@@ -172,7 +206,7 @@ public class APIStepDefinition {
         ScenarioContext.save("userNameFromDB", userName);
         ScenarioContext.save("emailFromDB", email);
 
-        swaggerResult = petStoreSwaggerAPI.getUserDetails(APIUtils.perStoreSwaggerHeaders(), userName);
+        Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPIGetUserDetails(APIUtils.perStoreSwaggerHeaders(), userName);
         ScenarioContext.save("statusCode", swaggerResult.get("statusCode"));
         ScenarioContext.save("userName", swaggerResult.get("userName"));
         ScenarioContext.save("email", swaggerResult.get("email"));
@@ -195,5 +229,19 @@ public class APIStepDefinition {
     @Then("API delete user response should be successful with status code {string}")
     public void APIDeleteUserResponseShouldBeSuccessfulWithStatusCode(String expectedStatusCode) {
         Assert.assertEquals(ScenarioContext.get("statusCode", String.class), expectedStatusCode, "Expected status code does not match actual");
+    }
+
+    @When("API creates a list of random users")
+    public void APICreatesAListOfRandomUsers() {
+        PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
+        Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPICreateNewUserListWithDTO(APIUtils.perStoreSwaggerHeaders(),
+                GeneratorUtils.generateUserName(), GeneratorUtils.generateFirstName(),
+                GeneratorUtils.generateLastName(), GeneratorUtils.generateEmail(), GeneratorUtils.generatePassword(),
+                GeneratorUtils.phoneNumber());
+
+        ScenarioContext.save("statusCode", swaggerResult.get("statusCode"));
+        ScenarioContext.save("type", swaggerResult.get("type"));
+
+        Assert.assertNotNull(swaggerResult);
     }
 }

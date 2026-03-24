@@ -5,12 +5,13 @@ import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"step_definitions", "hooks"},
+        glue = {"step_definitions","hooks","di"},
         plugin = {
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
+        publish = false,
         tags = "@petStoreSwaggerAPI"
 )
 
