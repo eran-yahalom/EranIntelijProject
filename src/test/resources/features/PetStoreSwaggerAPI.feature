@@ -27,7 +27,7 @@ Feature: Pet Store Swagger API
 
     Scenario Outline: Create user list
     When API creates a list of random users
-    Then API response should be successful with status code "200" and type "unknown"
+    Then API CREATE LIST response should be successful with status code "200" and type "unknown"
 
       Examples:
         | run |

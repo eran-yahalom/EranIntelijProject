@@ -1,5 +1,6 @@
 package step_definitions;
 
+import com.google.inject.Inject;
 import components.BreadcrumbComponent;
 import components.FooterComponent;
 import io.cucumber.java.en.Then;
@@ -11,6 +12,7 @@ import utils.DriverManager;
 
 public class FooterStepDefinition {
 
+    @Inject
     FooterComponent footerComponent;
 
     public FooterStepDefinition() {
