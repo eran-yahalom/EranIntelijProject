@@ -12,6 +12,7 @@
         <classes>
             <class name="launchers.HeaderLauncher"/>
             <class name="launchers.PostmanAPILauncher"/>
+            <class name="launchers.SwaggerAPILauncher"/>
             <class name="launchers.RegisterLauncher"/>
             <class name="launchers.LoginLauncher"/>
             <class name="launchers.BookLauncher"/>

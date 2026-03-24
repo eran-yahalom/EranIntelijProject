@@ -17,6 +17,10 @@ Feature: Pet Store Swagger API
     When API request user details with user name
     Then API get user details response should be successful with status code "200"
 
+  Scenario: Update user by user name
+    When API updates user details for user
+    Then API update user details response should be successful with status code "200"
+
   Scenario: Delete user by user name
     When API deletes user with user name
     Then API delete user response should be successful with status code "200"
