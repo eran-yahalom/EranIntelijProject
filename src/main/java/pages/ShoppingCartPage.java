@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +40,7 @@ public class ShoppingCartPage extends BasePage {
     @FindBy(css = ".cart-total tr:nth-child(4) .cart-total-right")
     private WebElement totalPrice;
 
+    @Inject
     public ShoppingCartPage(WebDriver driver) {
         super(driver);
     }

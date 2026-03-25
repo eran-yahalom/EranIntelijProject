@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import components.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -53,6 +54,7 @@ public class ItemDetailsPage extends BasePage {
     @FindBy(css = "[value='Add to compare list']")
     private WebElement addToCompareButton;
 
+    @Inject
     public ItemDetailsPage(WebDriver driver) {
 
         super(driver);

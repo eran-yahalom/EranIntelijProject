@@ -1,13 +1,11 @@
 package step_definitions;
 
 import com.google.inject.Inject;
-import components.BreadcrumbComponent;
 import components.FooterComponent;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import pages.*;
 import utils.DriverManager;
 
 public class FooterStepDefinition {

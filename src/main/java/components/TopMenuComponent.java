@@ -1,5 +1,6 @@
 package components;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,10 +27,12 @@ public class TopMenuComponent extends BaseComponent {
     @FindBy(css = ".header-logo a")
     private WebElement logoLink;
 
+    @Inject
     public TopMenuComponent(WebDriver driver) {
-        super(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver); // שולח את הדרייבר ל-BaseComponent לאתחול ה-Wait
         PageFactory.initElements(driver, this);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
     }
 
     public boolean clickOnTopMenuLink(String linkText) {

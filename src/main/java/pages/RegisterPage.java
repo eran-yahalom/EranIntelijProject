@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,6 +62,7 @@ public class RegisterPage extends BasePage {
     @FindBy(css = "[data-valmsg-for='ConfirmPassword']")
     private WebElement emptyConfirmPasswordValidationErrorMessage;
 
+    @Inject
     public RegisterPage(WebDriver driver) {
         super(driver);
     }

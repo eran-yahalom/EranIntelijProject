@@ -1,5 +1,6 @@
 package components;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -40,9 +41,10 @@ public class HeaderComponent extends BaseComponent {
     @FindBy(css = ".search-results .result")
     private WebElement noItemsInResultsMessage;
 
+    @Inject
     public HeaderComponent(WebDriver driver) {
-        super(driver);
-        PageFactory.initElements(driver, this);
+        super(driver); // שולח את הדרייבר ל-BaseComponent לאתחול ה-Wait
+        PageFactory.initElements(driver, this); // ✅ חובה: מאתחל את ה-WebElements במחלקה זו
     }
 
     public boolean clickOnRegisterLink() {

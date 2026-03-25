@@ -1,156 +1,179 @@
 package step_definitions;
 
-import com.beust.ah.A;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import components.HeaderComponent;
 import components.TopMenuComponent;
 import configurations.db.QueryExecutor;
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import io.cucumber.guice.ScenarioScoped;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.testng.Assert;
 import pages.*;
 import services.RegistrationService;
-import utils.*;
+import utils.GeneratorUtils;
+import utils.ScenarioContext;
+import utils.Utils;
 
 import java.util.List;
 import java.util.Map;
 
+@ScenarioScoped
 public class RegisterStepDefinition {
+    private final Provider<WelcomePage> welcomePageProvider;
+    private final Provider<RegisterPage> registerPageProvider;
+    private final Provider<LoggedInPage> loggedInPageProvider;
+    private final Provider<ShoppingCartPage> shoppingCartPageProvider;
+    private final Provider<HeaderComponent> headerComponentProvider;
+    private final Provider<ItemDetailsPage> itemDetailsPageProvider;
+    private final Provider<TopMenuComponent> topMenuComponentProvider;
+    private final Provider<ElectronicsPage> electronicsPageProvider;
+    private final Provider<CellPhonesPage> cellPhonesPageProvider;
+
+
+    private final RegistrationService registrationService;
+
     private String email = GeneratorUtils.generateEmail();
     private String password = GeneratorUtils.generatePassword();
 
-    WelcomePage welcomePage;
-    RegisterPage registerPage;
-    LoggedInPage loggedInPage;
-    ShoppingCartPage shoppingCartPage;
-    ElectronicsPage electronicsPage;
-    CellPhonesPage cellPhonesPage;
-    TopMenuComponent topMenuComponent;
-    HeaderComponent headerComponent;
-    ItemDetailsPage itemDetailsPage;
-    RegistrationService registrationService;
-
-    public RegisterStepDefinition() {
-        WebDriver driver = DriverManager.getDriver();
-        this.welcomePage = new WelcomePage(driver);
-        this.registerPage = new RegisterPage(driver);
-        this.loggedInPage = new LoggedInPage(driver);
-        this.shoppingCartPage = new ShoppingCartPage(driver);
-        this.electronicsPage = new ElectronicsPage(driver);
-        this.cellPhonesPage = new CellPhonesPage(driver);
-        this.topMenuComponent = new TopMenuComponent(driver);
-        this.headerComponent = new HeaderComponent(driver);
-        this.itemDetailsPage = new ItemDetailsPage(driver);
-        this.registrationService = new RegistrationService();
+    @Inject
+    public RegisterStepDefinition(
+            Provider<WelcomePage> welcomePageProvider,
+            Provider<RegisterPage> registerPageProvider,
+            Provider<LoggedInPage> loggedInPageProvider,
+            Provider<ShoppingCartPage> shoppingCartPageProvider,
+            Provider<HeaderComponent> headerComponentProvider,
+            Provider<ItemDetailsPage> itemDetailsPageProvider,
+            Provider<TopMenuComponent> topMenuComponentProvider,
+            Provider<ElectronicsPage> electronicsPageProvider,
+            Provider<CellPhonesPage> cellPhonesPageProvider,
+            RegistrationService registrationService
+    ) {
+        this.welcomePageProvider = welcomePageProvider;
+        this.registerPageProvider = registerPageProvider;
+        this.loggedInPageProvider = loggedInPageProvider;
+        this.shoppingCartPageProvider = shoppingCartPageProvider;
+        this.headerComponentProvider = headerComponentProvider;
+        this.itemDetailsPageProvider = itemDetailsPageProvider;
+        this.topMenuComponentProvider = topMenuComponentProvider;
+        this.electronicsPageProvider = electronicsPageProvider;
+        this.cellPhonesPageProvider = cellPhonesPageProvider;
+        this.registrationService = registrationService;
     }
 
 
     @When("user clicks on register link")
     public void clickOnRegisterLink() {
-        Assert.assertTrue(headerComponent.clickOnRegisterLink());
+        Assert.assertTrue(headerComponentProvider.get().clickOnRegisterLink());
     }
 
     @When("user clicks on log in link")
     public void clickOnLogInLink() {
-        Assert.assertTrue(headerComponent.clickOnLoginLink());
+        Assert.assertTrue(headerComponentProvider.get().clickOnLoginLink());
     }
 
     @And("user fills in email and password")
     public void userFillsEmailAndPassword() {
-        Assert.assertTrue(welcomePage.fillEmail(Utils.readProperty("userEmail")));
-        Assert.assertTrue(welcomePage.fillPassword(Utils.readProperty("userPassword")));
+        WelcomePage welcome = welcomePageProvider.get();
+        Assert.assertTrue(welcome.fillEmail(Utils.readProperty("userEmail")));
+        Assert.assertTrue(welcome.fillPassword(Utils.readProperty("userPassword")));
     }
 
     @And("user fills in email and password with {string} and {string}")
     public void userFillsEmailAndPasswordWith(String email, String password) {
-        Assert.assertTrue(welcomePage.fillEmail(email));
-        Assert.assertTrue(welcomePage.fillPassword(password));
+        WelcomePage welcome = welcomePageProvider.get();
+        Assert.assertTrue(welcome.fillEmail(email));
+        Assert.assertTrue(welcome.fillPassword(password));
     }
 
     @And("user clicks on log in button")
     public void userClicksOnLogInButton() {
-        Assert.assertTrue(welcomePage.clickOnLoginButton());
+        Assert.assertTrue(welcomePageProvider.get().clickOnLoginButton());
     }
 
     @When("user enters gender {string}")
     public void userEntersGender(String gender) {
-        Assert.assertTrue(registerPage.selectGender(gender));
+        Assert.assertTrue(registerPageProvider.get().selectGender(gender));
     }
 
     @When("user enters first and last name")
     public void userEntersFirstNameAndLastName() {
-
-        Assert.assertTrue(registerPage.fillFirstName(GeneratorUtils.generateFirstName()));
-        Assert.assertTrue(registerPage.fillLastName(GeneratorUtils.generateLastName()));
+        RegisterPage register = registerPageProvider.get();
+        Assert.assertTrue(register.fillFirstName(GeneratorUtils.generateFirstName()));
+        Assert.assertTrue(register.fillLastName(GeneratorUtils.generateLastName()));
     }
 
     @When("user enters email")
     public void userEntersEmail() {
-        Assert.assertTrue(registerPage.fillEmail(email));
+        Assert.assertTrue(registerPageProvider.get().fillEmail(email));
     }
 
     @And("user enters existing email")
     public void userEntersExistingEmail() {
-        Assert.assertTrue(registerPage.fillEmail(Utils.readProperty("userEmail")));
+        Assert.assertTrue(registerPageProvider.get().fillEmail(Utils.readProperty("userEmail")));
     }
 
     @And("user enters password and confirm password")
     public void userEntersPasswordAndConfirmPassword() {
-        Assert.assertTrue(registerPage.fillPassword(password));
-        Assert.assertTrue(registerPage.fillConfirmPassword(password));
+        RegisterPage register = registerPageProvider.get();
+        Assert.assertTrue(register.fillPassword(password));
+        Assert.assertTrue(register.fillConfirmPassword(password));
     }
 
     @And("user enters non matching password and confirm password")
     public void userEntersNonMatchingPasswordAndConfirmPassword() {
-        Assert.assertTrue(registerPage.fillPassword(password));
-        Assert.assertTrue(registerPage.fillConfirmPassword(password + "A"));
+        RegisterPage register = registerPageProvider.get();
+        Assert.assertTrue(register.fillPassword(password));
+        Assert.assertTrue(register.fillConfirmPassword(password + "A"));
     }
 
     @And("user clicks on register button")
     public void userClicksOnRegisterButton() {
-        Assert.assertTrue(registerPage.clickOnRegisterButton());
+        Assert.assertTrue(registerPageProvider.get().clickOnRegisterButton());
     }
 
     @And("a success message is displayed")
     public void userShouldSeeRegistrationSuccessMessage() {
-        String actualMessage = registerPage.getSuccessMessage();
+        String actualMessage = registerPageProvider.get().getSuccessMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("registerSuccessMessage"), "Registration success message does not match expected.");
     }
 
     @And("user clicks on continue button")
     public void userClicksOnContinueButton() {
-        Assert.assertTrue(registerPage.clickOnContinueButton());
+        Assert.assertTrue(registerPageProvider.get().clickOnContinueButton());
     }
 
     @And("user is logged in with email {string}")
     public void userIsLoggedIn(String email) {
-        Assert.assertTrue(loggedInPage.isUserLoggedIn(email));
+        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(email));
     }
 
     @And("the user should be logged in")
     public void newUserIsLoggedInSuccessfully() {
-        Assert.assertTrue(loggedInPage.isUserLoggedIn(email));
+        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(email));
     }
 
     @And("the user is logged in successfully")
     public void existingUserIsLoggedInSuccessfully() {
-        Assert.assertTrue(loggedInPage.isUserLoggedIn(Utils.readProperty("userEmail")));
+        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(Utils.readProperty("userEmail")));
     }
 
     @Then("a error message should be displayed for existing email")
     public void userShouldSeeErrorMessageForExistingEmail() {
-        String actualMessage = registerPage.getEmailRegistrationErrorMessage();
+        String actualMessage = registerPageProvider.get().getEmailRegistrationErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("emailAlreadyExistsText"));
     }
 
     @Then("a error message should be displayed for non matching passwords")
     public void userShouldSeeErrorMessageForNonMatchingPasswords() {
-        String actualMessage = registerPage.getPasswordValidationErrorMessage();
+        String actualMessage = registerPageProvider.get().getPasswordValidationErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty("passwordsDontMatchErrorMessage"));
     }
 
     @Then("a error message should be displayed for all empty fields")
     public void userShouldSeeErrorMessageForAllEmptyFields() {
+        RegisterPage registerPage = registerPageProvider.get();
         String emptyFirstname = registerPage.getFirstNameValidationErrorMessage();
         String emptyLastname = registerPage.getLastNameValidationErrorMessage();
         String emptyEmail = registerPage.getEmailValidationErrorMessage();
@@ -189,124 +212,125 @@ public class RegisterStepDefinition {
 
     @Then("error message {string} is displayed for invalid credentials")
     public void userShouldSeeErrorMessageForInvalidCredentials(String errorMessageFormat) {
-        String actualMessage = welcomePage.getInvalidLoginErrorMessage();
+        String actualMessage = welcomePageProvider.get().getInvalidLoginErrorMessage();
         Assert.assertEquals(actualMessage, Utils.readProperty(errorMessageFormat));
     }
 
     @And("the user navigates to the {string} page")
     public void userClicksOnFromTheTopMenu(String menuOption) {
-        Assert.assertTrue(topMenuComponent.clickOnTopMenuLink(menuOption));
+        Assert.assertTrue(topMenuComponentProvider.get().clickOnTopMenuLink(menuOption));
     }
 
     @And("user adds {string} to the cart")
     public void userAddsToTheCart(String productName) {
-        Assert.assertTrue(itemDetailsPage.addProductToCart(productName));
+        Assert.assertTrue(itemDetailsPageProvider.get().addProductToCart(productName));
     }
 
     @And("user clicks on add to cart button")
     public void clickOnAddToCartButton() {
-        Assert.assertTrue(itemDetailsPage.clickAddToCartButton());
+        Assert.assertTrue(itemDetailsPageProvider.get().clickAddToCartButton());
     }
 
     @And("an error message should be displayed")
     public void userShouldSeeMessageProductNotAddedToCart() {
+        ItemDetailsPage itemDetailsPage = itemDetailsPageProvider.get();
         Assert.assertTrue(itemDetailsPage.isValidTRecipientEmailMessagePresented());
         Assert.assertTrue(itemDetailsPage.isValidTRecipientNameMessagePresented());
     }
 
     @And("user fills in recipient name")
     public void userFillsInRecipientName() {
-        Assert.assertTrue(itemDetailsPage.fillRecipientNameFromSender());
+        Assert.assertTrue(itemDetailsPageProvider.get().fillRecipientNameFromSender());
     }
 
     @And("user fills in recipient email")
     public void userFillsInRecipientEmail() {
-        Assert.assertTrue(itemDetailsPage.fillRecipientEmailFromSender());
+        Assert.assertTrue(itemDetailsPageProvider.get().fillRecipientEmailFromSender());
     }
 
     @And("a success message should be displayed")
     public void userShouldSeeMessageProductAddedToCart() {
-        Assert.assertTrue(itemDetailsPage.addToCartSuccessMessagePresented());
+        Assert.assertTrue(itemDetailsPageProvider.get().addToCartSuccessMessagePresented());
     }
 
     @And("the user clicks on cart link in the notification")
     public void userClicksOnCartLinkInTheNotification() {
-        Assert.assertTrue(itemDetailsPage.clickOnCartLinkInNotification());
+        Assert.assertTrue(itemDetailsPageProvider.get().clickOnCartLinkInNotification());
     }
 
     @Then("the user should be redirected to the shopping cart page")
     public void userShouldBeOnShoppingCartPage() {
-        Assert.assertTrue(shoppingCartPage.isHeaderDisplayedCorrectly());
+        Assert.assertTrue(shoppingCartPageProvider.get().isHeaderDisplayedCorrectly());
     }
 
     @Then("the item was added to the cart successfully")
     public void itemWasAddedToTheCartSuccessfully() {
         int numberOfItemsBeforeAdd = ScenarioContext.get("quantityOfItemsInCart", Integer.class);
-        int numberOfItemsAfterAdd = shoppingCartPage.getQuantityOfItemInCart();
+        int numberOfItemsAfterAdd = shoppingCartPageProvider.get().getQuantityOfItemInCart();
         Assert.assertEquals(numberOfItemsAfterAdd, numberOfItemsBeforeAdd + 1, "Expected number of items in cart to be increased by 1 after adding a product, but it was not.");
     }
 
     @And("user clicks on shopping cart link in the top menu")
     public void userClicksOnShoppingCartLinkInTheTopMenu() {
-        Assert.assertTrue(headerComponent.clickOnShoppingCartLink());
+        Assert.assertTrue(headerComponentProvider.get().clickOnShoppingCartLink());
     }
 
     @And("user counts the number of items in the cart")
     public void userCountsTheNumberOfItemsInTheCart() {
-        int numberOfItemsInCart = shoppingCartPage.countNumberOfItemsInCart();
+        int numberOfItemsInCart = shoppingCartPageProvider.get().countNumberOfItemsInCart();
         ScenarioContext.save("numberOfItemsInCart", numberOfItemsInCart);
         Assert.assertTrue(numberOfItemsInCart > 0, "Expected at least one item in the cart, but found: " + numberOfItemsInCart);
     }
 
     @And("user clicks on demo web shop link in the top menu")
     public void userClicksOnDemoWebShopLinkInTheTopMenu() {
-        Assert.assertTrue(topMenuComponent.clickOnLogoLink());
+        Assert.assertTrue(topMenuComponentProvider.get().clickOnLogoLink());
     }
 
     @And("user counts the quantity of items in the cart")
     public void userCountsTheQuantityOfItemsInTheCart() {
-        int quantityOfItemsInCart = shoppingCartPage.getQuantityOfItemInCart();
+        int quantityOfItemsInCart = shoppingCartPageProvider.get().getQuantityOfItemInCart();
         ScenarioContext.save("quantityOfItemsInCart", quantityOfItemsInCart);
         Assert.assertTrue(quantityOfItemsInCart >= 0, "Expected at least one item in the cart, but found quantity: " + quantityOfItemsInCart);
     }
 
     @And("user deletes all the items from the cart")
     public void userDeletesItemFromTheCart() {
-        Assert.assertTrue(shoppingCartPage.deleteItemFromCart());
+        Assert.assertTrue(shoppingCartPageProvider.get().deleteItemFromCart());
     }
 
     @And("user clicks on {string} from top menu and selects {string} from the submenu")
     public void userSelectsFromTheTopMenu(String menuOption, String subMenuOption) {
-        Assert.assertTrue(topMenuComponent.clickOnSubMenuLink(menuOption, subMenuOption));
+        Assert.assertTrue(topMenuComponentProvider.get().clickOnSubMenuLink(menuOption, subMenuOption));
     }
 
     @And("user selects {string} from categories page")
     public void userSelectsItemFromPage(String categoryOption) {
-        Assert.assertTrue(electronicsPage.selectItem(categoryOption));
+        Assert.assertTrue(electronicsPageProvider.get().selectItem(categoryOption));
     }
 
     @And("user selects {string}")
     public void userSelectsItemFromDropdownPage(String itemName) {
-        Assert.assertTrue(cellPhonesPage.selectItem(itemName));
+        Assert.assertTrue(cellPhonesPageProvider.get().selectItem(itemName));
     }
 
     @And("the cart total price should be calculated correctly")
     public void userShouldSeeCorrectTotalPriceForItemsInCart() {
-        Assert.assertTrue(shoppingCartPage.isTotalPriceCalculatedCorrectly());
+        Assert.assertTrue(shoppingCartPageProvider.get().isTotalPriceCalculatedCorrectly());
     }
 
     @And("the cart header number of items match the cart page number of items")
     public void numberOfItemsInCartHeaderShouldMatchNumberOfItemsInCartPage() {
-        int numberOfItemsInCart = shoppingCartPage.countNumberOfItemsInCart();
-        int numberOfItemsInHeader = headerComponent.getShoppingCartItemCount();
+        int numberOfItemsInCart = shoppingCartPageProvider.get().countNumberOfItemsInCart();
+        int numberOfItemsInHeader = headerComponentProvider.get().getShoppingCartItemCount();
         Assert.assertEquals(numberOfItemsInHeader, numberOfItemsInCart, "Expected number of items in cart header to match the actual number of items in the cart, but it did not.");
     }
 
     @And("the user is logged in")
     public void theUserIsLoggedIn() {
         List<String> userCreds = registrationService.getRandomUserLoginCredentials();
-        Assert.assertTrue(headerComponent.clickOnLoginLink());
-        // Assert.assertTrue(registerPage.fillEmail(email));
+        WelcomePage welcomePage = welcomePageProvider.get();
+        Assert.assertTrue(headerComponentProvider.get().clickOnLoginLink());
         Assert.assertTrue(welcomePage.fillEmail(userCreds.getFirst()));
         Assert.assertTrue(welcomePage.fillPassword(userCreds.getLast()));
         Assert.assertTrue(welcomePage.clickOnLoginButton());
@@ -314,24 +338,25 @@ public class RegisterStepDefinition {
 
     @And("the shopping cart is empty")
     public void theShoppingCartIsEmpty() {
-        Assert.assertTrue(headerComponent.clickOnShoppingCartLink());
-        Assert.assertTrue(shoppingCartPage.deleteItemFromCart());
+        Assert.assertTrue(headerComponentProvider.get().clickOnShoppingCartLink());
+        Assert.assertTrue(shoppingCartPageProvider.get().deleteItemFromCart());
     }
 
     @And("user clicks on log out link")
     public void userClicksOnLogOutLink() {
-        Assert.assertTrue(headerComponent.clickOnLogoutLink());
+        Assert.assertTrue(headerComponentProvider.get().clickOnLogoutLink());
     }
 
     @Then("the user is logged out successfully")
     public void theUserIsLoggedOutSuccessfully() {
+        WelcomePage welcomePage = welcomePageProvider.get();
         Assert.assertTrue(welcomePage.isRegisterLinkDisplayed());
         Assert.assertTrue(welcomePage.isLoginLinkDisplayed());
     }
 
     @Then("error message {string} should be displayed")
     public void errorMessageShouldBeDisplayed(String messageKey) {
-        String actualMessage = headerComponent.getNoResultsTextMessage();
+        String actualMessage = headerComponentProvider.get().getNoResultsTextMessage();
         String expectedMessage = Utils.readProperty(messageKey);
         Assert.assertEquals(actualMessage, expectedMessage);
     }
@@ -345,7 +370,8 @@ public class RegisterStepDefinition {
 
     @When("user is logged in with email {string} and password {string}")
     public void userIsLoggedInWithEmailAndPassword(String email, String password) {
-        Assert.assertTrue(headerComponent.clickOnLoginLink());
+        WelcomePage welcomePage = welcomePageProvider.get();
+        Assert.assertTrue(headerComponentProvider.get().clickOnLoginLink());
         Assert.assertTrue(welcomePage.fillEmail(email));
         Assert.assertTrue(welcomePage.fillPassword(password));
         Assert.assertTrue(welcomePage.clickOnLoginButton());
@@ -359,8 +385,8 @@ public class RegisterStepDefinition {
         double totalPriceFromDB = (double) queryResult.getFirst().get("totalPrice");
         int qtyFromDB = (int) queryResult.getFirst().get("itemsQty");
 
-        int itemQty = shoppingCartPage.getQuantityOfItemInCart();
-        double totalPriceFromUI = shoppingCartPage.sumPriceOfProductsInCart();
+        int itemQty = shoppingCartPageProvider.get().getQuantityOfItemInCart();
+        double totalPriceFromUI = shoppingCartPageProvider.get().sumPriceOfProductsInCart();
 
         Assert.assertEquals(itemQty, qtyFromDB, "Expected item quantity in cart to match DB value, but it did not.");
         Assert.assertEquals(totalPriceFromUI, totalPriceFromDB, "Expected total price in cart to match DB value, but it did not.");
@@ -368,6 +394,6 @@ public class RegisterStepDefinition {
 
     @And("user updated cart item quantity to {int}")
     public void userUpdatedCartItemQuantityTo(int quantity) {
-        Assert.assertTrue(shoppingCartPage.updateQuantityOfItemInCart(quantity));
+        Assert.assertTrue(shoppingCartPageProvider.get().updateQuantityOfItemInCart(quantity));
     }
 }
