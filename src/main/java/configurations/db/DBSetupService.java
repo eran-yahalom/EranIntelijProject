@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 public class DBSetupService {
 
-    public static void init() {
-        Connection connection = DBServiceProvider.createSqliteConnection();
+    public static void init(String schemaURL, String dbName, String username, String password) {
+        Connection connection = DBServiceProvider.createSqliteConnection(schemaURL, dbName, username, password);
         DBThreadLocal.set(connection);
     }
 

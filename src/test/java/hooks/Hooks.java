@@ -1,6 +1,7 @@
 package hooks;
 
 import com.google.inject.Inject;
+import configurations.EnvManager;
 import configurations.db.DBSetupService;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -25,14 +26,14 @@ public class Hooks {
 
     @Before
     public void setup() {
-        DBSetupService.init();
+        DBSetupService.init(EnvManager.get().getSchema(), EnvManager.get().getDbName(), null, null);
         DriverManager.setDriver(driver);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        String url = Utils.readProperty("url");
-        driver.get(url);
+//        String url = Utils.readProperty("url");
+        driver.get(EnvManager.get().getUrl());
 
         try {
             driver.findElement(By.cssSelector("#details-button")).click();
