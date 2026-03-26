@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import components.CategoryItemsComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,6 @@ import utils.Utils;
 public class SearchPage extends BasePage {
 
     CategoryItemsComponent categoryItems = new CategoryItemsComponent(driver);
-    ;
     @FindBy(css = ".basic-search div label:nth-child(1)")
     public WebElement searchKeyWordHeader;
 
@@ -29,6 +29,7 @@ public class SearchPage extends BasePage {
     @FindBy(css = ".search-results .result")
     public WebElement noSearchResultsText;
 
+    @Inject
     public SearchPage(WebDriver driver) {
         super(driver);
     }

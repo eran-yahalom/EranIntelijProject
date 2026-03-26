@@ -30,9 +30,7 @@ public class RegisterStepDefinition {
     private final Provider<TopMenuComponent> topMenuComponentProvider;
     private final Provider<ElectronicsPage> electronicsPageProvider;
     private final Provider<CellPhonesPage> cellPhonesPageProvider;
-
-
-    private final RegistrationService registrationService;
+    private final Provider<RegistrationService> registrationServiceProvider;
 
     private String email = GeneratorUtils.generateEmail();
     private String password = GeneratorUtils.generatePassword();
@@ -48,7 +46,7 @@ public class RegisterStepDefinition {
             Provider<TopMenuComponent> topMenuComponentProvider,
             Provider<ElectronicsPage> electronicsPageProvider,
             Provider<CellPhonesPage> cellPhonesPageProvider,
-            RegistrationService registrationService
+            RegistrationService registrationService, Provider<RegistrationService> registrationServiceProvider
     ) {
         this.welcomePageProvider = welcomePageProvider;
         this.registerPageProvider = registerPageProvider;
@@ -59,7 +57,7 @@ public class RegisterStepDefinition {
         this.topMenuComponentProvider = topMenuComponentProvider;
         this.electronicsPageProvider = electronicsPageProvider;
         this.cellPhonesPageProvider = cellPhonesPageProvider;
-        this.registrationService = registrationService;
+        this.registrationServiceProvider = registrationServiceProvider;
     }
 
 
@@ -328,7 +326,7 @@ public class RegisterStepDefinition {
 
     @And("the user is logged in")
     public void theUserIsLoggedIn() {
-        List<String> userCreds = registrationService.getRandomUserLoginCredentials();
+        List<String> userCreds = registrationServiceProvider.get().getRandomUserLoginCredentials();
         WelcomePage welcomePage = welcomePageProvider.get();
         Assert.assertTrue(headerComponentProvider.get().clickOnLoginLink());
         Assert.assertTrue(welcomePage.fillEmail(userCreds.getFirst()));
@@ -363,7 +361,7 @@ public class RegisterStepDefinition {
 
     @When("new user is updated in DB")
     public void newUserIsUpdatedInDB() {
-        List<String> userDetails = registrationService.registerRandomUserInDB();
+        List<String> userDetails = registrationServiceProvider.get().registerRandomUserInDB();
         email = userDetails.get(0);
         password = userDetails.get(1);
     }

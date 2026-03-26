@@ -15,7 +15,6 @@ public class ShoppingCartPage extends BasePage {
     @FindBy(css = ".cart-item-row")
     private List<WebElement> cartItemRow;
 
-
     @FindBy(css = ".qty-input")
     private List<WebElement> quantityInputFields;
 

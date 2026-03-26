@@ -1,5 +1,6 @@
 package components;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 
@@ -11,6 +12,7 @@ public class BreadcrumbComponent extends BaseComponent {
     private By breadcrumbElements = By.cssSelector(".breadcrumb ul li");
     private By breadcrumbContainer = By.cssSelector(".breadcrumb");
 
+    @Inject
     public BreadcrumbComponent(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);

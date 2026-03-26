@@ -1,35 +1,30 @@
 package services;
 
 import configurations.db.QueryExecutor;
+import io.cucumber.guice.ScenarioScoped;
 import utils.GeneratorUtils;
 
 import java.util.List;
 import java.util.Map;
 
+@ScenarioScoped
 public class RegistrationService {
-    private String email;
-    private String password;
-    private String first_name;
-    private String last_name;
-    private String address;
-    private String phoneNumber;
-    private String city;
-    private String country;
+
     private String dateOfBirth;
     List<String> creds;
 
     public List<String> registerRandomUserInDB() {
 
         try {
-            email = GeneratorUtils.generateEmail();
-            password = GeneratorUtils.generatePassword();
-            first_name = GeneratorUtils.generateFirstName();
-            last_name = GeneratorUtils.generateLastName();
-            address = GeneratorUtils.address();
-            phoneNumber = GeneratorUtils.phoneNumber();
-            city = GeneratorUtils.city();
-            country = GeneratorUtils.country();
-            dateOfBirth = GeneratorUtils.dateOfBirth().toString();
+            String email = GeneratorUtils.generateEmail();
+            String password = GeneratorUtils.generatePassword();
+            String first_name = GeneratorUtils.generateFirstName();
+            String last_name = GeneratorUtils.generateLastName();
+            String address = GeneratorUtils.address();
+            String phoneNumber = GeneratorUtils.phoneNumber();
+            String city = GeneratorUtils.city();
+            String country = GeneratorUtils.country();
+            String dateOfBirth = GeneratorUtils.dateOfBirth().toString();
 
             QueryExecutor.executeUpdate(
                     "set_new_customer",

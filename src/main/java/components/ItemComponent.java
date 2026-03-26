@@ -1,5 +1,6 @@
 package components;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,6 +33,7 @@ public class ItemComponent {
     @FindBy(css = "input[value='Add to compare list']")
     private WebElement addToCompareButton;
 
+    @Inject
     public ItemComponent(WebDriver driver, WebElement root) {
         this.driver = driver;
         this.root = root;

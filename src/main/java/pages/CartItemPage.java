@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import components.BreadcrumbComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,6 +47,7 @@ public class CartItemPage extends BasePage {
     @FindBy(css = "[value='Add to compare list']")
     private WebElement addToCompareListButton;
 
+    @Inject
     public CartItemPage(WebDriver driver) {
         super(driver);
         breadcrumbs = new BreadcrumbComponent(driver);

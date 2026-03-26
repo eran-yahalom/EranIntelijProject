@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,6 +23,7 @@ public class GiftCardsPage extends BasePage {
     @FindBy(css = ".product-item .price.actual-price")
     private List<WebElement> giftCardPrices;
 
+    @Inject
     public GiftCardsPage(WebDriver driver) {
         super(driver);
     }

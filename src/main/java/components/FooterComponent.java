@@ -1,5 +1,6 @@
 package components;
 
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +40,7 @@ public class FooterComponent extends BaseComponent {
     @FindBy(css = ".column.information ul li a")
     private List<WebElement> informationLinks;
 
+    @Inject
     public FooterComponent(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);

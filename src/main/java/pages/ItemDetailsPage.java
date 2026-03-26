@@ -56,7 +56,6 @@ public class ItemDetailsPage extends BasePage {
 
     @Inject
     public ItemDetailsPage(WebDriver driver) {
-
         super(driver);
         categoryItems = new CategoryItemsComponent(driver);
     }

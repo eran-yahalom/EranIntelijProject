@@ -12,7 +12,6 @@ import utils.DriverManager;
 import utils.ScenarioContext;
 import utils.Utils;
 
-
 import java.time.Duration;
 
 public class Hooks {

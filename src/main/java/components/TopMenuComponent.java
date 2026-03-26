@@ -9,7 +9,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class TopMenuComponent extends BaseComponent {
 
@@ -29,7 +32,7 @@ public class TopMenuComponent extends BaseComponent {
 
     @Inject
     public TopMenuComponent(WebDriver driver) {
-        super(driver); // שולח את הדרייבר ל-BaseComponent לאתחול ה-Wait
+        super(driver);
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 

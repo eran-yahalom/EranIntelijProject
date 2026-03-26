@@ -22,6 +22,9 @@
         <runParallel>true</runParallel>
         <parallelMode>false</parallelMode>
         <threadCount>1</threadCount>
+<!--        <maven.test.skip>true</maven.test.skip>-->
+        <env>qa1</env>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
@@ -280,6 +283,17 @@
                 </executions>
             </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.5</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <env>${env}</env>
+                            <dataproviderthreadcount>4</dataproviderthreadcount>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
         </plugins>
     </build>
 

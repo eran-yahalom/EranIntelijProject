@@ -43,8 +43,8 @@ public class HeaderComponent extends BaseComponent {
 
     @Inject
     public HeaderComponent(WebDriver driver) {
-        super(driver); // שולח את הדרייבר ל-BaseComponent לאתחול ה-Wait
-        PageFactory.initElements(driver, this); // ✅ חובה: מאתחל את ה-WebElements במחלקה זו
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public boolean clickOnRegisterLink() {

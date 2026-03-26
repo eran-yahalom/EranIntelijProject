@@ -10,6 +10,7 @@ import com.google.inject.Provider;
 import configurations.db.QueryExecutor;
 import context.ScenarioState;
 import context.StateKeys;
+import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,12 +21,19 @@ import utils.ScenarioContext;
 import java.util.List;
 import java.util.Map;
 
+@ScenarioScoped
 public class APIStepDefinition {
 
+
+    private final Provider<ReqresAPI> reqresAPIProvider;
+    private final Provider<PetStoreSwaggerAPI> petStoreSwaggerAPIProvider;
+
     @Inject
-    private Provider<ReqresAPI> reqresAPIProvider;
-    @Inject
-    private Provider<PetStoreSwaggerAPI> petStoreSwaggerAPIProvider;
+    public APIStepDefinition(Provider<ReqresAPI> reqresAPIProvider,
+                             Provider<PetStoreSwaggerAPI> petStoreSwaggerAPIProvider) {
+        this.reqresAPIProvider = reqresAPIProvider;
+        this.petStoreSwaggerAPIProvider = petStoreSwaggerAPIProvider;
+    }
 
 
     @When("API request all users details")
