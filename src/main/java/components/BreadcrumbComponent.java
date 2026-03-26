@@ -1,12 +1,15 @@
 package components;
 
 import com.google.inject.Inject;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 public class BreadcrumbComponent extends BaseComponent {
 
     private By breadcrumbElements = By.cssSelector(".breadcrumb ul li");
@@ -66,7 +69,7 @@ public class BreadcrumbComponent extends BaseComponent {
                 }
             }
         } catch (NoSuchElementException ignored) {
-
+            log.error("Breadcrumb element not found: " + breadCrumbName);
         }
         return false;
     }
@@ -75,6 +78,7 @@ public class BreadcrumbComponent extends BaseComponent {
         try {
             return driver.findElements(breadcrumbElements).size();
         } catch (NoSuchElementException e) {
+            log.info("No breadcrumbs found on the page.");
             return 0;
         }
     }

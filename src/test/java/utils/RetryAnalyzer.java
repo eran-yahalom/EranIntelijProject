@@ -1,8 +1,11 @@
 package utils;
 
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
+@Log4j2
 public class RetryAnalyzer implements IRetryAnalyzer {
 
     private final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
@@ -15,7 +18,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         if (currentCount < MAX_RETRY) {
             count.set(currentCount + 1);
 
-            System.out.println("Retrying Scenario: "
+            log.info("Retrying Scenario: "
                     + result.getMethod().getMethodName()
                     + " | Attempt: " + (currentCount + 1) + "/" + MAX_RETRY);
 

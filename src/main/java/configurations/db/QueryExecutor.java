@@ -1,7 +1,10 @@
 package configurations.db;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QueryExecutor {
 
@@ -39,6 +42,7 @@ public class QueryExecutor {
             throw new RuntimeException("Query execution failed: " + queryKey, e);
         }
     }
+
     // =========================
     // INSERT / UPDATE / DELETE
     // =========================
@@ -52,13 +56,12 @@ public class QueryExecutor {
 
             bindParams(stmt, params);
 
-            return stmt.executeUpdate(); // ✅ correct for INSERT/UPDATE/DELETE
+            return stmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException("UPDATE query failed: " + queryKey, e);
         }
     }
-
 
     // =========================
     // INSERT + RETURN GENERATED KEY (optional)
@@ -87,7 +90,6 @@ public class QueryExecutor {
         }
     }
 
-
     // =========================
     // COMMON PARAM BINDER
     // =========================
@@ -96,6 +98,4 @@ public class QueryExecutor {
             stmt.setObject(i + 1, params[i]);
         }
     }
-
-
 }

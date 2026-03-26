@@ -1,12 +1,16 @@
 package components;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Set;
 
+@Log4j2
 public abstract class BaseComponent {
 
     protected WebDriver driver;
@@ -56,6 +60,7 @@ public abstract class BaseComponent {
                 return true;
 
             } catch (Exception ex) {
+                log.error("Fail to click on button{}", element.getText());
                 return false;
             }
         }
@@ -68,6 +73,7 @@ public abstract class BaseComponent {
             element.sendKeys(text);
             return true;
         } catch (Exception e) {
+            log.error("Fail to fill text in element: {} | Error: {}", element.getText(), e.getMessage());
             return false;
         }
     }
@@ -76,6 +82,7 @@ public abstract class BaseComponent {
         try {
             return waitForVisibility(element).getText();
         } catch (Exception e) {
+            log.error("Fail to get text from element: {} | Error: {}", element.getText(), e.getMessage());
             return "";
         }
     }
@@ -84,6 +91,7 @@ public abstract class BaseComponent {
         try {
             return waitForVisibility(element).isDisplayed();
         } catch (Exception e) {
+            log.error("Fail to check visibility of element: {} | Error: {}", element.getText(), e.getMessage());
             return false;
         }
     }
@@ -125,6 +133,7 @@ public abstract class BaseComponent {
             moveToNewWindow();
             return true;
         } catch (Exception e) {
+            log.error("Fail to click and move to selected social media: {} | Error: {}", element.getText(), e.getMessage());
             return false;
         }
     }
@@ -138,6 +147,7 @@ public abstract class BaseComponent {
             driver.switchTo().alert().accept();
             return true;
         } catch (Exception e) {
+            log.error("Fail to click on alert OK button | Error: {}", e.getMessage());
             return false;
         }
     }
@@ -149,6 +159,7 @@ public abstract class BaseComponent {
             select.selectByVisibleText(value);
             return true;
         } catch (StaleElementReferenceException e) {
+            log.error("Stale element reference: {} | Error: {}", element.getText(), e.getMessage());
             return false;
         }
     }

@@ -84,7 +84,6 @@ public class ItemDetailsPage extends BasePage {
     }
 
     public boolean fillRecipientEmailFromSender() {
-        //  wait.until(ExpectedConditions.elementToBeClickable(senderEmailInput));
         String senderEmail = senderEmailInput.getAttribute("value");
         return fillText(recipientEmailInput, senderEmail);
     }

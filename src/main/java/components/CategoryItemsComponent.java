@@ -1,18 +1,22 @@
 package components;
 
 import com.google.inject.Inject;
-import org.openqa.selenium.*;
+import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Utils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 import static utils.Utils.getPricesFromUI;
 
-// the page items (e.g:booksPage) see filters,sort ,list of elements
+@Log4j2
 public class CategoryItemsComponent extends BaseComponent {
 
     private WebDriver driver;
@@ -105,6 +109,7 @@ public class CategoryItemsComponent extends BaseComponent {
         if (filterElement != null) {
             return click(filterElement);
         } else {
+            log.error("Invalid price range: {}", priceRange);
             throw new IllegalArgumentException("Invalid price range: " + priceRange);
         }
     }
@@ -127,6 +132,7 @@ public class CategoryItemsComponent extends BaseComponent {
             Utils.verifyPricesSortedHighToLow(pricesFromBooksPage);
             return true;
         } catch (Exception e) {
+            log.error("Books are not sorted by price low to high: {}", e.getMessage());
             return false;
         }
     }

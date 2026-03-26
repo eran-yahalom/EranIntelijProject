@@ -2,11 +2,13 @@ package services;
 
 import configurations.db.QueryExecutor;
 import io.cucumber.guice.ScenarioScoped;
+import lombok.extern.log4j.Log4j2;
 import utils.GeneratorUtils;
 
 import java.util.List;
 import java.util.Map;
 
+@Log4j2
 @ScenarioScoped
 public class RegistrationService {
 
@@ -59,6 +61,7 @@ public class RegistrationService {
 
             return List.of(email, password);
         } catch (Exception e) {
+            log.error("Fail to get random credentials {}", e.getMessage());
             throw new RuntimeException("Failed to retrieve user credentials from DB", e);
         }
     }

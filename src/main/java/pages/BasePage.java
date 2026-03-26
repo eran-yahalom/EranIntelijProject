@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
@@ -9,6 +10,7 @@ import utils.Utils;
 import java.time.Duration;
 import java.util.Set;
 
+@Log4j2
 public abstract class BasePage {
 
     protected WebDriver driver;
@@ -135,7 +137,6 @@ public abstract class BasePage {
 
         return false;
     }
-
     // ==============================
     // Wait helpers
     // ==============================
@@ -146,7 +147,6 @@ public abstract class BasePage {
     public void waitForElementToBeClickable(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
-
     // ==============================
     // Display check
     // ==============================
@@ -157,7 +157,6 @@ public abstract class BasePage {
             return false;
         }
     }
-
     // ==============================
     // Hover
     // ==============================
@@ -175,7 +174,6 @@ public abstract class BasePage {
 
         option.click();
     }
-
     // ==============================
     // Scroll
     // ==============================
@@ -185,7 +183,6 @@ public abstract class BasePage {
                 element
         );
     }
-
     // ==============================
     // Highlight
     // ==============================
@@ -210,7 +207,6 @@ public abstract class BasePage {
                 element, originalStyle
         );
     }
-
     // ==============================
     // Windows handling
     // ==============================
@@ -231,7 +227,6 @@ public abstract class BasePage {
         driver.close();
         driver.switchTo().window(mainWindow);
     }
-
     // ==============================
     // Dropdown
     // ==============================
@@ -242,6 +237,7 @@ public abstract class BasePage {
             select.selectByValue(value);
             return true;
         } catch (StaleElementReferenceException e) {
+            log.error("Failed to select option from dropdown by value", e);
             return false;
         }
     }
@@ -253,6 +249,7 @@ public abstract class BasePage {
             select.selectByVisibleText(value);
             return true;
         } catch (StaleElementReferenceException e) {
+            log.error("Failed to select option from dropdown by visible text", e);
             return false;
         }
     }
@@ -264,10 +261,10 @@ public abstract class BasePage {
             select.selectByIndex(2);
             return true;
         } catch (StaleElementReferenceException e) {
+            log.error("Failed to select option from dropdown by index", e);
             return false;
         }
     }
-
     // ==============================
     // Popup handling
     // ==============================
@@ -286,6 +283,7 @@ public abstract class BasePage {
             }
 
         } catch (Exception ignored) {
+            log.error("System popup not found or already closed");
         }
     }
 
@@ -296,6 +294,7 @@ public abstract class BasePage {
         try {
             return getText(element);
         } catch (Exception e) {
+            log.info("Toast message not found");
             return null;
         }
     }
@@ -321,6 +320,7 @@ public abstract class BasePage {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
+//            log.error("Sleep interrupted", e);
             Thread.currentThread().interrupt();
         }
     }

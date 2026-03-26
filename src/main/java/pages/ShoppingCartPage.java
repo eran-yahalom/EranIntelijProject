@@ -1,12 +1,15 @@
 package pages;
 
 import com.google.inject.Inject;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
+@Log4j2
 public class ShoppingCartPage extends BasePage {
 
     @FindBy(css = ".page-title h1")
@@ -52,6 +55,7 @@ public class ShoppingCartPage extends BasePage {
         try {
             return cartItemRow.size();
         } catch (Exception e) {
+            log.info("Number of items in cart: 0");
             return 0;
         }
     }
@@ -65,6 +69,7 @@ public class ShoppingCartPage extends BasePage {
             }
             return qty;
         } catch (Exception e) {
+            log.info("Quantity of items in cart: 0");
             return 0;
         }
     }

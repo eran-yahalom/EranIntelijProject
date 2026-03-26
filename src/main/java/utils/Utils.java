@@ -1,7 +1,10 @@
 package utils;
 
 
-import org.openqa.selenium.*;
+import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -12,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Log4j2
 public class Utils {
 
     public static String readProperty(String key) {
@@ -20,7 +24,7 @@ public class Utils {
             FileInputStream fis = new FileInputStream("src/test/resources/configuration.properties");
             prop.load(fis);
         } catch (IOException e) {
-            System.err.println("שגיאה: לא ניתן למצוא את קובץ ה-Properties בנתיב המוגדר!");
+            log.error("Error: Unable to find the Properties file at the specified path!", e);
             e.printStackTrace();
         }
         return prop.getProperty(key);
@@ -62,6 +66,7 @@ public class Utils {
             wait.until(ExpectedConditions.visibilityOf(element));
             return element.getText().equalsIgnoreCase(readProperty(propertyKey));
         } catch (TimeoutException e) {
+            log.info("Element not found within the specified timeout: " + e.getMessage(), e);
             return false;
         }
     }

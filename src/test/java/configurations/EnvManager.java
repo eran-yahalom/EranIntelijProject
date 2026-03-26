@@ -1,23 +1,23 @@
 package configurations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-@Slf4j
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class EnvManager {
     private static EnvConfig.EnvironmentDetails currentEnv;
 
     static {
         try {
-            // 1. טעינת קובץ ה-JSON
             ObjectMapper mapper = new ObjectMapper();
             EnvConfig config = mapper.readValue(new File("src/test/resources/environments.json"), EnvConfig.class);
 
-            // 2. קביעת הסביבה: עדיפות ל-Terminal (-Denv), אחרת ל-global.properties
             String envName = System.getProperty("env");
 
             if (envName == null || envName.isEmpty()) {

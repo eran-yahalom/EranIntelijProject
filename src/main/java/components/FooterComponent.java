@@ -1,6 +1,7 @@
 package components;
 
 import com.google.inject.Inject;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+@Log4j2
 public class FooterComponent extends BaseComponent {
 
     @FindBy(css = ".facebook a")
@@ -160,6 +162,7 @@ public class FooterComponent extends BaseComponent {
             }
             return currentUrl.contains(socialMedia.toLowerCase());
         } catch (Exception e) {
+            log.error("Failed to get current URL or validate social media page: {}", e.getMessage());
             return false;
         }
     }

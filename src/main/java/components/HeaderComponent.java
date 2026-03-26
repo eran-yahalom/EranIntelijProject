@@ -1,11 +1,13 @@
 package components;
 
 import com.google.inject.Inject;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+@Log4j2
 public class HeaderComponent extends BaseComponent {
 
     @FindBy(css = ".ico-register")
@@ -78,6 +80,7 @@ public class HeaderComponent extends BaseComponent {
                     .trim();
             return Integer.parseInt(itemCountText);
         } catch (Exception e) {
+            log.info("Number of items in shopping cart: 0");
             return 0;
         }
     }
@@ -87,6 +90,7 @@ public class HeaderComponent extends BaseComponent {
             String itemCountText = getText(wishlistItemCount).trim();
             return Integer.parseInt(itemCountText);
         } catch (Exception e) {
+            log.info("Number of items in wishlist: 0");
             return 0;
         }
     }

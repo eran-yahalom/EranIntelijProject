@@ -32,7 +32,6 @@ public class Hooks {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-//        String url = Utils.readProperty("url");
         driver.get(EnvManager.get().getUrl());
 
         try {

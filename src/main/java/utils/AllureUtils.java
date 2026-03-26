@@ -2,15 +2,17 @@ package utils;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.logging.*;
 
 import java.io.ByteArrayInputStream;
 
+@Log4j2
 public class AllureUtils {
 
     // ==============================
-    // 📸 Screenshot
+    // Screenshot
     // ==============================
     public static void attachScreenshot(WebDriver driver, String name) {
 
@@ -28,11 +30,12 @@ public class AllureUtils {
                     ".png"
             );
         } catch (Exception e) {
-            System.out.println("Failed to capture screenshot: " + e.getMessage());
+            log.error("Failed to capture screenshot: " + e.getMessage(), e);
         }
     }
+
     // ==============================
-    // 🖥 Browser Console Logs
+    // Browser Console Logs
     // ==============================
     public static void attachBrowserLogs(WebDriver driver) {
 
@@ -53,11 +56,12 @@ public class AllureUtils {
             Allure.addAttachment("Browser Console Logs", logText.toString());
 
         } catch (Exception e) {
-            System.out.println("Failed to capture browser logs: " + e.getMessage());
+            log.error("Failed to capture browser logs: " + e.getMessage(), e);
         }
     }
+
     // ==============================
-    // 🌐 Page Source
+    // Page Source
     // ==============================
     public static void attachPageSource(WebDriver driver) {
 
@@ -66,11 +70,12 @@ public class AllureUtils {
         try {
             Allure.addAttachment("Page Source", driver.getPageSource());
         } catch (Exception e) {
-            System.out.println("Failed to capture page source: " + e.getMessage());
+            log.error("Failed to capture page source: " + e.getMessage(), e);
         }
     }
+
     // ==============================
-    // 🔗 Current URL
+    // Current URL
     // ==============================
     public static void attachCurrentUrl(WebDriver driver) {
 
@@ -79,18 +84,19 @@ public class AllureUtils {
         try {
             Allure.addAttachment("Current URL", driver.getCurrentUrl());
         } catch (Exception e) {
-            System.out.println("Failed to capture URL: " + e.getMessage());
+            log.error("Failed to capture current URL: " + e.getMessage(), e);
         }
     }
+
     // ==============================
-    // 📝 Custom Text Attachment
+    // Custom Text Attachment
     // ==============================
     public static void attachText(String name, String content) {
         Allure.addAttachment(name, content);
     }
 
     // ==============================
-    // 📊 Environment Info
+    // Environment Info
     // ==============================
     public static void attachEnvironmentInfo() {
 
@@ -101,11 +107,11 @@ public class AllureUtils {
 
         Allure.addAttachment("Environment Info", info);
     }
+
     // ==============================
-    // 🧩 Step Helper (Optional)
+    //  Step Helper (Optional)
     // ==============================
     @Step("{stepName}")
     public static void step(String stepName) {
-        // This will appear as a step in Allure report
     }
 }
