@@ -1,12 +1,16 @@
 package utils;
 
+import lombok.extern.log4j.Log4j2;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.Gender;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import java.sql.Timestamp;
 
+@Log4j2
 public class GeneratorUtils {
     private static final ThreadLocal<Faker> faker =
             ThreadLocal.withInitial(Faker::new);
@@ -57,5 +61,19 @@ public class GeneratorUtils {
 
     public static String generateUserName() {
         return faker.get().name() + UUID.randomUUID().toString().substring(0, 5);
+    }
+
+    public static List<String> generateRandomUserAndPassword() {
+        try {
+            String user = generateEmail();
+            String passWord = generatePassword();
+
+            return List.of(user, passWord);
+
+
+        } catch (Exception e) {
+            log.error("Failed to generate random user and password", e);
+        }
+        return Collections.emptyList();
     }
 }

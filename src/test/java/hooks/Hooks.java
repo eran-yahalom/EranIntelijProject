@@ -29,7 +29,7 @@ public class Hooks {
         DBSetupService.init(EnvManager.get().getSchema(), EnvManager.get().getDbName(), null, null);
         DriverManager.setDriver(driver);
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+      //  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
         driver.get(EnvManager.get().getUrl());

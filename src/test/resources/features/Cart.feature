@@ -2,7 +2,7 @@
 Feature: User can manage shopping cart operations
 
   Background:
-    Given the user is logged in
+    Given random user is logged in successfully
     And the shopping cart is empty
 
   Scenario Outline: User cannot add a gift card to the cart without filling in required fields

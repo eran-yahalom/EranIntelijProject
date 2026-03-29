@@ -49,11 +49,9 @@ public class RegistrationService {
 
     public List<String> getRandomUserLoginCredentials() {
         try {
-            Map<String, Object> credentials = QueryExecutor.executeQueryAsTable("get_random_customer_user_and_password").getFirst();
-            ;
+            Map<String, Object> credentials = QueryExecutor.executeQueryAsTable("get_random_customer_user_and_password", 1).getFirst();
             String email = credentials.get("email").toString();
-            String password = credentials.get("password_hash").toString();
-
+            String password = credentials.get("password").toString();
 
             if (credentials.isEmpty()) {
                 throw new RuntimeException("No credentials found for email: " + email);

@@ -1,9 +1,12 @@
 package pages;
 
 import com.google.inject.Inject;
+import components.HeaderComponent;
+import configurations.db.QueryExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utils.GeneratorUtils;
 import utils.Utils;
 
 public class RegisterPage extends BasePage {
@@ -146,4 +149,37 @@ public class RegisterPage extends BasePage {
     public String getEmptyConfirmPasswordValidationErrorMessage() {
         return getText(emptyConfirmPasswordValidationErrorMessage);
     }
+
+    public boolean registerNewUser(int numberOfUsersToAdd) {
+        HeaderComponent hea = new HeaderComponent(driver);
+
+        try {
+            for (int i = 0; i < numberOfUsersToAdd; i++) {
+                String email = GeneratorUtils.generateEmail();
+                String password = GeneratorUtils.generatePassword();
+                String firstName = GeneratorUtils.generateFirstName();
+                String lastName = GeneratorUtils.generateLastName();
+
+                hea.clickOnRegisterLink();
+                fillFirstName(firstName);
+                fillLastName(lastName);
+                fillEmail(email);
+                fillPassword(password);
+                fillConfirmPassword(password);
+                clickOnRegisterButton();
+                clickOnContinueButton();
+                QueryExecutor.executeUpdate(
+                        "insert_into_users_table",
+                        email, password, firstName, lastName, 1);
+                hea.clickOnLogoutLink();
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
+
+
+
+

@@ -5,6 +5,8 @@ import com.google.inject.Provider;
 import components.HeaderComponent;
 import components.TopMenuComponent;
 import configurations.db.QueryExecutor;
+import context.ScenarioState;
+import context.StateKeys;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -73,9 +75,20 @@ public class RegisterStepDefinition {
 
     @And("user fills in email and password")
     public void userFillsEmailAndPassword() {
+        List<Map<String, Object>> userDetails = QueryExecutor.executeQueryAsTable("get_random_customer_user_and_password", 1);
+
+        Assert.assertNotNull(userDetails, "DB query is empty");
+
+        String userEmail = userDetails.getFirst().get("email").toString();
+        String userPassword = userDetails.getFirst().get("password").toString();
+
+        ScenarioState.save(StateKeys.USER_EMAIL, userEmail);
+        ScenarioState.save(StateKeys.USER_PASSWORD, userPassword);
+
         WelcomePage welcome = welcomePageProvider.get();
-        Assert.assertTrue(welcome.fillEmail(Utils.readProperty("userEmail")));
-        Assert.assertTrue(welcome.fillPassword(Utils.readProperty("userPassword")));
+
+        Assert.assertTrue(welcome.fillEmail(userEmail));
+        Assert.assertTrue(welcome.fillPassword(userPassword));
     }
 
     @And("user fills in email and password with {string} and {string}")
@@ -104,7 +117,7 @@ public class RegisterStepDefinition {
 
     @When("user enters email")
     public void userEntersEmail() {
-        Assert.assertTrue(registerPageProvider.get().fillEmail(email));
+        Assert.assertTrue(registerPageProvider.get().fillEmail(ScenarioState.get(StateKeys.USER_EMAIL, String.class)));
     }
 
     @And("user enters existing email")
@@ -114,6 +127,7 @@ public class RegisterStepDefinition {
 
     @And("user enters password and confirm password")
     public void userEntersPasswordAndConfirmPassword() {
+        String password = ScenarioState.get(StateKeys.USER_PASSWORD, String.class);
         RegisterPage register = registerPageProvider.get();
         Assert.assertTrue(register.fillPassword(password));
         Assert.assertTrue(register.fillConfirmPassword(password));
@@ -149,12 +163,12 @@ public class RegisterStepDefinition {
 
     @And("the user should be logged in")
     public void newUserIsLoggedInSuccessfully() {
-        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(email));
+        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(ScenarioState.get(StateKeys.USER_EMAIL, String.class)));
     }
 
     @And("the user is logged in successfully")
     public void existingUserIsLoggedInSuccessfully() {
-        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(Utils.readProperty("userEmail")));
+        Assert.assertTrue(loggedInPageProvider.get().isUserLoggedIn(ScenarioState.get(StateKeys.USER_EMAIL, String.class)));
     }
 
     @Then("a error message should be displayed for existing email")
@@ -324,9 +338,13 @@ public class RegisterStepDefinition {
         Assert.assertEquals(numberOfItemsInHeader, numberOfItemsInCart, "Expected number of items in cart header to match the actual number of items in the cart, but it did not.");
     }
 
-    @And("the user is logged in")
+    @And("random user is logged in successfully")
     public void theUserIsLoggedIn() {
         List<String> userCreds = registrationServiceProvider.get().getRandomUserLoginCredentials();
+
+        ScenarioState.save(StateKeys.DB_EMAIL, userCreds.getFirst());
+        ScenarioState.save(StateKeys.DB_PASSWORD, userCreds.getLast());
+
         WelcomePage welcomePage = welcomePageProvider.get();
         Assert.assertTrue(headerComponentProvider.get().clickOnLoginLink());
         Assert.assertTrue(welcomePage.fillEmail(userCreds.getFirst()));
@@ -362,8 +380,8 @@ public class RegisterStepDefinition {
     @When("new user is updated in DB")
     public void newUserIsUpdatedInDB() {
         List<String> userDetails = registrationServiceProvider.get().registerRandomUserInDB();
-        email = userDetails.get(0);
-        password = userDetails.get(1);
+        ScenarioState.save(StateKeys.USER_EMAIL, userDetails.get(0));
+        ScenarioState.save(StateKeys.USER_PASSWORD, userDetails.get(1));
     }
 
     @When("user is logged in with email {string} and password {string}")
@@ -390,8 +408,35 @@ public class RegisterStepDefinition {
         Assert.assertEquals(totalPriceFromUI, totalPriceFromDB, "Expected total price in cart to match DB value, but it did not.");
     }
 
+    @And("cart items for user match the user cart in DB")
+    public void cartItemsMatchTheRandomUserCartInDB() {
+        List<Map<String, Object>> queryResult = QueryExecutor.executeQueryAsTable(
+                "get_cart_item_qty_and_total_price", ScenarioState.get(StateKeys.DB_EMAIL,String.class));
+
+        double totalPriceFromDB = (double) queryResult.getFirst().get("totalPrice");
+        int qtyFromDB = (int) queryResult.getFirst().get("itemsQty");
+
+        int itemQty = shoppingCartPageProvider.get().getQuantityOfItemInCart();
+        double totalPriceFromUI = shoppingCartPageProvider.get().sumPriceOfProductsInCart();
+
+        Assert.assertEquals(itemQty, qtyFromDB, "Expected item quantity in cart to match DB value, but it did not.");
+        Assert.assertEquals(totalPriceFromUI, totalPriceFromDB, "Expected total price in cart to match DB value, but it did not.");
+    }
+
     @And("user updated cart item quantity to {int}")
     public void userUpdatedCartItemQuantityTo(int quantity) {
         Assert.assertTrue(shoppingCartPageProvider.get().updateQuantityOfItemInCart(quantity));
+    }
+
+    @And("user registers {int} new users in the database")
+    public void userRegistersNewUsersInTheDatabase(int numberOfUsersStr) {
+        registerPageProvider.get().registerNewUser(numberOfUsersStr);
+    }
+
+    @And("user generates random user and password")
+    public void generateRandomUserAndPassword() {
+        List<String> userEmail = GeneratorUtils.generateRandomUserAndPassword();
+        ScenarioState.save(StateKeys.USER_EMAIL, userEmail.getFirst());
+        ScenarioState.save(StateKeys.USER_PASSWORD, userEmail.getLast());
     }
 }

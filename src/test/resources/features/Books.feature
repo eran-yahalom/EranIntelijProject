@@ -2,7 +2,7 @@
 Feature: User can manage sorting, filtering and display on Books page
 
   Background:
-    Given user is logged in with email "vivian.donnelly@yahoo.com" and password "gt08bo9no"
+    Given random user is logged in successfully
     And the shopping cart is empty
     And the user navigates to the "BOOKS" page
 
@@ -77,14 +77,13 @@ Feature: User can manage sorting, filtering and display on Books page
       | Name: Z to A       | Under 25.00   |
 
   Scenario Outline: number and price of cart items match the cart items in DB after adding item to the cart
-
     When user counts the quantity of items in the cart
     And user adds "<itemNane>" to the cart
     Then a success message should be displayed
     And the user clicks on cart link in the notification
     And the user should be redirected to the shopping cart page
     And user updated cart item quantity to 2
-    And cart items for user "vivian.donnelly@yahoo.com" match the user cart in DB
+    And cart items for user match the user cart in DB
     Examples:
       | itemNane               |
       | Fiction                |

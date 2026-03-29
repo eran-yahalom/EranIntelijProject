@@ -1,5 +1,4 @@
 @petStoreSwaggerAPI
-
 Feature: Pet Store Swagger API
 
   Scenario Outline: Create user

@@ -2,7 +2,7 @@
 Feature: User can register a new account
 
   Background:
-    Given new user is updated in DB
+    Given user generates random user and password
     And user clicks on register link
 
   @ui
