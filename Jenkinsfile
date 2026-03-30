@@ -24,7 +24,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     // שימוש ב-Dtest כדי להריץ רק את הקלאס שנבחר בפרמטרים
-                    sh "mvn clean test -Dtest=${params.LAUNCHER} -Dcucumber.filter.tags='${params.TAGS}'"
+                  sh "mvn clean test -Dtest=${params.LAUNCHER} -Dcucumber.filter.tags='${params.TAGS}' -Ddataproviderthreadcount=3"
                 }
             }
         }

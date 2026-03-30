@@ -55,7 +55,7 @@ public class BaseLauncher extends AbstractTestNGCucumberTests {
     }
 
     @Override
-    @DataProvider(parallel = false) // נשאר על false ליציבות ה-DB כרגע
+    @DataProvider(parallel = true)
     public Object[][] scenarios() {
         return super.scenarios();
     }
