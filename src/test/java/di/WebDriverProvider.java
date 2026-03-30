@@ -5,27 +5,42 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.logging.LogType;
 import utils.DriverManager;
-
-import java.util.Map;
-import java.util.logging.Level;
+import java.io.File;
 
 public class WebDriverProvider implements Provider<WebDriver> {
     @Override
     public WebDriver get() {
-        // אם כבר קיים דרייבר ל-Thread הזה, החזר אותו במקום ליצור חדש
         if (DriverManager.getDriver() != null) {
             return DriverManager.getDriver();
         }
 
-        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        // ... שאר ההגדרות שלך ...
+
+        // בדיקה: האם אנחנו רצים בתוך ה-Docker של ג'נקינס?
+        // אנחנו בודקים אם הנתיב של Chromium (שהתקנת קודם) קיים במערכת
+        boolean isDocker = new File("/usr/bin/chromium").exists();
+
+        if (isDocker) {
+            // הגדרות ספציפיות ל-Docker (Jenkins)
+            options.setBinary("/usr/bin/chromium");
+            options.addArguments("--headless=new");      // חובה: הרצה ללא ממשק גרפי
+            options.addArguments("--no-sandbox");         // חובה: מאפשר הרצה כ-Root
+            options.addArguments("--disable-dev-shm-usage"); // מונע קריסות זיכרון בלינוקס
+            WebDriverManager.chromedriver().browserInDocker().setup();
+        } else {
+            // הגדרות להרצה ללא-Docker (ה-MacBook שלך)
+            // כאן לא צריך setBinary, סלניום ימצא את ה-Chrome הרגיל שלך
+            WebDriverManager.chromedriver().setup();
+        }
+
+        // הגדרות כלליות שעוזרות בשתי הסביבות
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--remote-allow-origins=*");
 
         WebDriver driver = new ChromeDriver(options);
-        // שמירה ב-ThreadLocal מיד עם היצירה
         DriverManager.setDriver(driver);
+
         return driver;
     }
 }
