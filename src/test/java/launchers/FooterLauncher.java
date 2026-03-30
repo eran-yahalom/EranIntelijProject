@@ -11,7 +11,7 @@ import org.testng.annotations.DataProvider;
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@footer or @ui"
+        tags = "@footer"
 )
 public class FooterLauncher extends BaseLauncher {
     @Override

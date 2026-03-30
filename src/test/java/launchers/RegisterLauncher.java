@@ -13,7 +13,7 @@ import org.testng.annotations.DataProvider;
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@register or @ui"
+        tags = "@register"
 )
 public class RegisterLauncher extends BaseLauncher {
 

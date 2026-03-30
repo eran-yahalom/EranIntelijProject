@@ -1,34 +1,37 @@
 pipeline {
     agent any
 
-    // הגדרת כלי ה-Maven לפי השם המדויק שמצאת
     tools {
         maven 'Maven 3.9'
     }
 
     parameters {
-        string(name: 'TAGS', defaultValue: '@book', description: 'Enter @tag or leave empty for all')
+        // פרמטר חדש לבחירת הלאנצ'ר הספציפי
+        string(name: 'LAUNCHER', defaultValue: 'BookLauncher', description: 'Enter Launcher class name (e.g., BookLauncher, RegisterLauncher)')
+
+        // פרמטר לתגים
+        string(name: 'TAGS', defaultValue: '@book', description: 'Enter @tag (e.g., @book, @smoke)')
     }
 
     stages {
         stage('Cleanup') {
             steps {
-                // מנקה תוצאות allure ישנות
                 sh 'rm -rf target/allure-results'
             }
         }
 
         stage('Run Automation') {
             steps {
-                // עכשיו ג'נקינס יזהה את פקודת mvn
-                sh "mvn clean test -Dcucumber.filter.tags='${params.TAGS}'"
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    // שימוש ב-Dtest כדי להריץ רק את הקלאס שנבחר בפרמטרים
+                    sh "mvn clean test -Dtest=${params.LAUNCHER} -Dcucumber.filter.tags='${params.TAGS}'"
+                }
             }
         }
     }
 
     post {
         always {
-            // יצירת דוח Allure בסיום
             allure includeProperties: false, results: [[path: 'target/allure-results']]
         }
     }

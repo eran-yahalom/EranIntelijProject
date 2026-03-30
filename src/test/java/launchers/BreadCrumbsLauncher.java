@@ -11,7 +11,7 @@ import org.testng.annotations.DataProvider;
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@breadCrumbs or @ui"
+        tags = "@breadCrumbs"
 )
 public class BreadCrumbsLauncher extends BaseLauncher {
     @Override

@@ -10,7 +10,8 @@ import org.testng.annotations.DataProvider;
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
-        }
+        },
+        tags = "@book"
 )
 
 public class BookLauncher extends BaseLauncher {
