@@ -2,21 +2,20 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'TAGS', defaultValue: '', description: 'Leave empty for ALL, or use @book')
+        string(name: 'TAGS', defaultValue: '', description: 'Leave empty for ALL, or enter @book')
     }
 
     stages {
-        stage('Cleanup & Checkout') {
+        stage('Cleanup') {
             steps {
-                // מנקה תוצאות קודמות כדי שהדו"ח יהיה אמין
+                // מנקה תוצאות ישנות
                 sh 'rm -rf target/allure-results'
-                git branch: 'main', url: 'https://github.com/EranIntelijProject/drmoShopProjectDuplicate.git'
             }
         }
 
         stage('Run Automation') {
             steps {
-                // הרצה עם ה-Tags מהפרמטרים
+                // מריץ את הטסטים על הקוד שג'נקינס כבר משך אוטומטית
                 sh "mvn clean test -Dcucumber.filter.tags='${params.TAGS}'"
             }
         }
@@ -24,7 +23,6 @@ pipeline {
 
     post {
         always {
-            // הנתיב הקריטי שמתאים ל-pom.xml שלך
             allure includeProperties: false, results: [[path: 'target/allure-results']]
         }
     }
