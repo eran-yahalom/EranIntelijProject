@@ -46,17 +46,29 @@ public class Hooks {
     @After
     public void tearDown(Scenario scenario) {
         try {
-            DBSetupService.close();
-
+            // 1. קודם כל מטפלים בתיעוד הכישלון (Screenshot) כל עוד הדרייבר חי
             if (scenario.isFailed() && driver != null) {
-                AllureUtils.attachScreenshot(driver, "Screenshot - " + scenario.getName());
-                AllureUtils.attachBrowserLogs(driver);
-                AllureUtils.attachPageSource(driver);
-                AllureUtils.attachCurrentUrl(driver);
+                try {
+                    AllureUtils.attachScreenshot(driver, "Failure Screenshot - " + scenario.getName());
+                    AllureUtils.attachBrowserLogs(driver);
+                    AllureUtils.attachPageSource(driver);
+                    AllureUtils.attachCurrentUrl(driver);
+                } catch (Exception e) {
+                    System.err.println("Failed to attach artifacts to Allure: " + e.getMessage());
+                }
             }
         } finally {
+            // 2. ניקוי נתונים - תמיד יתבצע גם אם הצילום נכשל
             ScenarioContext.clear();
 
+            // 3. סגירת ה-DB בנפרד (כדי שלא יפיל את ה-Driver Quit)
+            try {
+                DBSetupService.close();
+            } catch (Exception e) {
+                System.err.println("DB connection close failed: " + e.getMessage());
+            }
+
+            // 4. שחרור הדרייבר
             if (driver != null) {
                 driver.quit();
             }

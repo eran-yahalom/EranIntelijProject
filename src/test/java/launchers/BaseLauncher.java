@@ -19,10 +19,17 @@ public class BaseLauncher extends AbstractTestNGCucumberTests {
     public void beforeSuite() {
         log.info("--- Starting Test Suite Execution ---");
 
+        // יצירת תיקיית Screenshots אם לא קיימת
         File screenshotDir = new File("target/screenshots");
         if (!screenshotDir.exists()) {
-            screenshotDir.mkdirs();
+            if (screenshotDir.mkdirs()) {
+                log.info("Created directory: target/screenshots");
+            }
         }
+
+        // הגדרת מספר ה-Threads מה-POM (במידה ותרצה להחזיר מקביליות)
+        String threadCount = System.getProperty("dataproviderthreadcount", "1");
+        log.info("System Thread Count set to: {}", threadCount);
     }
 
     @Override
@@ -33,19 +40,22 @@ public class BaseLauncher extends AbstractTestNGCucumberTests {
             retryAnalyzer = RetryAnalyzer.class
     )
     public void runScenario(PickleWrapper pickle, FeatureWrapper cucumberFeature) {
-        log.info("Starting Scenario: {}", pickle.getPickle().getName());
+        // הוספת שם ה-Feature ללוג הופכת את הניתוח ב-Jenkins להרבה יותר קל
+        log.info(">>> Running Scenario: [{}] from Feature: [{}]",
+                pickle.getPickle().getName(),
+                cucumberFeature.toString());
 
         try {
             super.runScenario(pickle, cucumberFeature);
-            log.info("Finished Scenario: {} - SUCCESS", pickle.getPickle().getName());
+            log.info("<<< Finished Scenario: [{}] - SUCCESS", pickle.getPickle().getName());
         } catch (Throwable t) {
-            log.error("Scenario FAILED: {} | Error: {}", pickle.getPickle().getName(), t.getMessage());
+            log.error("!!! Scenario FAILED: [{}] | Error: {}", pickle.getPickle().getName(), t.getMessage());
             throw t;
         }
     }
 
     @Override
-    @DataProvider(parallel = false)
+    @DataProvider(parallel = false) // נשאר על false ליציבות ה-DB כרגע
     public Object[][] scenarios() {
         return super.scenarios();
     }
