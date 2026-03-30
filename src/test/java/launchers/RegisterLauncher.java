@@ -25,7 +25,7 @@ public class RegisterLauncher extends BaseLauncher {
     }
 
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

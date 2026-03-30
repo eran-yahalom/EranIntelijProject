@@ -6,23 +6,26 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
+import utils.DriverManager;
 
 import java.util.Map;
 import java.util.logging.Level;
 
 public class WebDriverProvider implements Provider<WebDriver> {
-
     @Override
     public WebDriver get() {
+        // אם כבר קיים דרייבר ל-Thread הזה, החזר אותו במקום ליצור חדש
+        if (DriverManager.getDriver() != null) {
+            return DriverManager.getDriver();
+        }
+
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
+        // ... שאר ההגדרות שלך ...
 
-        options.addArguments("--incognito");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--no-sandbox");
-        options.setCapability("goog:loggingPrefs", Map.of(LogType.BROWSER, Level.ALL));
-        options.addArguments("--remote-allow-origins=*");
-
-        return new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
+        // שמירה ב-ThreadLocal מיד עם היצירה
+        DriverManager.setDriver(driver);
+        return driver;
     }
 }

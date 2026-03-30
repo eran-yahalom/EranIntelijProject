@@ -2,7 +2,10 @@ package step_definitions;
 
 import api.client.PetStoreSwaggerAPI;
 import api.client.ReqresAPI;
-import api.pojo.*;
+import api.pojo.GetAllUsersDataPOJO;
+import api.pojo.LoginResponsePOJO;
+import api.pojo.SingleUserResponsePOJO;
+import api.pojo.UpdateUserResponsePOJO;
 import api.utils.APIUtils;
 import api.utils.ApiResponse;
 import com.google.inject.Inject;

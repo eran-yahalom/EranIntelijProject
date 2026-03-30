@@ -13,10 +13,9 @@ import org.testng.annotations.DataProvider;
         },
         tags = "@header or @ui"
 )
-
 public class HeaderLauncher extends BaseLauncher {
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

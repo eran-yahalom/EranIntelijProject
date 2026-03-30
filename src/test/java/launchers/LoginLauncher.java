@@ -16,7 +16,6 @@ import utils.RetryListener;
         },
         tags = "@logIn"
 )
-
 public class LoginLauncher extends BaseLauncher {
 
     @Override

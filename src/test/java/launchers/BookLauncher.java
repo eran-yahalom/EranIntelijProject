@@ -10,13 +10,12 @@ import org.testng.annotations.DataProvider;
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
-        },
-        tags = "@books or @ui"
+        }
 )
 
 public class BookLauncher extends BaseLauncher {
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

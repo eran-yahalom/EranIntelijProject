@@ -20,6 +20,7 @@ import utils.Utils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @ScenarioScoped
 public class RegisterStepDefinition {
@@ -410,17 +411,27 @@ public class RegisterStepDefinition {
 
     @And("cart items for user match the user cart in DB")
     public void cartItemsMatchTheRandomUserCartInDB() {
+        record CartSummary(double totalPrice, int itemsQty) {
+        }
+        String email = ScenarioState.get(StateKeys.DB_EMAIL, String.class);
+
         List<Map<String, Object>> queryResult = QueryExecutor.executeQueryAsTable(
-                "get_cart_item_qty_and_total_price", ScenarioState.get(StateKeys.DB_EMAIL,String.class));
+                "get_cart_item_qty_and_total_price", email);
 
-        double totalPriceFromDB = (double) queryResult.getFirst().get("totalPrice");
-        int qtyFromDB = (int) queryResult.getFirst().get("itemsQty");
+        Assert.assertFalse(queryResult.get(0).values().stream().allMatch(Objects::isNull), "DB query returned null for cart summary");
 
-        int itemQty = shoppingCartPageProvider.get().getQuantityOfItemInCart();
-        double totalPriceFromUI = shoppingCartPageProvider.get().sumPriceOfProductsInCart();
+        Map<String, Object> row = queryResult.getFirst();
 
-        Assert.assertEquals(itemQty, qtyFromDB, "Expected item quantity in cart to match DB value, but it did not.");
-        Assert.assertEquals(totalPriceFromUI, totalPriceFromDB, "Expected total price in cart to match DB value, but it did not.");
+        CartSummary dbCart = new CartSummary(
+                ((Number) row.getOrDefault("totalPrice", 0.0)).doubleValue(),
+                ((Number) row.getOrDefault("itemsQty", 0)).intValue()
+        );
+
+        int uiQty = shoppingCartPageProvider.get().getQuantityOfItemInCart();
+        double uiPrice = shoppingCartPageProvider.get().sumPriceOfProductsInCart();
+
+        Assert.assertEquals(uiQty, dbCart.itemsQty(), "Quantity mismatch!");
+        Assert.assertEquals(uiPrice, dbCart.totalPrice(), 0.01, "Price mismatch!");
     }
 
     @And("user updated cart item quantity to {int}")

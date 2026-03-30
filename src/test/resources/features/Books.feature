@@ -1,4 +1,4 @@
-@ui @book
+@ui @book @regression
 Feature: User can manage sorting, filtering and display on Books page
 
   Background:
@@ -6,6 +6,7 @@ Feature: User can manage sorting, filtering and display on Books page
     And the shopping cart is empty
     And the user navigates to the "BOOKS" page
 
+  @sort1
   Scenario Outline: User can sort books by different options
     When user clicks on sort by dropdown and selects "<sortByOption>"
     Then the books should be sorted by "<sortByOption>"
@@ -75,7 +76,7 @@ Feature: User can manage sorting, filtering and display on Books page
       | Price: Low to High | 25.00 - 50.00 |
       | Price: High to Low | Over 50.00    |
       | Name: Z to A       | Under 25.00   |
-
+#
   Scenario Outline: number and price of cart items match the cart items in DB after adding item to the cart
     When user counts the quantity of items in the cart
     And user adds "<itemNane>" to the cart

@@ -5,26 +5,19 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>AdvancedSelenium</groupId>
     <artifactId>drmoShopProjectDuplicate</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- JAVA 21 FIX -->
         <maven.compiler.release>21</maven.compiler.release>
-
         <cucumber.version>7.15.0</cucumber.version>
         <aspectj.version>1.9.21</aspectj.version>
-
-        <runParallel>true</runParallel>
-        <parallelMode>false</parallelMode>
-        <threadCount>1</threadCount>
-<!--        <maven.test.skip>true</maven.test.skip>-->
+        <allure.version>2.29.0</allure.version>
+        <threadCount>3</threadCount>
         <env>qa1</env>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <headless>false</headless>
     </properties>
 
     <dependencyManagement>
@@ -32,11 +25,10 @@
             <dependency>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-bom</artifactId>
-                <version>2.29.0</version>
+                <version>${allure.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-bom</artifactId>
@@ -44,53 +36,36 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <!--            <dependency>-->
-            <!--                <groupId>io.cucumber</groupId>-->
-            <!--                <artifactId>cucumber-picocontainer</artifactId>-->
-            <!--                <version>${cucumber.version}</version>-->
-            <!--            </dependency>-->
-
-            <dependency>
-                <groupId>io.cucumber</groupId>
-                <artifactId>junit-platform-engine</artifactId>
-                <version>${cucumber.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-
-        <!-- CUCUMBER -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
-            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-guice</artifactId>
         </dependency>
 
-        <!-- ALLURE -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-cucumber7-jvm</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
         </dependency>
 
-        <!-- TESTNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -98,41 +73,33 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SELENIUM -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.30.0</version>
         </dependency>
-
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>5.6.3</version>
         </dependency>
 
-        <!-- REST ASSURED -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.5.0</version>
         </dependency>
 
-        <!-- UTILITIES -->
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.3.0</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
         </dependency>
-
-        <!-- JSON (FIX for org.json.JSONObject) -->
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20240303</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.1</version>
         </dependency>
-
-        <!-- LOGGING (SLF4J + LOG4J2 bridge) -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
@@ -140,85 +107,62 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.23.1</version>
-        </dependency>
-
-        <!-- SQLLite -->
-        <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.45.3.0</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.16.0</version>
         </dependency>
-
         <dependency>
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
             <version>2.2.2</version>
         </dependency>
-
-        <!-- ASPECTJ -->
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
         </dependency>
 
-        <!-- LOMBOK (UPDATED FOR JAVA 21) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JACKSON -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
 
-        <!-- GUICE DI -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>7.0.0</version>
         </dependency>
-
-        <!-- CUCUMBER GUICE BINDING -->
         <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-guice</artifactId>
-            <version>${cucumber.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-
-            <!-- COMPILER (JAVA 21 + LOMBOK FIX) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
-
                 <configuration>
                     <release>21</release>
-
-                    <!-- 🟢 FIX FOR JAVA 21 + LOMBOK -->
                     <compilerArgs>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
                     </compilerArgs>
-
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -226,75 +170,39 @@
                             <version>1.18.38</version>
                         </path>
                     </annotationProcessorPaths>
-
-
                 </configuration>
             </plugin>
 
-            <!-- SUREFIRE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-
+                <version>3.2.5</version>
                 <configuration>
-
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testRunner.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                     <properties>
                         <property>
                             <name>dataproviderthreadcount</name>
                             <value>${threadCount}</value>
                         </property>
                     </properties>
-
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testRunner.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-
-                    <!-- 🟢 ADD THIS BLOCK -->
                     <systemPropertyVariables>
-                        <runParallel>${runParallel}</runParallel>
-
-                        <!-- FIX SQLITE GRAAL WARNING -->
+                        <env>${env}</env>
+                        <headless>${headless}</headless>
                         <org.sqlite.omit_loading_extension>true</org.sqlite.omit_loading_extension>
                     </systemPropertyVariables>
-
                 </configuration>
             </plugin>
 
-            <!-- ALLURE -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.12.0</version>
-
                 <configuration>
                     <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
-                    <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
                 </configuration>
-
-                <executions>
-                    <execution>
-                        <id>allure-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <env>${env}</env>
-                            <dataproviderthreadcount>4</dataproviderthreadcount>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
         </plugins>
     </build>
-
 </project>

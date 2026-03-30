@@ -17,7 +17,7 @@ import org.testng.annotations.DataProvider;
 
 public class SwaggerAPILauncher extends BaseLauncher {
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

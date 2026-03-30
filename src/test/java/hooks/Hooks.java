@@ -11,9 +11,6 @@ import org.openqa.selenium.WebDriver;
 import utils.AllureUtils;
 import utils.DriverManager;
 import utils.ScenarioContext;
-import utils.Utils;
-
-import java.time.Duration;
 
 public class Hooks {
 
@@ -24,20 +21,25 @@ public class Hooks {
         this.driver = driver;
     }
 
-    @Before
+    @Before(order = 0)
     public void setup() {
-        DBSetupService.init(EnvManager.get().getSchema(), EnvManager.get().getDbName(), null, null);
-        DriverManager.setDriver(driver);
 
-      //  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        DBSetupService.init(
+                EnvManager.get().getSchema(),
+                EnvManager.get().getDbName(),
+                null,
+                null
+        );
 
-        driver.get(EnvManager.get().getUrl());
+        if (driver != null) {
+            driver.manage().window().maximize();
+            driver.get(EnvManager.get().getUrl());
 
-        try {
-            driver.findElement(By.cssSelector("#details-button")).click();
-            driver.findElement(By.cssSelector("#proceed-link")).click();
-        } catch (Exception ignored) {
+            try {
+                driver.findElement(By.cssSelector("#details-button")).click();
+                driver.findElement(By.cssSelector("#proceed-link")).click();
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -54,10 +56,11 @@ public class Hooks {
             }
         } finally {
             ScenarioContext.clear();
+
             if (driver != null) {
                 driver.quit();
-                DriverManager.unload();
             }
+            DriverManager.unload();
         }
     }
 }

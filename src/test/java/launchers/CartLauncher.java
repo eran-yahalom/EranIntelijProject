@@ -13,7 +13,6 @@ import org.testng.annotations.DataProvider;
         },
         tags = "@cart"
 )
-
 public class CartLauncher extends BaseLauncher {
     @Override
     @DataProvider(parallel = false)

@@ -1,4 +1,4 @@
-@petStoreSwaggerAPI
+@petStoreSwaggerAPI @regression
 Feature: Pet Store Swagger API
 
   Scenario Outline: Create user
