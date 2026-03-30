@@ -17,27 +17,30 @@ public class WebDriverProvider implements Provider<WebDriver> {
 
         ChromeOptions options = new ChromeOptions();
 
-        // בדיקה: האם אנחנו רצים בתוך ה-Docker של ג'נקינס?
-        // אנחנו בודקים אם הנתיב של Chromium (שהתקנת קודם) קיים במערכת
+        // בדיקה אם אנחנו בתוך Docker
         boolean isDocker = new File("/usr/bin/chromium").exists();
 
         if (isDocker) {
-            // הגדרות ספציפיות ל-Docker (Jenkins)
+            // 1. הגדרת הנתיב לדרייבר שראינו הרגע בטרמינל (חובה ל-M3 ב-Docker)
+            System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+
+            // 2. הגדרת הנתיב לדפדפן
             options.setBinary("/usr/bin/chromium");
-            options.addArguments("--headless=new");      // חובה: הרצה ללא ממשק גרפי
-            options.addArguments("--no-sandbox");         // חובה: מאפשר הרצה כ-Root
-            options.addArguments("--disable-dev-shm-usage"); // מונע קריסות זיכרון בלינוקס
-            WebDriverManager.chromedriver().browserInDocker().setup();
+
+            // 3. הגדרות הרצה לקונטיינר
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu"); // מונע קריסות גרפיות ב-Docker
         } else {
-            // הגדרות להרצה ללא-Docker (ה-MacBook שלך)
-            // כאן לא צריך setBinary, סלניום ימצא את ה-Chrome הרגיל שלך
+            // הרצה מקומית על ה-MacBook M3 שלך
             WebDriverManager.chromedriver().setup();
         }
 
-        // הגדרות כלליות שעוזרות בשתי הסביבות
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-allow-origins=*");
 
+        // יצירת הדרייבר
         WebDriver driver = new ChromeDriver(options);
         DriverManager.setDriver(driver);
 
