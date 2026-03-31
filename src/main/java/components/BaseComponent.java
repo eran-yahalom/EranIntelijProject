@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 @Log4j2
@@ -161,6 +162,22 @@ public abstract class BaseComponent {
         } catch (StaleElementReferenceException e) {
             log.error("Stale element reference: {} | Error: {}", element.getText(), e.getMessage());
             return false;
+        }
+    }
+
+    public boolean clickOnFooterLinkByIndex(By footerLinksLocator,int index) {
+        try {
+            // findElements מוודא שסלניום סורק את הדף מחדש באותו רגע
+            List<WebElement> freshLinks = driver.findElements(footerLinksLocator);
+
+            if (index < freshLinks.size()) {
+                return click(freshLinks.get(index));
+            }
+            System.out.println("Index " + index + " not found in footer links.");
+            return false;
+        } catch (StaleElementReferenceException e) {
+            // הגנה אחרונה: אם בכל זאת קרה Stale, ננסה פעם אחת אחרונה למצוא מחדש
+            return click(driver.findElements(footerLinksLocator).get(index));
         }
     }
 }

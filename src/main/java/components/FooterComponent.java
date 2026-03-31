@@ -2,6 +2,8 @@ package components;
 
 import com.google.inject.Inject;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,6 +44,10 @@ public class FooterComponent extends BaseComponent {
     @FindBy(css = ".column.information ul li a")
     private List<WebElement> informationLinks;
 
+    private By footerLinksLocator = By.cssSelector(".column.my-account ul li a");
+    private By customerServiceFooterLinksLocator = By.cssSelector(".column.customer-service ul li a");
+    private By informationLinksLocator = By.cssSelector(".column.information ul li a");
+
     @Inject
     public FooterComponent(WebDriver driver) {
         super(driver);
@@ -69,71 +75,73 @@ public class FooterComponent extends BaseComponent {
     }
 
     public boolean clickOnMyAccountAccountLink() {
-        return click(myAccountFooterLinks.get(0));
+
+        return clickOnFooterLinkByIndex(footerLinksLocator, 0);
     }
 
     public boolean clickOnMyAccountOrdersLink() {
-        return click(myAccountFooterLinks.get(1));
+        return clickOnFooterLinkByIndex(footerLinksLocator, 1);
     }
 
     public boolean clickOnMyAccountAddressesLink() {
-        return click(myAccountFooterLinks.get(2));
+        return clickOnFooterLinkByIndex(footerLinksLocator, 2);
     }
 
     public boolean clickOnMyAccountShoppingCartLink() {
-        return click(myAccountFooterLinks.get(3));
+        return clickOnFooterLinkByIndex(footerLinksLocator, 3);
     }
 
     public boolean clickOnMyAccountWishlistLink() {
-        return click(myAccountFooterLinks.get(4));
+        return clickOnFooterLinkByIndex(footerLinksLocator, 4);
     }
 
     public boolean clickOnCustomerServiceSearchLink() {
-        return click(customerServiceFooterLinks.get(0));
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 0);
     }
 
     public boolean clickOnCustomerServiceNewsLink() {
-        return click(customerServiceFooterLinks.get(1));
+
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 1);
     }
 
     public boolean clickOnCustomerServiceBlogLink() {
-        return click(customerServiceFooterLinks.get(2));
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 2);
     }
 
     public boolean clickOnCustomerServiceRecentlyViewedProductsLink() {
-        return click(customerServiceFooterLinks.get(3));
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 3);
     }
 
     public boolean clickOnCustomerServiceCompareProductsListLink() {
-        return click(customerServiceFooterLinks.get(4));
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 4);
     }
 
     public boolean clickOnCustomerServiceNewProductsListLink() {
-        return click(customerServiceFooterLinks.get(5));
+        return clickOnFooterLinkByIndex(customerServiceFooterLinksLocator, 5);
     }
 
     public boolean clickOnInformationSiteLink() {
-        return click(informationLinks.get(0));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 0);
     }
 
     public boolean clickOnInformationShippingAndReturnsLink() {
-        return click(informationLinks.get(1));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 1);
     }
 
     public boolean clickOnInformationSPrivacyNoticeLink() {
-        return click(informationLinks.get(2));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 2);
     }
 
     public boolean clickOnInformationConditionsOfUseLink() {
-        return click(informationLinks.get(3));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 3);
     }
 
     public boolean clickOnInformationAboutUsLink() {
-        return click(informationLinks.get(4));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 4);
     }
 
     public boolean clickOnInformationContactUsLink() {
-        return click(informationLinks.get(5));
+        return clickOnFooterLinkByIndex(informationLinksLocator, 05);
     }
 
     public boolean clickAndMoveToSelectedSocialMedia(String socialMedia) {
