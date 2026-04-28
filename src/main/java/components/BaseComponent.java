@@ -167,7 +167,6 @@ public abstract class BaseComponent {
 
     public boolean clickOnFooterLinkByIndex(By footerLinksLocator,int index) {
         try {
-            // findElements מוודא שסלניום סורק את הדף מחדש באותו רגע
             List<WebElement> freshLinks = driver.findElements(footerLinksLocator);
 
             if (index < freshLinks.size()) {
@@ -176,7 +175,6 @@ public abstract class BaseComponent {
             System.out.println("Index " + index + " not found in footer links.");
             return false;
         } catch (StaleElementReferenceException e) {
-            // הגנה אחרונה: אם בכל זאת קרה Stale, ננסה פעם אחת אחרונה למצוא מחדש
             return click(driver.findElements(footerLinksLocator).get(index));
         }
     }
