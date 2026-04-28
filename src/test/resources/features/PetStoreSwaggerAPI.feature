@@ -24,13 +24,13 @@ Feature: Pet Store Swagger API
     When API deletes user with user name
     Then API delete user response should be successful with status code "200"
 
-    Scenario Outline: Create user list
+  Scenario Outline: Create user list
     When API creates a list of random users
     Then API CREATE LIST response should be successful with status code "200" and type "unknown"
 
-      Examples:
-        | run |
-        | 1   |
-        | 2   |
-        | 3   |
+    Examples:
+      | run |
+      | 1   |
+      | 2   |
+      | 3   |
 

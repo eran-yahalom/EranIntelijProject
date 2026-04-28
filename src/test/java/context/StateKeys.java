@@ -1,13 +1,8 @@
 package context;
 
-/**
- * Central place for ALL ScenarioState keys
- * Used across all StepDefinition classes
- */
 public final class StateKeys {
 
     private StateKeys() {
-        // prevent instantiation
     }
 
     // =========================
@@ -43,5 +38,5 @@ public final class StateKeys {
     // =========================
     public static final String DB_USER_NAME = "dbUserName";
     public static final String DB_EMAIL = "dbEmail";
-    public static final String DB_PASSWORD="dbPassword";
+    public static final String DB_PASSWORD = "dbPassword";
 }

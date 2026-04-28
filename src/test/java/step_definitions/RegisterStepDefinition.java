@@ -35,7 +35,6 @@ public class RegisterStepDefinition {
     private final Provider<CellPhonesPage> cellPhonesPageProvider;
     private final Provider<RegistrationService> registrationServiceProvider;
 
-    private String email = GeneratorUtils.generateEmail();
     private String password = GeneratorUtils.generatePassword();
 
     @Inject

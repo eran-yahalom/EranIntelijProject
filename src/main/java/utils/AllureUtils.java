@@ -3,17 +3,18 @@ package utils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.*;
-import org.openqa.selenium.logging.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 
 import java.io.ByteArrayInputStream;
 
 @Log4j2
 public class AllureUtils {
 
-    // ==============================
-    // Screenshot
-    // ==============================
     public static void attachScreenshot(WebDriver driver, String name) {
 
         if (driver == null) return;
@@ -34,9 +35,6 @@ public class AllureUtils {
         }
     }
 
-    // ==============================
-    // Browser Console Logs
-    // ==============================
     public static void attachBrowserLogs(WebDriver driver) {
 
         if (driver == null) return;
@@ -60,9 +58,6 @@ public class AllureUtils {
         }
     }
 
-    // ==============================
-    // Page Source
-    // ==============================
     public static void attachPageSource(WebDriver driver) {
 
         if (driver == null) return;
@@ -74,9 +69,6 @@ public class AllureUtils {
         }
     }
 
-    // ==============================
-    // Current URL
-    // ==============================
     public static void attachCurrentUrl(WebDriver driver) {
 
         if (driver == null) return;
@@ -88,16 +80,10 @@ public class AllureUtils {
         }
     }
 
-    // ==============================
-    // Custom Text Attachment
-    // ==============================
     public static void attachText(String name, String content) {
         Allure.addAttachment(name, content);
     }
 
-    // ==============================
-    // Environment Info
-    // ==============================
     public static void attachEnvironmentInfo() {
 
         String info =
@@ -108,9 +94,6 @@ public class AllureUtils {
         Allure.addAttachment("Environment Info", info);
     }
 
-    // ==============================
-    //  Step Helper (Optional)
-    // ==============================
     @Step("{stepName}")
     public static void step(String stepName) {
     }

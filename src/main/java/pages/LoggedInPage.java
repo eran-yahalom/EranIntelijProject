@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class LoggedInPage extends BasePage {
 
@@ -14,7 +13,6 @@ public class LoggedInPage extends BasePage {
     @Inject
     public LoggedInPage(WebDriver driver) {
         super(driver);
-
     }
 
     public boolean isMyAccountLinkDisplayed() {

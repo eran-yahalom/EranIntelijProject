@@ -1,7 +1,8 @@
 package pages;
 
 import com.google.inject.Inject;
-import components.*;
+import components.CategoryItemsComponent;
+import components.ItemComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

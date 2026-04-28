@@ -165,7 +165,7 @@ public abstract class BaseComponent {
         }
     }
 
-    public boolean clickOnFooterLinkByIndex(By footerLinksLocator,int index) {
+    public boolean clickOnFooterLinkByIndex(By footerLinksLocator, int index) {
         try {
             List<WebElement> freshLinks = driver.findElements(footerLinksLocator);
 

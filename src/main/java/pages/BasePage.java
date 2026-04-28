@@ -4,7 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Utils;
 
 import java.time.Duration;
@@ -23,21 +25,14 @@ public abstract class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
 
-        // Waits
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.longWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         this.socialNetworkWait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
-        // JS
         this.js = (JavascriptExecutor) driver;
 
-        // PageFactory
         PageFactory.initElements(driver, this);
     }
-
-    // ==============================
-    // Text actions
-    // ==============================
 
     public String getPageHeader() {
         return driver.findElement(By.cssSelector(".page-title h1"))
@@ -89,9 +84,6 @@ public abstract class BasePage {
         return null;
     }
 
-    // ==============================
-    // Click actions
-    // ==============================
     public boolean click(WebElement element) {
         try {
             longWait.until(ExpectedConditions.elementToBeClickable(element));
@@ -137,9 +129,7 @@ public abstract class BasePage {
 
         return false;
     }
-    // ==============================
-    // Wait helpers
-    // ==============================
+
     public void waitForElementToBeVisible(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
@@ -147,9 +137,7 @@ public abstract class BasePage {
     public void waitForElementToBeClickable(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
-    // ==============================
-    // Display check
-    // ==============================
+
     public boolean isDisplayed(WebElement element) {
         try {
             return element != null && element.isDisplayed();
@@ -157,9 +145,7 @@ public abstract class BasePage {
             return false;
         }
     }
-    // ==============================
-    // Hover
-    // ==============================
+
     public void hover(WebElement element) {
         Actions actions = new Actions(driver);
         actions.moveToElement(element).perform();
@@ -174,18 +160,14 @@ public abstract class BasePage {
 
         option.click();
     }
-    // ==============================
-    // Scroll
-    // ==============================
+
     public void scrollToElement(WebElement element) {
         js.executeScript(
                 "arguments[0].scrollIntoView({block: 'center'});",
                 element
         );
     }
-    // ==============================
-    // Highlight
-    // ==============================
+
     protected void highlightElement(WebElement element, String color) {
 
         String originalStyle = element.getAttribute("style");
@@ -207,9 +189,7 @@ public abstract class BasePage {
                 element, originalStyle
         );
     }
-    // ==============================
-    // Windows handling
-    // ==============================
+
     public void moveToNewWindow() {
 
         mainWindow = driver.getWindowHandle();
@@ -227,9 +207,7 @@ public abstract class BasePage {
         driver.close();
         driver.switchTo().window(mainWindow);
     }
-    // ==============================
-    // Dropdown
-    // ==============================
+
     public boolean selectOptionFromDropdownByValue(WebElement element, String value) {
         try {
             longWait.until(ExpectedConditions.elementToBeClickable(element));
@@ -265,9 +243,7 @@ public abstract class BasePage {
             return false;
         }
     }
-    // ==============================
-    // Popup handling
-    // ==============================
+
     public void closeSystemPopupIfPresent() {
         try {
             WebDriverWait shortWait =
@@ -287,9 +263,6 @@ public abstract class BasePage {
         }
     }
 
-    // ==============================
-    // Toast message
-    // ==============================
     public String getToastMessage(WebElement element) {
         try {
             return getText(element);
@@ -299,9 +272,6 @@ public abstract class BasePage {
         }
     }
 
-    // ==============================
-    // Header validation
-    // ==============================
     public boolean confirmPageHeader(
             WebElement element,
             String textHeaderKey) {
@@ -313,14 +283,10 @@ public abstract class BasePage {
                 .equalsIgnoreCase(expected);
     }
 
-    // ==============================
-    // Sleep helper (avoid if possible)
-    // ==============================
     public void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-//            log.error("Sleep interrupted", e);
             Thread.currentThread().interrupt();
         }
     }

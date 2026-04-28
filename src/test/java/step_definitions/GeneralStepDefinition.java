@@ -3,14 +3,12 @@ package step_definitions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import components.BreadcrumbComponent;
-import components.FooterComponent;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import pages.*;
-import utils.DriverManager;
+import pages.CartItemPage;
+import pages.WelcomePage;
 
 @ScenarioScoped
 public class GeneralStepDefinition {

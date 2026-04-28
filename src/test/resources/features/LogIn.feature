@@ -2,7 +2,7 @@
 Feature: Log in and logout actions
 
   Background:
-   Given user registers 2 new users in the database
+    Given user registers 2 new users in the database
     And user clicks on log in link
 
   Scenario: Successful login with valid credentials

@@ -1,7 +1,6 @@
 package pages;
 
 import com.google.inject.Inject;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

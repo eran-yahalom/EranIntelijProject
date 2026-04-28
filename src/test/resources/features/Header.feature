@@ -11,7 +11,7 @@ Feature: header activities (login,logout,search etc...)
     And user clicks on the search button
     Then error message "searchResultNoItemsFoundMessage" should be displayed
 
-    Scenario: Search finds results
+  Scenario: Search finds results
     When user enters "book" in the search field
     And user clicks on the search button
     Then search results should be displayed

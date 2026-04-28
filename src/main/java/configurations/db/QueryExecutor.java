@@ -43,9 +43,6 @@ public class QueryExecutor {
         }
     }
 
-    // =========================
-    // INSERT / UPDATE / DELETE
-    // =========================
     public static int executeUpdate(String queryKey, Object... params) {
 
         String query = QueryProvider.getQuery(queryKey);
@@ -63,9 +60,6 @@ public class QueryExecutor {
         }
     }
 
-    // =========================
-    // INSERT + RETURN GENERATED KEY (optional)
-    // =========================
     public static Object executeInsertAndReturnKey(String queryKey, Object... params) {
 
         String query = QueryProvider.getQuery(queryKey);
@@ -90,9 +84,6 @@ public class QueryExecutor {
         }
     }
 
-    // =========================
-    // COMMON PARAM BINDER
-    // =========================
     private static void bindParams(PreparedStatement stmt, Object... params) throws SQLException {
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);

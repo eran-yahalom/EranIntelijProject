@@ -27,7 +27,6 @@ import java.util.Map;
 @ScenarioScoped
 public class APIStepDefinition {
 
-
     private final Provider<ReqresAPI> reqresAPIProvider;
     private final Provider<PetStoreSwaggerAPI> petStoreSwaggerAPIProvider;
 
@@ -37,7 +36,6 @@ public class APIStepDefinition {
         this.reqresAPIProvider = reqresAPIProvider;
         this.petStoreSwaggerAPIProvider = petStoreSwaggerAPIProvider;
     }
-
 
     @When("API request all users details")
     public void APIRequestAllUsersDetails() {
@@ -95,12 +93,10 @@ public class APIStepDefinition {
         PetStoreSwaggerAPI petStoreSwaggerAPI = petStoreSwaggerAPIProvider.get();
         Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPIDeleteUser(APIUtils.perStoreSwaggerHeaders(),
                 userNameFromDB);
-//        ScenarioContext.save("statusCode", swaggerResult.get("statusCode"));
         ScenarioState.save(StateKeys.SWAGGER_DELETE_USER, swaggerResult);
 
         Assert.assertNotNull(swaggerResult);
     }
-
 
     @Then("API response should be successful with status code {string} and type {string}")
     public void APIResponseShouldBeSuccessfulWithStatusCodeAndType(String expectedStatusCode, String expectedType) {
@@ -234,7 +230,6 @@ public class APIStepDefinition {
 
         ScenarioContext.save(StateKeys.DB_USER_NAME, userName);
         ScenarioContext.save(StateKeys.DB_EMAIL, email);
-
 
         Map<String, String> swaggerResult = petStoreSwaggerAPI.swaggerAPIGetUserDetails(APIUtils.perStoreSwaggerHeaders(), userName);
         ScenarioState.save(StateKeys.SWAGGER_GET_USER, swaggerResult);

@@ -18,10 +18,6 @@ public class HeaderStepDefinition {
     private final Provider<CategoryItemsComponent> categoryItemsComponentProvider;
     private final Provider<SearchPage> searchPageProvider;
 
-    //    HeaderComponent headerComponent;
-    // CategoryItemsComponent categoryItemsComponent;
-    //  SearchPage searchPage;
-
     @Inject
     public HeaderStepDefinition(Provider<HeaderComponent> headerComponentProvider,
                                 Provider<CategoryItemsComponent> categoryItemsComponentProvider,
@@ -30,13 +26,6 @@ public class HeaderStepDefinition {
         this.categoryItemsComponentProvider = categoryItemsComponentProvider;
         this.searchPageProvider = searchPageProvider;
     }
-
-//    public HeaderStepDefinition() {
-//        WebDriver driver = DriverManager.getDriver();
-//        this.headerComponent = new HeaderComponent(driver);
-//        this.categoryItemsComponent = new CategoryItemsComponent(driver);
-//        this.searchPage = new SearchPage(driver);
-//    }
 
     @When("user clicks on the search button")
     public void userClicksOnTheSearchButton() {

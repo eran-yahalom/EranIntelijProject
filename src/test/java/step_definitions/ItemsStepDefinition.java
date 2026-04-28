@@ -4,18 +4,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import components.CategoryItemsComponent;
 import io.cucumber.guice.ScenarioScoped;
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.testng.Assert;
-import pages.*;
-import utils.DriverManager;
-import utils.GeneratorUtils;
 
 @ScenarioScoped
 public class ItemsStepDefinition {
-
-    private String email = GeneratorUtils.generateEmail();
-    private String password = GeneratorUtils.generatePassword();
 
     private final Provider<CategoryItemsComponent> categoryItemsComponentProvider;
 
@@ -23,12 +18,6 @@ public class ItemsStepDefinition {
     public ItemsStepDefinition(Provider<CategoryItemsComponent> categoryItemsComponentProvider) {
         this.categoryItemsComponentProvider = categoryItemsComponentProvider;
     }
-
-
-//    public ItemsStepDefinition() {
-//        WebDriver driver = DriverManager.getDriver();
-//        this.categoryItemsComponent = new CategoryItemsComponent(driver);
-//    }
 
     @When("user clicks on sort by dropdown and selects {string}")
     public void userClicksOnSortByDropdownAndSelects(String sortOption) {
