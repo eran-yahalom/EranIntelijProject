@@ -3,7 +3,7 @@
 
 <suite name="e commerce Test Suite"
        parallel="methods"
-       thread-count="1"
+       thread-count="4"
        data-provider-thread-count="10">
     <listeners>
         <listener class-name="listeners.TestNGListener"/>
