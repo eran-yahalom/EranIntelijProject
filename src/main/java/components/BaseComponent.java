@@ -11,6 +11,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Thread.sleep;
+
 @Log4j2
 public abstract class BaseComponent {
 
@@ -170,12 +172,44 @@ public abstract class BaseComponent {
             List<WebElement> freshLinks = driver.findElements(footerLinksLocator);
 
             if (index < freshLinks.size()) {
-                return click(freshLinks.get(index));
+                return clickOnStaleElement(freshLinks.get(index));
             }
             System.out.println("Index " + index + " not found in footer links.");
             return false;
         } catch (StaleElementReferenceException e) {
-            return click(driver.findElements(footerLinksLocator).get(index));
+            return clickOnStaleElement(driver.findElements(footerLinksLocator).get(index));
+        }
+    }
+
+    protected boolean clickOnStaleElement(WebElement element) {
+        int maxRetries = 3;
+
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                click(element);
+                return true;
+            } catch (StaleElementReferenceException e) {
+                log.warn("Attempt {}/{} failed due to StaleElementReferenceException. Retrying...", attempt, maxRetries);
+                if (attempt == maxRetries) {
+                    log.error("Reached maximum retry attempts for element.");
+                    return false;
+                }
+                waitForSmallInterval();
+            } catch (Exception e) {
+                log.error("Uncaught exception while clicking element: {}", e.getMessage());
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    protected void waitForSmallInterval() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warn("Interrupted during small interval wait", e);
         }
     }
 }

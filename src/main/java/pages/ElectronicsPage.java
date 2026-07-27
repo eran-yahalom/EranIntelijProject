@@ -25,12 +25,21 @@ public class ElectronicsPage extends BasePage {
     }
 
     public boolean selectItem(String itemName) {
-        wait.until(ExpectedConditions.elementToBeClickable(productTitles.get(productTitles.size() - 1)));
-        for (WebElement title : productTitles) {
-            if (getText(title).contains(itemName)) {
-                return click(title);
+        try {
+            // 1. ממתינים פעם אחת בלבד שכל הרשימה תופיע בדף (מונע קריסות של רשימה ריקה)
+            wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
+
+            // 2. רצים על הרשימה בצורה סופר מהירה
+            for (WebElement title : productTitles) {
+                // משתמשים ב-getText() המקורי של סלניום כי כבר הבטחנו שהאלמנטים גלויים לעין
+                if (title.getText().contains(itemName)) {
+                    return click(title); // משתמש במתודת ה-click הבטוחה שלך ומחזיר true
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Failed to select product: " + itemName + ". Exception: " + e.getMessage());
         }
-        return false;
+
+        return false; // אם המוצר לא נמצא או שהייתה שגיאה, מחזירים false בצורה חלקה
     }
 }

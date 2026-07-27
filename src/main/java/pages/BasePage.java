@@ -265,10 +265,13 @@ public abstract class BasePage {
 
     public String getToastMessage(WebElement element) {
         try {
-            return getText(element);
+            WebElement toastMessageElement = wait.until(
+                    ExpectedConditions.visibilityOf(element)
+            );
+            return getText(toastMessageElement);
         } catch (Exception e) {
             log.info("Toast message not found");
-            return null;
+            return "";
         }
     }
 
