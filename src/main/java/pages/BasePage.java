@@ -305,4 +305,13 @@ public abstract class BasePage {
     public void clickBreadcrumbStep(String stepName) {
         driver.findElement(By.linkText(stepName)).click();
     }
+
+    public void goBackToPreviousPage() {
+        driver.navigate().back();
+    }
+
+    public String getPageTitle() {
+       // return driver.getTitle();
+        return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
+    }
 }

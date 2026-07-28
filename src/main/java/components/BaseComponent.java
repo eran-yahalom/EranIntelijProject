@@ -18,11 +18,13 @@ public abstract class BaseComponent {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected WebDriverWait shortWait;
     protected String mainWindow;
 
     public BaseComponent(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
     }
 
     public String getPageHeader() {
@@ -211,5 +213,35 @@ public abstract class BaseComponent {
             Thread.currentThread().interrupt();
             log.warn("Interrupted during small interval wait", e);
         }
+    }
+    public String getPageTitle() {
+        // return driver.getTitle();
+        return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
+    }
+
+    public boolean clickOnSelectedNameTag(List<WebElement> elements,String tagName) {
+        int attempts = 0;
+        while (attempts < 2) {
+            try {
+                wait.until(ExpectedConditions.visibilityOfAllElements(elements));
+
+                for (WebElement element : elements) {
+                    if (element.getText().trim().equals(tagName)) {
+                        return click(element);
+                    }
+                }
+
+                log.warn("Tag '{}' was not found in popularTagsList", tagName);
+                return false;
+
+            } catch (StaleElementReferenceException e) {
+                attempts++;
+                log.warn("StaleElement encountered while scanning tags. Retrying attempt {}/2...", attempts);
+            } catch (Exception e) {
+                log.error("Failed to click on tag: {}. Exception: {}", tagName, e.getMessage());
+                return false;
+            }
+        }
+        return false;
     }
 }

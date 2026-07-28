@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import utils.Utils;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class CategoryItemsComponent extends BaseComponent {
 
     private WebDriver driver;
     private WebElement root;
+
+    @FindBy(css = "[class='page-title'] h1")
+    private WebElement pageTitle;
 
     @FindBy(css = "#products-orderby")
     private WebElement sortByDropdown;
@@ -72,6 +76,9 @@ public class CategoryItemsComponent extends BaseComponent {
 
     @FindBy(css = ".product-item")
     private List<WebElement> items;
+
+    @FindBy(css = "[class='product-tags-list'] li a")
+    private List<WebElement> productTagsList;
 
     @Inject
     public CategoryItemsComponent(WebDriver driver) {
@@ -286,5 +293,24 @@ public class CategoryItemsComponent extends BaseComponent {
 
     public List<WebElement> getListOfWebElementTitles() {
         return productTitle;
+    }
+
+    public String getPageTitle() {
+        wait.until(ExpectedConditions.visibilityOf(pageTitle));
+        return pageTitle.getText();
+    }
+
+    public int getPopularTagsCount() {
+        try {
+            wait.until(ExpectedConditions.visibilityOfAllElements(productTagsList));
+            return productTagsList.size();
+        } catch (Exception e) {
+            log.error("Failed to get popular tags count. Exception: {}", e.getMessage());
+            return 0;
+        }
+    }
+
+    public boolean clickOnTagName(String tagName) {
+        return clickOnSelectedNameTag(productTagsList, tagName);
     }
 }

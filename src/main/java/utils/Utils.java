@@ -2,6 +2,7 @@ package utils;
 
 
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
