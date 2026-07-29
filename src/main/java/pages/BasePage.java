@@ -21,6 +21,7 @@ public abstract class BasePage {
     protected WebDriverWait socialNetworkWait;
     protected JavascriptExecutor js;
     protected static String mainWindow;
+    protected By backButtonLocator = By.cssSelector("#payment-method-buttons-container [class='back-link'] a");
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -45,9 +46,10 @@ public abstract class BasePage {
             wait.until(ExpectedConditions.visibilityOf(element));
             element.clear();
             element.sendKeys(text);
+            log.info("Successfully filled text '{}'", text);
             return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("Failed to fill text '{}'", text);
             return false;
         }
     }
@@ -311,7 +313,18 @@ public abstract class BasePage {
     }
 
     public String getPageTitle() {
-       // return driver.getTitle();
+        // return driver.getTitle();
         return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
+    }
+
+    public boolean clickOnCheckOutBackButton() {
+        try {
+            WebElement backButton = driver.findElement(backButtonLocator);
+            backButton.click();
+            return true;
+        } catch (NoSuchElementException e) {
+            log.error("Back button not found: " + e.getMessage());
+            return false;
+        }
     }
 }
