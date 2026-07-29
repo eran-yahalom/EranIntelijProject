@@ -1,5 +1,5 @@
-@popularTags
-Feature: Popular Tags
+@LeftPane
+Feature: Left pane tests
 
   Background:
     Given random user is logged in successfully
@@ -20,12 +20,12 @@ Feature: Popular Tags
     Then popular tags block should be visible
 
   Scenario: Check that popular tags block is not visible on the product page
-     When user clicks on popular tags "apparel" tag
+    When user clicks on popular tags "apparel" tag
     Then user should see the correct page for "apparel" tag
     Then popular tags block should not be visible
 
   Scenario: :Check that we can see the popular tags block after clicking on the demo web shop logo
-     When user clicks on popular tags "apparel" tag
+    When user clicks on popular tags "apparel" tag
     Then user should see the correct page for "apparel" tag
     And user clicks on the demo web shop logo link
     Then popular tags block should be visible
@@ -45,3 +45,17 @@ Feature: Popular Tags
     And user clicks on popular tags "apparel" tag
     Then user should see the correct page for "apparel" tag
     Then popular tags block should not be visible
+
+  Scenario Outline: Click on the categories links and see correct page will open
+    When user clicks on categories "<categoryName>" link and "<subCategoryName>" sub-category link
+    Then user should see the correct page for "<pageHeaderText>" tag
+    Examples:
+      | categoryName      | subCategoryName | pageHeaderText |
+      | Books             |                 | Books          |
+      | Electronics       | Camera, photo   | Camera, photo  |
+      | Electronics       | Cell phones     | Cell phones    |
+      | Computers         | Desktops        | Desktops       |
+      | Computers         | Notebooks       | Notebooks      |
+      | Computers         | Accessories     | Accessories    |
+      | Digital downloads |                 | downloads      |
+

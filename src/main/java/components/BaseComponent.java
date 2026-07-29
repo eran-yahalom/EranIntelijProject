@@ -214,12 +214,13 @@ public abstract class BaseComponent {
             log.warn("Interrupted during small interval wait", e);
         }
     }
+
     public String getPageTitle() {
         // return driver.getTitle();
         return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
     }
 
-    public boolean clickOnSelectedNameTag(List<WebElement> elements,String tagName) {
+    public boolean clickOnSelectedNameTag(List<WebElement> elements, String tagName) {
         int attempts = 0;
         while (attempts < 2) {
             try {
@@ -244,4 +245,61 @@ public abstract class BaseComponent {
         }
         return false;
     }
-}
+
+        public boolean clickOnCategoryNameLink(List<WebElement> mainCategoryElement,List<WebElement> subCategoryElement,String mainCategoryName, String subCategoryName) {
+            int attempts = 0;
+            while (attempts < 2) {
+                try {
+                    // 1. מחכים לרשימת הקטגוריות הראשיות ומוצאים את המבוקשת
+                    List<WebElement> mainCategories = wait.until(
+                            ExpectedConditions.visibilityOfAllElements(mainCategoryElement)
+                    );
+
+                    WebElement targetMainCategory = null;
+                    for (WebElement category : mainCategories) {
+                        if (category.getText().trim().equalsIgnoreCase(mainCategoryName)) {
+                            targetMainCategory = category;
+                            break;
+                        }
+                    }
+
+                    if (targetMainCategory == null) {
+                        log.warn("Main category '{}' was not found", mainCategoryName);
+                        return false;
+                    }
+
+                    // לחיצה על הקטגוריה הראשית
+                    click(targetMainCategory);
+
+                    // 2. תרחיש 1: אם לא הוגדרה תת-קטגוריה -> סיימנו בהצלחה!
+                    if (subCategoryName == null || subCategoryName.trim().isEmpty()) {
+                        return true;
+                    }
+
+                    // 3. תרחיש 2: מחכים שהתת-קטגוריות מתוך ה-sublist יופיעו ב-DOM ובלוחצים עליה
+                    List<WebElement> subCategories = wait.until(
+                            ExpectedConditions.visibilityOfAllElements(subCategoryElement)
+                    );
+
+                    for (WebElement subCategory : subCategories) {
+                        if (subCategory.getText().trim().equalsIgnoreCase(subCategoryName)) {
+                            return click(subCategory);
+                        }
+                    }
+
+                    log.warn("Sub-category '{}' was not found under '{}'", subCategoryName, mainCategoryName);
+                    return false;
+
+                } catch (StaleElementReferenceException e) {
+                    attempts++;
+                    log.warn("StaleElement encountered while clicking categories. Attempt {}/2...", attempts);
+                } catch (Exception e) {
+                    log.error("Failed to click category: {} -> {}. Exception: {}",
+                            mainCategoryName, subCategoryName, e.getMessage());
+                    return false;
+                }
+            }
+            return false;
+        }
+    }
+

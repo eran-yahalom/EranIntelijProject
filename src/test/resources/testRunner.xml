@@ -22,7 +22,7 @@
             <class name="launchers.CartLauncher"/>
             <class name="launchers.FooterLauncher"/>
             <class name="launchers.BreadCrumbsLauncher"/>
-            <class name="launchers.PopularTagsLauncher"/>
+            <class name="launchers.LeftPaneLauncher"/>
         </classes>
     </test>
 </suite>

@@ -14,9 +14,9 @@ import utils.RetryListener;
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/cucumber.json"
         },
-        tags = "@popularTags"
+        tags = "@LeftPane"
 )
-public class PopularTagsLauncher extends BaseLauncher {
+public class LeftPaneLauncher extends BaseLauncher {
 
     // Only override if you explicitly want to toggle parallel execution per launcher
     @Override

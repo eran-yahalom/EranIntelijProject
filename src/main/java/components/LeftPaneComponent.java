@@ -2,7 +2,6 @@ package components;
 
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,7 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 
 @Log4j2
-public class PopularTagsComponent extends BaseComponent {
+public class LeftPaneComponent extends BaseComponent {
 
     @FindBy(css = "[class='tags'] ul li a")
     private List<WebElement> popularTagsList;
@@ -26,8 +25,14 @@ public class PopularTagsComponent extends BaseComponent {
     @FindBy(css = "[class='block block-popular-tags']")
     private WebElement popularTagsBlock;
 
+    @FindBy(css = "[class='block block-category-navigation'] ul[class='list'] li a")
+    private List<WebElement> categoryNavigationListLinks;
+
+    @FindBy(css = "[class='sublist'] li a")
+    private List<WebElement> subCategoryNavigationListLinks;
+
     @Inject
-    public PopularTagsComponent(WebDriver driver) {
+    public LeftPaneComponent(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
@@ -109,5 +114,9 @@ public class PopularTagsComponent extends BaseComponent {
             log.error("Failed to get popular tags count. Exception: {}", e.getMessage());
             return 0;
         }
+    }
+
+    public boolean clickOnLeftPaneCategory(String categoryName,String subCategoryName) {
+        return clickOnCategoryNameLink(categoryNavigationListLinks,subCategoryNavigationListLinks, categoryName,subCategoryName);
     }
 }

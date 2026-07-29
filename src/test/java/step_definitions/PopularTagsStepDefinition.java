@@ -3,7 +3,7 @@ package step_definitions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import components.CategoryItemsComponent;
-import components.PopularTagsComponent;
+import components.LeftPaneComponent;
 import components.TopMenuComponent;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
@@ -15,16 +15,16 @@ import pages.WelcomePage;
 @ScenarioScoped
 public class PopularTagsStepDefinition {
 
-    private final Provider<PopularTagsComponent> popularTagsComponentProvider;
+    private final Provider<LeftPaneComponent> leftPaneComponentProvider;
     private final Provider<CategoryItemsComponent> categoryItemsComponentProvider;
     private final Provider<TopMenuComponent> topMenuComponentProvider;
     private final Provider<WelcomePage> welcomePageProvider;
 
     @Inject
-    public PopularTagsStepDefinition(Provider<PopularTagsComponent> popularTagsComponentProvider,
+    public PopularTagsStepDefinition(Provider<LeftPaneComponent> popularTagsComponentProvider,
                                      Provider<CategoryItemsComponent> categoryItemsComponentProvider,
                                      Provider<TopMenuComponent> topMenuComponentProvider, Provider<WelcomePage> welcomePageProvider) {
-        this.popularTagsComponentProvider = popularTagsComponentProvider;
+        this.leftPaneComponentProvider = popularTagsComponentProvider;
         this.categoryItemsComponentProvider = categoryItemsComponentProvider;
         this.topMenuComponentProvider = topMenuComponentProvider;
         this.welcomePageProvider = welcomePageProvider;
@@ -32,7 +32,7 @@ public class PopularTagsStepDefinition {
 
     @When("user clicks on popular tags {string} tag")
     public void userClicksOnTag(String tagName) {
-        Assert.assertTrue(popularTagsComponentProvider.get().clickOnTagName(tagName),
+        Assert.assertTrue(leftPaneComponentProvider.get().clickOnTagName(tagName),
                 "Failed to click on the tag: " + tagName);
     }
 
@@ -45,13 +45,13 @@ public class PopularTagsStepDefinition {
 
     @And("popular tags block should not be visible")
     public void popularTagsBlockShouldNotBeVisible() {
-        Assert.assertFalse(popularTagsComponentProvider.get().isPopularTagsBlockDisplayed(),
+        Assert.assertFalse(leftPaneComponentProvider.get().isPopularTagsBlockDisplayed(),
                 "Popular tags block is not visible.");
     }
 
     @And("popular tags block should be visible")
     public void popularTagsBlockShouldBeVisible() {
-        Assert.assertTrue(popularTagsComponentProvider.get().isPopularTagsBlockDisplayed(),
+        Assert.assertTrue(leftPaneComponentProvider.get().isPopularTagsBlockDisplayed(),
                 "Popular tags block is not visible.");
     }
 
@@ -84,16 +84,22 @@ public class PopularTagsStepDefinition {
 
     @And("user clicks on popular tags view all link")
     public void userClicksOnPopularTagsViewAllLink() {
-        Assert.assertTrue(popularTagsComponentProvider.get().clickOnViewAllTagsLink(),
+        Assert.assertTrue(leftPaneComponentProvider.get().clickOnViewAllTagsLink(),
                 "Failed to click on the 'View All Tags' link.");
     }
 
     @Then("number of tags in the popular tags block should match number of tags in the view all tags page")
     public void numberOfTagsInThePopularTagsBlockShouldMatchNumberOfTagsInTheViewAllTagsPage() {
-        int popularTagsCount = popularTagsComponentProvider.get().getPopularTagsCount();
+        int popularTagsCount = leftPaneComponentProvider.get().getPopularTagsCount();
         int viewAllTagsCount = categoryItemsComponentProvider.get().getPopularTagsCount();
 
         Assert.assertTrue(popularTagsCount < viewAllTagsCount,
                 "The number of tags in the popular tags block does not match the number of tags in the view all tags page.");
+    }
+
+    @When("user clicks on categories {string} link and {string} sub-category link")
+    public void clickOnCategoryLink(String categoryName,String subCategoryName) {
+        Assert.assertTrue(leftPaneComponentProvider.get().clickOnLeftPaneCategory(categoryName,subCategoryName),
+                "Failed to click on the category link: " + categoryName);
     }
 }
