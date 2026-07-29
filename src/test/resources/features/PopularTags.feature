@@ -59,3 +59,29 @@ Feature: Left pane tests
       | Computers         | Accessories     | Accessories    |
       | Digital downloads |                 | downloads      |
 
+  Scenario: Logged in user success to subscribe to the newsletter with email
+    When user enters an email "dan@gmail.com" in the news letter field
+    And user clicks on the news letter subscribe button
+    Then a success message should be displayed for the news letter subscription
+
+  Scenario: logged out user success to subscribe to the newsletter with email
+    When user clicks on log out link
+    And user enters an email "dan@gmail.com" in the news letter field
+    And user clicks on the news letter subscribe button
+    Then a success message should be displayed for the news letter subscription
+
+  Scenario Outline: logged out user success to subscribe to the newsletter with email
+    When user clicks on log out link
+    And user enters an email "<nonValidMail>" in the news letter field
+    And user clicks on the news letter subscribe button
+    Then a fail message should be displayed for the news letter subscription
+    Examples:
+      | nonValidMail  |
+      | dan@gmail,com |
+      | dan.com       |
+
+  Scenario: Subscribe to newsletter from left pane
+    When the user navigates to the "BOOKS" page
+    And user enters an email "dan@gmail.com" in the news letter field
+    And user clicks on the news letter subscribe button
+    Then a success message should be displayed for the news letter subscription

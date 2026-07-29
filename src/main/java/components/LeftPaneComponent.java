@@ -9,6 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
+import java.util.Objects;
+
+import static java.nio.file.Files.getAttribute;
 
 @Log4j2
 public class LeftPaneComponent extends BaseComponent {
@@ -30,6 +33,18 @@ public class LeftPaneComponent extends BaseComponent {
 
     @FindBy(css = "[class='sublist'] li a")
     private List<WebElement> subCategoryNavigationListLinks;
+
+    @FindBy(css = "[class='block block-newsletter'] [class='title'] strong")
+    private WebElement newsletterTitle;
+
+    @FindBy(css = "[class='newsletter-email'] #newsletter-email")
+    private WebElement newsLetterEmailInput;
+
+    @FindBy(css = "[value='Subscribe']")
+    private WebElement newsLetterSubscribeButton;
+
+    @FindBy(css = "#newsletter-result-block")
+    private WebElement newsLetterResultBlock;
 
     @Inject
     public LeftPaneComponent(WebDriver driver) {
@@ -116,7 +131,43 @@ public class LeftPaneComponent extends BaseComponent {
         }
     }
 
-    public boolean clickOnLeftPaneCategory(String categoryName,String subCategoryName) {
-        return clickOnCategoryNameLink(categoryNavigationListLinks,subCategoryNavigationListLinks, categoryName,subCategoryName);
+    public boolean clickOnLeftPaneCategory(String categoryName, String subCategoryName) {
+        return clickOnCategoryNameLink(categoryNavigationListLinks, subCategoryNavigationListLinks, categoryName, subCategoryName);
+    }
+
+    public boolean enterEmailInNewsletter(String email) {
+        try {
+            wait.until(ExpectedConditions.visibilityOf(newsLetterEmailInput));
+        } catch (Exception e) {
+            log.error("Newsletter email input field is not visible. Exception: {}", e.getMessage());
+            return false;
+        }
+        newsLetterEmailInput.clear();
+        return fillText(newsLetterEmailInput, email);
+
+    }
+
+    public boolean clickOnNewsletterSubscribeButton() {
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(newsLetterSubscribeButton));
+            return click(newsLetterSubscribeButton);
+        } catch (Exception e) {
+            log.error("Newsletter subscribe button is not clickable. Exception: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isNewsletterResultBlockTextCorrect(String expectedText) {
+        try {
+            wait.until(driver -> !newsLetterResultBlock.getAttribute("textContent").trim().isEmpty());
+            String actualText = newsLetterResultBlock.getAttribute("textContent").trim();
+            log.info("Newsletter updated result text: '{}'", actualText);
+
+            return actualText.equals(expectedText);
+        } catch (Exception e) {
+            log.error("Failed waiting for newsletter result text. Current text in DOM: '{}'. Exception: {}",
+                    newsLetterResultBlock.getAttribute("textContent"), e.getMessage());
+            return false;
+        }
     }
 }

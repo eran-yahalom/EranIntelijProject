@@ -11,6 +11,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
 import pages.WelcomePage;
+import utils.Utils;
 
 @ScenarioScoped
 public class PopularTagsStepDefinition {
@@ -98,8 +99,34 @@ public class PopularTagsStepDefinition {
     }
 
     @When("user clicks on categories {string} link and {string} sub-category link")
-    public void clickOnCategoryLink(String categoryName,String subCategoryName) {
-        Assert.assertTrue(leftPaneComponentProvider.get().clickOnLeftPaneCategory(categoryName,subCategoryName),
+    public void clickOnCategoryLink(String categoryName, String subCategoryName) {
+        Assert.assertTrue(leftPaneComponentProvider.get().clickOnLeftPaneCategory(categoryName, subCategoryName),
                 "Failed to click on the category link: " + categoryName);
     }
+
+    @When("user enters an email {string} in the news letter field")
+    public void enterEmailToNewsletterSubscriptionField(String email) {
+        Assert.assertTrue(leftPaneComponentProvider.get().enterEmailInNewsletter(email),
+                "Failed to enter email in the newsletter subscription field: " + email);
+    }
+
+    @And("user clicks on the news letter subscribe button")
+    public void clickOnNewsLetterSubscribeButton() {
+        Assert.assertTrue(leftPaneComponentProvider.get().clickOnNewsletterSubscribeButton(),
+                "Failed to click on the newsletter subscribe button.");
+    }
+
+    @Then("a success message should be displayed for the news letter subscription")
+    public void verifyNewsletterSubscriptionSuccessMessage() {
+        Assert.assertTrue(leftPaneComponentProvider.get().isNewsletterResultBlockTextCorrect(Utils.readProperty("newsLetterSuccessMessage")),
+                "The success message for the newsletter subscription is not displayed.");
+    }
+
+    @Then("a fail message should be displayed for the news letter subscription")
+    public void verifyNewsletterSubscriptionFailMessage() {
+        Assert.assertTrue(leftPaneComponentProvider.get().isNewsletterResultBlockTextCorrect(Utils.readProperty("newsletterInvalidEmailErrorMessage")),
+                "The success message for the newsletter subscription is not displayed.");
+    }
 }
+
+
