@@ -1,0 +1,42 @@
+[
+  {
+    "firstName": "Dani",
+    "lastName": "Din",
+    "email": "dani@yopmail.com",
+    "billingCountry": "Hungary",
+    "billingCity": "Budapest",
+    "billingAddress": "lov st 1",
+    "billingZip": "90210",
+    "phone": "710202002",
+    "shippingCountry": "Hungary",
+    "shippingCity": "Budapest",
+    "shippingAddress": "lov st 1",
+    "shippingZip": "90210",
+    "creditCardType": "Visa",
+    "creditCardName": "dani din",
+    "creditCardNumber": "4242424242424242",
+    "creditCardTypeCVV": "111",
+    "creditCardExpirationYear": "2029",
+    "PONumberer": "NO12345"
+  },
+  {
+    "firstName": "Roni",
+    "lastName": "Ron",
+    "email": "roni@yopmail.com",
+    "billingCountry": "France",
+    "billingCity": "Paris",
+    "billingAddress": "lovsinki st 33",
+    "billingZip": "89088",
+    "phone": "232332323232",
+    "shippingCountry": "France",
+    "shippingCity": "Lion",
+    "shippingAddress": "lion st 41",
+    "shippingZip": "555556",
+    "creditCardType": "Amex",
+    "creditCardName": "dani din",
+    "creditCardNumber": "4111111111111111",
+    "creditCardTypeCVV": "999",
+    "creditCardExpirationYear": "2028",
+    "PONumberer": "NO12251"
+  }
+]

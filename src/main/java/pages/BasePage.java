@@ -327,4 +327,16 @@ public abstract class BasePage {
             return false;
         }
     }
+
+    public int countNumberOfRequiredAsterisks() {
+        try {
+            return driver.findElements(By.cssSelector("[class='required']")).size();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public boolean isRequiredErrorMessageCorrect(WebElement element, String requiredText) {
+        return element.getText().equalsIgnoreCase(requiredText);
+    }
 }

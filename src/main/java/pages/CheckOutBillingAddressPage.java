@@ -5,6 +5,9 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 @Log4j2
 public class CheckOutBillingAddressPage extends BasePage {
@@ -41,6 +44,15 @@ public class CheckOutBillingAddressPage extends BasePage {
 
     @FindBy(css = "#billing-buttons-container [class='button-1 new-address-next-step-button']")
     private WebElement continueButton;
+
+    @FindBy(css = "[class='field-validation-error']")
+    private List<WebElement> billingPageRequiredErrorMessages;
+
+    @FindBy(css = "#opc-billing [class='step-title'] h2")
+    private WebElement billingAddressTitle;
+
+    @FindBy(css="[for='billing-address-select']")
+    private WebElement selectBillingAddressText;
 
     @Inject
     public CheckOutBillingAddressPage(WebDriver driver) {
@@ -81,6 +93,7 @@ public class CheckOutBillingAddressPage extends BasePage {
 
     public boolean selectBillingAddress(String billingAddress) {
         try {
+            wait.until(ExpectedConditions.visibilityOf(billingAddressDropDown));
             if (isDisplayed(billingAddressDropDown)) {
                 log.info("Billing address dropdown is displayed. Selecting option: {}", billingAddress);
                 selectOptionFromDropdownByVisibleText(billingAddressDropDown, billingAddress);

@@ -3,9 +3,11 @@ package step_definitions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import configurations.EnvManager;
+import configurations.TestDataManager;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
+import models.testdata.CustomerTestData;
 import org.testng.Assert;
 import pages.*;
 
@@ -82,6 +84,18 @@ public class CheckOutStepDefinition {
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterPhoneNumber(phoneNumber), "Cant enter phone number");
     }
 
+    @And("user fills in billing address details for customer index {int} from JSON")
+    public void fillBillingAddressByIndex(int index) {
+        CustomerTestData customer = TestDataManager.getCustomer(index);
+
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterAddress(customer.getBillingAddress()), "Cant enter address");
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterCity(customer.getBillingCity()), "Cant enter city");
+
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterZipCode(customer.getBillingZip()), "Cant enter zip code");
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterPhoneNumber(customer.getPhone()), "Cant enter phone number");
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().selectCountry(customer.getBillingCountry()), "Cant enter country");
+    }
+
     @And("click on checkout:shipping address page in store pickup checkbox")
     public void clickOnCheckOutShippingAddressCheckBox() {
         Assert.assertTrue(checkOutShippingAddressPageProvider.get().selectPickUpInStoreOption(), "Cant check the pick up checkbox");
@@ -101,13 +115,30 @@ public class CheckOutStepDefinition {
 
     @And("user fills in the selected {string} payment method details from environments file")
     public void fillInSelectedPaymentMethodDetails(String paymentType) {
-        Assert.assertTrue(checkOutPaymentInformationPageProvider.get().executePaymentHandler(paymentType,
+        Assert.assertTrue(checkOutPaymentInformationPageProvider.get().executePaymentHandler(
+                paymentType,
                 EnvManager.get().getPurchaseNumber(),
                 "Visa",
                 firstName,
                 EnvManager.get().getCreditCardNumber(),
                 EnvManager.get().getCreditCardExpiryYear(),
                 EnvManager.get().getCreditCardCVV()
+
+        ), "Cant enter payment method details");
+    }
+
+    @And("user fills in the selected {string} payment method details for customer index {int} from JSON")
+    public void fillBillingAddressByIndex(String paymentType, int index) {
+        CustomerTestData customer = TestDataManager.getCustomer(index);
+
+        Assert.assertTrue(checkOutPaymentInformationPageProvider.get().executePaymentHandler(
+                paymentType,
+                customer.getPoNumber(),
+                customer.getCreditCardType(),
+                customer.getFirstName(),
+                customer.getCreditCardNumber(),
+                customer.getCreditCardExpirationYear(),
+                customer.getCreditCardTypeCVV()
 
         ), "Cant enter payment method details");
     }
