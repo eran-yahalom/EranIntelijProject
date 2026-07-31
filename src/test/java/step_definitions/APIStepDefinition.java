@@ -57,7 +57,7 @@ public class APIStepDefinition {
                 GeneratorUtils.generateLastName(),
                 GeneratorUtils.generateEmail(),
                 GeneratorUtils.generatePassword(),
-                GeneratorUtils.phoneNumber());
+                GeneratorUtils.generatePhoneNumber());
         ScenarioState.save(StateKeys.SWAGGER_CREATE_USER, swaggerResult);
 
         Assert.assertNotNull(swaggerResult);
@@ -77,7 +77,7 @@ public class APIStepDefinition {
                 GeneratorUtils.generateLastName(),
                 GeneratorUtils.generateEmail(),
                 GeneratorUtils.generatePassword(),
-                GeneratorUtils.phoneNumber()
+                GeneratorUtils.generatePhoneNumber()
         );
 
         ScenarioState.save(StateKeys.SWAGGER_UPDATE_USER, swaggerResult);
@@ -272,7 +272,7 @@ public class APIStepDefinition {
                 GeneratorUtils.generateLastName(),
                 GeneratorUtils.generateEmail(),
                 GeneratorUtils.generatePassword(),
-                GeneratorUtils.phoneNumber()
+                GeneratorUtils.generatePhoneNumber()
         );
 
         ScenarioState.save(StateKeys.SWAGGER_CREATE_USER_LIST, swaggerResult);

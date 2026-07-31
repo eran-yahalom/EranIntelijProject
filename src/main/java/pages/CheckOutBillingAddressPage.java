@@ -5,11 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 
 @Log4j2
 public class CheckOutBillingAddressPage extends BasePage {
+
+    @FindBy(css = "[name='billing_address_id']")
+    private WebElement billingAddressDropDown;
 
     @FindBy(css = "#BillingNewAddress_FirstName")
     private WebElement firstNameField;
@@ -41,7 +42,7 @@ public class CheckOutBillingAddressPage extends BasePage {
     @FindBy(css = "#billing-buttons-container [class='button-1 new-address-next-step-button']")
     private WebElement continueButton;
 
-@Inject
+    @Inject
     public CheckOutBillingAddressPage(WebDriver driver) {
         super(driver);
     }
@@ -76,6 +77,24 @@ public class CheckOutBillingAddressPage extends BasePage {
             return false;
         }
         return true;
+    }
+
+    public boolean selectBillingAddress(String billingAddress) {
+        try {
+            if (isDisplayed(billingAddressDropDown)) {
+                log.info("Billing address dropdown is displayed. Selecting option: {}", billingAddress);
+                selectOptionFromDropdownByVisibleText(billingAddressDropDown, billingAddress);
+                return true;
+            }
+
+            log.info("Billing address dropdown is not displayed. Moving forward...");
+            return true;
+
+        } catch (Exception e) {
+            log.error("Failed to process billing address selection for address: {}. Exception: {}",
+                    billingAddress, e.getMessage());
+            return false;
+        }
     }
 
     public boolean selectState(String state) {

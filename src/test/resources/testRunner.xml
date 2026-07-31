@@ -23,6 +23,7 @@
             <class name="launchers.FooterLauncher"/>
             <class name="launchers.BreadCrumbsLauncher"/>
             <class name="launchers.LeftPaneLauncher"/>
+            <class name="launchers.CheckOutLauncher"/>
         </classes>
     </test>
 </suite>

@@ -41,6 +41,12 @@ public class ShoppingCartPage extends BasePage {
     @FindBy(css = ".cart-total tr:nth-child(4) .cart-total-right")
     private WebElement totalPrice;
 
+    @FindBy(css = "[name='termsofservice']")
+    private WebElement termsOfServiceCheckbox;
+
+    @FindBy(css = "[name='checkout']")
+    private WebElement checkoutButton;
+
     @Inject
     public ShoppingCartPage(WebDriver driver) {
         super(driver);
@@ -116,5 +122,16 @@ public class ShoppingCartPage extends BasePage {
             quantityInput.sendKeys(String.valueOf(newQuantity));
         }
         return click(updateCartButton);
+    }
+
+    public boolean acceptTermsOfService() {
+        if (!termsOfServiceCheckbox.isSelected()) {
+            return click(termsOfServiceCheckbox);
+        }
+        return true;
+    }
+
+    public boolean proceedToCheckout() {
+        return click(checkoutButton);
     }
 }

@@ -2,11 +2,15 @@
   "environments": {
     "qa1": {
       "url": "https://demowebshop.tricentis.com/?hl=en-GB",
-      "schema":  "jdbc:sqlite:/Users/eranyahalom/Library/DBeaverData/workspace6/.metadata/sample-database-sqlite-1/Chinook.db",
+      "schema": "jdbc:sqlite:/Users/eranyahalom/Library/DBeaverData/workspace6/.metadata/sample-database-sqlite-1/Chinook.db",
       "dbName": "qa1_db",
       "dbPass": "pass123",
       "username": "admin_qa1",
-      "password": "password_qa1"
+      "password": "password_qa1",
+      "creditCardNumber": "4111 1111 1111 1111",
+      "creditCardCVV": "123",
+      "creditCardExpiryYear": "2029",
+      "purchaseNumber": "NO1234"
     },
     "qa2": {
       "url": "https://qa2.demostore.com",

@@ -22,10 +22,10 @@ public class RegistrationService {
             String password = GeneratorUtils.generatePassword();
             String first_name = GeneratorUtils.generateFirstName();
             String last_name = GeneratorUtils.generateLastName();
-            String address = GeneratorUtils.address();
-            String phoneNumber = GeneratorUtils.phoneNumber();
-            String city = GeneratorUtils.city();
-            String country = GeneratorUtils.country();
+            String address = GeneratorUtils.generateAddress();
+            String phoneNumber = GeneratorUtils.generatePhoneNumber();
+            String city = GeneratorUtils.generateCity();
+            String country = GeneratorUtils.generateCountry();
             String dateOfBirth = GeneratorUtils.dateOfBirth().toString();
 
             QueryExecutor.executeUpdate(

@@ -16,5 +16,9 @@ public class EnvConfig {
         private String dbPass;
         private String username;
         private String password;
+        private String creditCardNumber;
+        private String creditCardCVV;
+        private String creditCardExpiryYear;
+        private String purchaseNumber;
     }
 }

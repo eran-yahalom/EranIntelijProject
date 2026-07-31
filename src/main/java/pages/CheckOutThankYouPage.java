@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @Log4j2
 public class CheckOutThankYouPage extends BasePage {
@@ -31,10 +32,15 @@ public class CheckOutThankYouPage extends BasePage {
     }
 
     public String getOrderNumber() {
-        return orderNumber.getText();
+        wait.until(ExpectedConditions.visibilityOf(orderNumber));
+        return orderNumber.getText().replaceAll("[^0-9]", "");
     }
 
     public boolean clickOrderDetailsLink() {
         return click(orderDetailsLink);
+    }
+
+    public boolean clickOnContinueButton() {
+        return click(continueButton);
     }
 }

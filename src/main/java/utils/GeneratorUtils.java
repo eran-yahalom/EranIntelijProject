@@ -34,11 +34,11 @@ public class GeneratorUtils {
         return faker.get().gender();
     }
 
-    public static String address() {
+    public static String generateAddress() {
         return faker.get().address().fullAddress();
     }
 
-    public static String phoneNumber() {
+    public static String generatePhoneNumber() {
         return faker.get().phoneNumber().phoneNumber();
     }
 
@@ -46,12 +46,12 @@ public class GeneratorUtils {
         return faker.get().company().name();
     }
 
-    public static String city() {
+    public static String generateCity() {
         return faker.get().address().city();
     }
 
-    public static String country() {
-        return faker.get().address().country();
+    public static String generateCountry() {
+        return faker.get().options().option("Germany", "Spain", "Hungary");
     }
 
     public static Timestamp dateOfBirth() {
@@ -62,14 +62,16 @@ public class GeneratorUtils {
         return faker.get().name() + UUID.randomUUID().toString().substring(0, 5);
     }
 
+    public static String generateZipCode() {
+        return faker.get().address().zipCode();
+    }
+
     public static List<String> generateRandomUserAndPassword() {
         try {
             String user = generateEmail();
             String passWord = generatePassword();
 
             return List.of(user, passWord);
-
-
         } catch (Exception e) {
             log.error("Failed to generate random user and password", e);
         }
