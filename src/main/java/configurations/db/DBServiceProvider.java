@@ -1,9 +1,12 @@
 package configurations.db;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Log4j2
 public class DBServiceProvider {
 
     public static Connection createSqliteConnection(String schemaURL, String dbName, String username, String password) {
@@ -14,7 +17,7 @@ public class DBServiceProvider {
             String relativePath = "/src/test/resources/db/Chinook.db";
             finalUrl = "jdbc:sqlite:" + projectPath + relativePath;
 
-            System.out.println("⚠️ Detected hardcoded Mac path. Redirecting to: " + finalUrl);
+            log.info("Detected hardcoded Mac path. Redirecting to: " + finalUrl);
         }
 
         try {

@@ -14,7 +14,6 @@ Feature: Left pane tests
       | computer |
       | TCP      |
 
-
   Scenario: Check that popular tags block is visible on the home page
     When user navigates to the home page
     Then popular tags block should be visible

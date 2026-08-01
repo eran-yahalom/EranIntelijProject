@@ -13,7 +13,8 @@ public class JsonDataLoaderUtils {
         ObjectMapper mapper = new ObjectMapper();
         try {
             String filePath = "src/test/resources/data/" + fileName;
-            return mapper.readValue(new File(filePath), new TypeReference<List<SearchTestData>>(){});
+            return mapper.readValue(new File(filePath), new TypeReference<List<SearchTestData>>() {
+            });
         } catch (IOException e) {
             throw new RuntimeException("Error reading JSON file: " + fileName, e);
         }

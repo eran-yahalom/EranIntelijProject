@@ -42,7 +42,6 @@ Feature: Breadcrumb reflects the correct navigation path
     And user selects "<itemName>"
     Then the breadcrumb should contain <numberOfLinksInBreadCrumb> links
 
-
     Examples:
       | topPageMenu       | itemName                | numberOfLinksInBreadCrumb |
       | BOOKS             | Computing and Internet  | 3                         |
@@ -55,7 +54,6 @@ Feature: Breadcrumb reflects the correct navigation path
     When user clicks on "<topPageMenu>" from top menu and selects "<subMenu>" from the submenu
     And user selects "<categoryName>"
     Then the breadcrumb should contain <numberOfLinksInBreadCrumb> links
-
 
     Examples:
       | topPageMenu | subMenu     | categoryName | numberOfLinksInBreadCrumb |

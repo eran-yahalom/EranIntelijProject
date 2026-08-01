@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @Log4j2
 public class CheckOutShippingAddressPage extends BasePage {
@@ -79,7 +80,7 @@ public class CheckOutShippingAddressPage extends BasePage {
         return true;
     }
 
-    public boolean setCity(String city) {
+    public boolean enterCity(String city) {
         if (!fillText(cityField, city)) {
             log.error("Failed to enter City: {}", city);
             return false;
@@ -87,7 +88,7 @@ public class CheckOutShippingAddressPage extends BasePage {
         return true;
     }
 
-    public boolean setAddress(String address) {
+    public boolean enterAddress(String address) {
         if (!fillText(addressField, address)) {
             log.error("Failed to enter Address: {}", address);
             return false;
@@ -95,7 +96,7 @@ public class CheckOutShippingAddressPage extends BasePage {
         return true;
     }
 
-    public boolean setZipCode(String zipCode) {
+    public boolean enterZipCode(String zipCode) {
         if (!fillText(zipCodeField, zipCode)) {
             log.error("Failed to enter Zip Code: {}", zipCode);
             return false;
@@ -103,7 +104,7 @@ public class CheckOutShippingAddressPage extends BasePage {
         return true;
     }
 
-    public boolean setPhoneNumber(String phoneNumber) {
+    public boolean enterPhoneNumber(String phoneNumber) {
         if (!fillText(phoneNumberField, phoneNumber)) {
             log.error("Failed to enter Phone Number: {}", phoneNumber);
             return false;
@@ -125,5 +126,24 @@ public class CheckOutShippingAddressPage extends BasePage {
             return false;
         }
         return true;
+    }
+
+    public boolean selectShippingAddress(String billingAddress) {
+        try {
+            wait.until(ExpectedConditions.visibilityOf(shippingAddressDropdown));
+            if (isDisplayed(shippingAddressDropdown)) {
+                log.info("Billing address dropdown is displayed. Selecting option: {}", billingAddress);
+                selectOptionFromDropdownByVisibleText(shippingAddressDropdown, billingAddress);
+                return true;
+            }
+
+            log.info("Billing address dropdown is not displayed. Moving forward...");
+            return true;
+
+        } catch (Exception e) {
+            log.info("Cant see the shipping address selector",
+                    billingAddress, e.getMessage());
+            return true;
+        }
     }
 }

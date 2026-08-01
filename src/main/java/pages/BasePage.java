@@ -313,7 +313,6 @@ public abstract class BasePage {
     }
 
     public String getPageTitle() {
-        // return driver.getTitle();
         return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
     }
 

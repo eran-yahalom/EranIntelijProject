@@ -30,7 +30,6 @@ public class CheckOutConfirmOrderPage extends BasePage {
     @FindBy(css = "[class='button-1 confirm-order-next-step-button']")
     private WebElement confirmOrderButton;
 
-
     @Inject
     public CheckOutConfirmOrderPage(WebDriver driver) {
         super(driver);

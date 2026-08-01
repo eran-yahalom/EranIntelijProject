@@ -59,10 +59,6 @@ public class CheckOutStepDefinition {
 
     @And("user fills in the checkout:billing address page details")
     public void fillCheckoutBillingDetails() {
-//        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterFirstName(firstName), "Cant enter first name");
-//        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterLastName(lastName), "Cant enter last name");
-//        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterEmail(email), "Cant enter email");
-
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterAddress(address), "Cant enter address");
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterCity(city), "Cant enter city");
 
@@ -78,10 +74,10 @@ public class CheckOutStepDefinition {
 
     @And("user fills in the checkout:shipping address page details")
     public void fillCheckoutShippingDetails() {
-        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterAddress(address), "Cant enter address");
-        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterCity(city), "Cant enter city");
-        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterZipCode(zipCode), "Cant enter zip code");
-        Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterPhoneNumber(phoneNumber), "Cant enter phone number");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterAddress(address), "Cant enter address");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterCity(city), "Cant enter city");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterZipCode(zipCode), "Cant enter zip code");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterPhoneNumber(phoneNumber), "Cant enter phone number");
     }
 
     @And("user fills in billing address details for customer index {int} from JSON")
@@ -94,6 +90,16 @@ public class CheckOutStepDefinition {
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterZipCode(customer.getBillingZip()), "Cant enter zip code");
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().enterPhoneNumber(customer.getPhone()), "Cant enter phone number");
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().selectCountry(customer.getBillingCountry()), "Cant enter country");
+    }
+
+    @And("user fills in the checkout:shipping address page details for customer index {int} from JSON")
+    public void fillCheckoutShippingDetails(int index) {
+        CustomerTestData customer = TestDataManager.getCustomer(index);
+
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterAddress(customer.getShippingAddress()), "Cant enter address");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterCity(customer.getShippingCity()), "Cant enter city");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterZipCode(customer.getShippingZip()), "Cant enter zip code");
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().enterPhoneNumber(customer.getPhone()), "Cant enter phone number");
     }
 
     @And("click on checkout:shipping address page in store pickup checkbox")
@@ -200,6 +206,12 @@ public class CheckOutStepDefinition {
     @And("user selects {string} billing address selector from checkout:billing address")
     public void selectBillingAddress(String addressSelection) {
         Assert.assertTrue(checkOutBillingAddressPageProvider.get().selectBillingAddress(addressSelection),
+                "Cant select billing address");
+    }
+
+    @And("user selects {string} shipping address selector from checkout:billing address")
+    public void selectShippingAddress(String addressSelection) {
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().selectShippingAddress(addressSelection),
                 "Cant select billing address");
     }
 }

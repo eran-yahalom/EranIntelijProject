@@ -176,7 +176,7 @@ public abstract class BaseComponent {
             if (index < freshLinks.size()) {
                 return clickOnStaleElement(freshLinks.get(index));
             }
-            System.out.println("Index " + index + " not found in footer links.");
+            log.info("Index " + index + " not found in footer links.");
             return false;
         } catch (StaleElementReferenceException e) {
             return clickOnStaleElement(driver.findElements(footerLinksLocator).get(index));
