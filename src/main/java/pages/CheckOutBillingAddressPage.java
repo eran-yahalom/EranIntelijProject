@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import utils.Utils;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class CheckOutBillingAddressPage extends BasePage {
     @FindBy(css = "#opc-billing [class='step-title'] h2")
     private WebElement billingAddressTitle;
 
-    @FindBy(css="[for='billing-address-select']")
+    @FindBy(css = "[for='billing-address-select']")
     private WebElement selectBillingAddressText;
 
     @Inject
@@ -152,5 +153,10 @@ public class CheckOutBillingAddressPage extends BasePage {
 
     public boolean clickContinueButton() {
         return click(continueButton);
+    }
+
+    public boolean isSelectBillingAddressHeaderDisplayed() {
+        return isDisplayed(selectBillingAddressText)
+                && getText(selectBillingAddressText).equals(Utils.readProperty("checkoutBillingAddressPageHeader"));
     }
 }

@@ -1,5 +1,6 @@
 package pages;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -10,7 +11,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Utils;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 @Log4j2
 public abstract class BasePage {
@@ -21,7 +25,12 @@ public abstract class BasePage {
     protected WebDriverWait socialNetworkWait;
     protected JavascriptExecutor js;
     protected static String mainWindow;
-    protected By backButtonLocator = By.cssSelector("#payment-method-buttons-container [class='back-link'] a");
+
+    protected By paymentMethodBackButtonLocator = By.cssSelector("#payment-method-buttons-container [class='back-link'] a");
+    protected By paymentInfoBackButtonLocator = By.cssSelector("#payment-info-buttons-container [class='back-link'] a");
+    protected By shippingMethodBackButtonLocator = By.cssSelector("#shipping-method-buttons-container [class='back-link'] a");
+    protected By confirmOrderBackButtonLocator = By.cssSelector("#confirm-order-buttons-container [class='back-link'] a");
+    protected By shippingAddressBackButtonLocator = By.cssSelector("#shipping-buttons-container [class='back-link'] a");
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -316,13 +325,44 @@ public abstract class BasePage {
         return driver.findElement(By.cssSelector("[class='page-title'] h1")).getText();
     }
 
-    public boolean clickOnCheckOutBackButton() {
+    public boolean clickOnCheckOutBackButtonByStep(String stepName) {
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".step-title")));
+
+        Map<String, Supplier<By>> backButtonMap = Map.of(
+                "payment method", () -> paymentMethodBackButtonLocator,
+                "payment information", () -> paymentInfoBackButtonLocator,
+                "shipping method", () -> shippingMethodBackButtonLocator,
+                "confirm order", () -> confirmOrderBackButtonLocator,
+                "Shipping address", () -> shippingAddressBackButtonLocator
+        );
+
         try {
-            WebElement backButton = driver.findElement(backButtonLocator);
-            backButton.click();
-            return true;
+            Supplier<By> locatorSupplier = backButtonMap.entrySet().stream()
+                    .filter(entry -> entry.getKey().equalsIgnoreCase(stepName.trim()))
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("שם שלב לא נתמך עבור כפתור חזור: " + stepName));
+
+            By targetLocator = locatorSupplier.get();
+
+            // 1. ממתינים שהאלמנט יהיה לחיץ ב-DOM
+            WebElement backButton = wait.until(ExpectedConditions.elementToBeClickable(targetLocator));
+
+            // 2. השהייה קבועה של 2 שניות ממש לפני בלוק הלחיצה
+            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+
+            // 3. ביצוע הלחיצה (מומלץ להשתמש במתודת ה-click העטופה שלך)
+            return click(backButton);
+
         } catch (NoSuchElementException e) {
-            log.error("Back button not found: " + e.getMessage());
+            log.error("כפתור חזור לא נמצא עבור השלב " + stepName + ": " + e.getMessage());
+            return false;
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
+            return false;
+        } catch (Exception e) {
+            log.error("שגיאה בלתי צפויה בעת לחיצה על כפתור חזור בשלב " + stepName + ": " + e.getMessage());
             return false;
         }
     }

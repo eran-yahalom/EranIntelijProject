@@ -6,6 +6,7 @@ import configurations.EnvManager;
 import configurations.TestDataManager;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import models.testdata.CustomerTestData;
 import org.testng.Assert;
@@ -213,6 +214,18 @@ public class CheckOutStepDefinition {
     public void selectShippingAddress(String addressSelection) {
         Assert.assertTrue(checkOutShippingAddressPageProvider.get().selectShippingAddress(addressSelection),
                 "Cant select billing address");
+    }
+
+    @And("user clicks back button on checkout {string} step")
+    public void clickBackButtonOnStep(String stepName) {
+        Assert.assertTrue(checkOutShippingAddressPageProvider.get().clickOnCheckOutBackButtonByStep(stepName),
+                "Cant click on back button for step: " + stepName);
+    }
+
+    @Then("user should be redirected to the checkout:Billing address tab")
+    public void userShouldBeRedirectedToTheCheckoutBillingAddressTab() {
+        Assert.assertTrue(checkOutBillingAddressPageProvider.get().isSelectBillingAddressHeaderDisplayed(),
+                "User is not redirected to the checkout:Billing address tab");
     }
 }
 

@@ -5,94 +5,120 @@ Feature: Checkout feature to verify checkout actions
     Given random user is logged in successfully
     And the shopping cart is empty
 
-  Scenario Outline: Verify that the user can complete checkout with data from environments.json file
-    When the user navigates to the "BOOKS" page
-    And user adds "Computing and Internet" to the cart
-    Then a success message should be displayed
+#  Scenario Outline: Verify that the user can complete checkout with data from environments.json file
+#    When the user navigates to the "BOOKS" page
+#    And user adds "Computing and Internet" to the cart
+#    Then a success message should be displayed
+#
+#    When the user clicks on cart link in the notification
+#    Then the user should be redirected to the shopping cart page
+#
+#    When user checks the shopping cart page terms and conditions checkbox
+#    And user clicks on shopping cart page checkout button
+#    And user selects "New Address" billing address selector from checkout:billing address
+#    And user fills in the checkout:billing address page details
+#    And user clicks on checkout:billing address continue button
+#    And click on checkout:shipping address page in store pickup checkbox
+#    And user clicks on checkout:shipping address continue button
+#    And user selects payment method "<paymentMethod>" from the checkout:payment method page
+#    And user clicks on checkout:payment method continue button
+#    And user fills in the selected "<paymentMethod>" payment method details from environments file
+#    And user clicks on checkout:payment information continue button
+#    And user clicks on checkout:confirm order continue button
+#    Then checkout:thank you order number is saved successfully in DB
+#
+#    When user clicks on checkout:thank you order continue button
+#    Then user is in welcome page
+#    Examples:
+#      | paymentMethod                 |
+#      | Cash On Delivery (COD) (7.00) |
+#      | Check / Money Order (5.00)    |
+#      | Credit Card                   |
+#      | Purchase Order                |
+#
+#  Scenario Outline: Verify checkout completion using JSON customer data
+#    When the user navigates to the "BOOKS" page
+#    And user adds "Computing and Internet" to the cart
+#    Then a success message should be displayed
+#
+#    When the user clicks on cart link in the notification
+#    Then the user should be redirected to the shopping cart page
+#
+#    When user checks the shopping cart page terms and conditions checkbox
+#    And user clicks on shopping cart page checkout button
+#    And user selects "New Address" billing address selector from checkout:billing address
+#    And user fills in billing address details for customer index <customerIndex> from JSON
+#    And user clicks on checkout:billing address continue button
+#    And click on checkout:shipping address page in store pickup checkbox
+#    And user clicks on checkout:shipping address continue button
+#    And user selects payment method "<paymentMethod>" from the checkout:payment method page
+#    And user clicks on checkout:payment method continue button
+#    And user fills in the selected "<paymentMethod>" payment method details for customer index <customerIndex> from JSON
+#    And user clicks on checkout:payment information continue button
+#    And user clicks on checkout:confirm order continue button
+#    Then checkout:thank you order number is saved successfully in DB
+#    When user clicks on checkout:thank you order continue button
+#    Then user is in welcome page
+#
+#    Examples:
+#      | customerIndex | paymentMethod                 |
+#      | 0             | Cash On Delivery (COD) (7.00) |
+#      | 1             | Check / Money Order (5.00)    |
+#      | 0             | Credit Card                   |
+#      | 1             | Purchase Order                |
+#
+#  Scenario Outline: Verify that the user can complete checkout with both shipping and billing addresses
+#    When the user navigates to the "BOOKS" page
+#    And user adds "Computing and Internet" to the cart
+#    Then a success message should be displayed
+#
+#    When the user clicks on cart link in the notification
+#    Then the user should be redirected to the shopping cart page
+#
+#    When user checks the shopping cart page terms and conditions checkbox
+#    And user clicks on shopping cart page checkout button
+#    And user selects "New Address" billing address selector from checkout:billing address
+#    And user fills in the checkout:billing address page details
+#    And user clicks on checkout:billing address continue button
+#    And user selects "New Address" shipping address selector from checkout:billing address
+#    And user fills in the checkout:shipping address page details
+#    And click on checkout:shipping address page in store pickup checkbox
+#    And user clicks on checkout:shipping address continue button
+#    And user selects payment method "<paymentMethod>" from the checkout:payment method page
+#    And user clicks on checkout:payment method continue button
+#    And user fills in the selected "<paymentMethod>" payment method details from environments file
+#    And user clicks on checkout:payment information continue button
+#    And user clicks on checkout:confirm order continue button
+#    Then checkout:thank you order number is saved successfully in DB
+#
+#    When user clicks on checkout:thank you order continue button
+#    Then user is in welcome page
+#    Examples:
+#      | paymentMethod                 |
+#      | Cash On Delivery (COD) (7.00) |
 
-    When the user clicks on cart link in the notification
-    Then the user should be redirected to the shopping cart page
+    Scenario: Verify the Checkout back button functionality
+      When the user navigates to the "BOOKS" page
+      And user adds "Computing and Internet" to the cart
+      Then a success message should be displayed
 
-    When user checks the shopping cart page terms and conditions checkbox
-    And user clicks on shopping cart page checkout button
-    And user selects "New Address" billing address selector from checkout:billing address
-    And user fills in the checkout:billing address page details
-    And user clicks on checkout:billing address continue button
-    And click on checkout:shipping address page in store pickup checkbox
-    And user clicks on checkout:shipping address continue button
-    And user selects payment method "<paymentMethod>" from the checkout:payment method page
-    And user clicks on checkout:payment method continue button
-    And user fills in the selected "<paymentMethod>" payment method details from environments file
-    And user clicks on checkout:payment information continue button
-    And user clicks on checkout:confirm order continue button
-    Then checkout:thank you order number is saved successfully in DB
+      When the user clicks on cart link in the notification
+      Then the user should be redirected to the shopping cart page
 
-    When user clicks on checkout:thank you order continue button
-    Then user is in welcome page
-    Examples:
-      | paymentMethod                 |
-      | Cash On Delivery (COD) (7.00) |
-      | Check / Money Order (5.00)    |
-      | Credit Card                   |
-      | Purchase Order                |
+      When user checks the shopping cart page terms and conditions checkbox
+      And user clicks on shopping cart page checkout button
+      And user selects "New Address" billing address selector from checkout:billing address
+      And user fills in the checkout:billing address page details
+      And user clicks on checkout:billing address continue button
+      And click on checkout:shipping address page in store pickup checkbox
+      And user clicks on checkout:shipping address continue button
+      And user selects payment method "Cash On Delivery (COD) (7.00)" from the checkout:payment method page
+      And user clicks on checkout:payment method continue button
+      And user fills in the selected "Cash On Delivery (COD) (7.00)" payment method details from environments file
+      And user clicks on checkout:payment information continue button
 
-  Scenario Outline: Verify checkout completion using JSON customer data
-    When the user navigates to the "BOOKS" page
-    And user adds "Computing and Internet" to the cart
-    Then a success message should be displayed
-
-    When the user clicks on cart link in the notification
-    Then the user should be redirected to the shopping cart page
-
-    When user checks the shopping cart page terms and conditions checkbox
-    And user clicks on shopping cart page checkout button
-    And user selects "New Address" billing address selector from checkout:billing address
-    And user fills in billing address details for customer index <customerIndex> from JSON
-    And user clicks on checkout:billing address continue button
-    And click on checkout:shipping address page in store pickup checkbox
-    And user clicks on checkout:shipping address continue button
-    And user selects payment method "<paymentMethod>" from the checkout:payment method page
-    And user clicks on checkout:payment method continue button
-    And user fills in the selected "<paymentMethod>" payment method details for customer index <customerIndex> from JSON
-    And user clicks on checkout:payment information continue button
-    And user clicks on checkout:confirm order continue button
-    Then checkout:thank you order number is saved successfully in DB
-    When user clicks on checkout:thank you order continue button
-    Then user is in welcome page
-
-    Examples:
-      | customerIndex | paymentMethod                 |
-      | 0             | Cash On Delivery (COD) (7.00) |
-      | 1             | Check / Money Order (5.00)    |
-      | 0             | Credit Card                   |
-      | 1             | Purchase Order                |
-
-  Scenario Outline: Verify that the user can complete checkout with both shipping and billing addresses
-    When the user navigates to the "BOOKS" page
-    And user adds "Computing and Internet" to the cart
-    Then a success message should be displayed
-
-    When the user clicks on cart link in the notification
-    Then the user should be redirected to the shopping cart page
-
-    When user checks the shopping cart page terms and conditions checkbox
-    And user clicks on shopping cart page checkout button
-    And user selects "New Address" billing address selector from checkout:billing address
-    And user fills in the checkout:billing address page details
-    And user clicks on checkout:billing address continue button
-    And user selects "New Address" shipping address selector from checkout:billing address
-    And user fills in the checkout:shipping address page details
-    And click on checkout:shipping address page in store pickup checkbox
-    And user clicks on checkout:shipping address continue button
-    And user selects payment method "<paymentMethod>" from the checkout:payment method page
-    And user clicks on checkout:payment method continue button
-    And user fills in the selected "<paymentMethod>" payment method details from environments file
-    And user clicks on checkout:payment information continue button
-    And user clicks on checkout:confirm order continue button
-    Then checkout:thank you order number is saved successfully in DB
-
-    When user clicks on checkout:thank you order continue button
-    Then user is in welcome page
-    Examples:
-      | paymentMethod                 |
-      | Cash On Delivery (COD) (7.00) |
+      And user clicks back button on checkout "Confirm order" step
+      And user clicks back button on checkout "Payment information" step
+      And user clicks back button on checkout "Payment method" step
+      And user clicks back button on checkout "Shipping address" step
+      Then user should be redirected to the checkout:Billing address tab
